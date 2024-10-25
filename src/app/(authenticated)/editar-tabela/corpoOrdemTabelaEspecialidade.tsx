@@ -14,10 +14,10 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue
 } from "../../../components/ui/select";
 
-export default function LinhasOrdemTabelaEspecialidade({ tabela, control, setValue, register, watch }) {
+export default function LinhasOrdemTabelaEspecialidade({ tabela, control, setValue, register, watch, especialidades }) {
   const tamanhoCabecalho = tabela.cabecalhosEspecialidades.length;
   let indexLinha = -1;
 
@@ -27,26 +27,12 @@ export default function LinhasOrdemTabelaEspecialidade({ tabela, control, setVal
         return(
           <div className="border border-t-0 border-black" key={indexCabecalho}>
             <LinhaCabecalho register={register} indexCabecalho={indexCabecalho} setValue={setValue} watch={watch}/>
-            {tabela.linhasEspecialidades.map((linha, indexLinhaTabela) => { 
-              const linhaInicial = tabela.cabecalhosEspecialidades[indexCabecalho].posicao + 1;
-              let linhaAtual = linhaInicial + indexLinhaTabela;
-
-              let linhaFinal;
-              if (tamanhoCabecalho > indexCabecalho + 1) {
-                linhaFinal = tabela.cabecalhosEspecialidades[indexCabecalho + 1].posicao - 1;
-              } else {
-                linhaFinal = tabela.linhasEspecialidades.length + tamanhoCabecalho;
-              }
-
-              if (linhaAtual <= linhaFinal) {
-                indexLinha++;
-
-                return(
-                  <LinhaTabela key={indexLinhaTabela} tabela={tabela} linha={tabela.linhasEspecialidades[indexLinha]} 
-                    control={control} setValue={setValue} indexLinha={indexLinha}
-                  />
-                );
-              }
+            {cabecalho.linhasEspecialidades.map((linha, indexLinhaTabela) => { 
+              return(
+                <LinhaTabela key={indexLinhaTabela} tabela={tabela} linha={linha} especialidades={especialidades}
+                  control={control} setValue={setValue} indexLinha={indexLinha}
+                />
+              );
             })}
           </div>
         );
@@ -89,7 +75,7 @@ function LinhaCabecalho({ register, indexCabecalho, setValue, watch }) {
   );
 }
 
-function LinhaTabela({linha, tabela, control, setValue, indexLinha}) {
+function LinhaTabela({linha, tabela, control, setValue, indexLinha, especialidades}) {
   function onChange(value) {
     setValue("especialidade." + indexLinha + ".especialidade", value);
     setValue("especialidade." + indexLinha + ".posicao", linha.posicao);
@@ -118,13 +104,13 @@ function LinhaTabela({linha, tabela, control, setValue, indexLinha}) {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {tabela.linhasEspecialidades.map((especialidade, index) => {
+                  {especialidades.map((especialidade, index) => {
                     return(
                       <SelectItem 
-                        value={especialidade.nomeEspecialidade}
+                        value={especialidade.especialidade}
                         key={index}
                       >
-                        {especialidade.nomeEspecialidade}
+                        {especialidade.especialidade}
                       </SelectItem>
                     );
                   })}

@@ -14,10 +14,10 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue
 } from "../../../components/ui/select";
 
-export default function LinhasOrdemTabelaCirurgiao({ tabela, control, setValue, register }) {
+export default function LinhasOrdemTabelaCirurgiao({ tabela, control, setValue, register, cirurgioes }) {
   let qtdCabecalhosEspecialidade = tabela.cabecalhosEspecialidades.length
 
   return (
@@ -28,18 +28,12 @@ export default function LinhasOrdemTabelaCirurgiao({ tabela, control, setValue, 
             <LinhaCabecalho cabecalho={cabecalho} key={"cabecalho-"+indexCabecalho} indexCabecalho={indexCabecalho} 
               setValue={setValue} register={register} qtdCabecalhosEspecialidade={qtdCabecalhosEspecialidade}
             />
-            {tabela.listaCirurgioes.map((cirurgiao, indexCirurgiao) => {
+            {cabecalho.listaProcedimentos.map((procedimento, indexProcedimento) => {
               return(
-                <div key={indexCirurgiao}>
-                  {cirurgiao.linhasProcedimentos.map((procedimento, indexProcedimento) => {
-                    return(
-                      <LinhaTabela key={indexProcedimento} procedimento={procedimento} tabela={tabela} cirurgiao={cirurgiao}
-                        control={control} indexLinhaTabela={indexProcedimento} setValue={setValue} 
-                      />
-                    )
-                  })}
-                </div>
-              );
+                <LinhaTabela key={indexProcedimento} procedimento={procedimento} cirurgioes={cirurgioes}
+                  control={control} indexLinhaTabela={indexProcedimento} setValue={setValue} 
+                />
+              )
             })}
           </div>
         );
@@ -91,7 +85,7 @@ function LinhaCabecalho({cabecalho, indexCabecalho, setValue, register, qtdCabec
   );
 }
 
-function LinhaTabela({procedimento, control, indexLinhaTabela, setValue, tabela, cirurgiao}) {
+function LinhaTabela({procedimento, control, indexLinhaTabela, setValue, cirurgioes}) {
   function onChange(value) {
     setValue("procedimento." + indexLinhaTabela + ".cirurgiao", procedimento.nomeCirurgiao);
     setValue("procedimento." + indexLinhaTabela + ".procedimento", value);
@@ -106,6 +100,8 @@ function LinhaTabela({procedimento, control, indexLinhaTabela, setValue, tabela,
     tipo: "CIRURGIAO_LINHA"
   }
 
+  let procedimentosFiltrados = filtrarProcedimentos(procedimento.nomeCirurgiao, cirurgioes);
+
   return(
     <div className="flex items-center justify-between divide-x divide-y border-black bg-[#E2EFDB]">
       <div className="flex items-center justify-between border-black border-t w-[300px] h-[25px]">
@@ -116,16 +112,16 @@ function LinhaTabela({procedimento, control, indexLinhaTabela, setValue, tabela,
           render={({ field }) => (
             <FormItem>
               <Select onValueChange={field.onChange} defaultValue={procedimento.nomeCirurgiao}>
-                <FormControl className="w-[300px] h-6 border-none hover:bg-[#d2dfcc]">
+                <FormControl className="w-[300px] h-[23px] border-none hover:bg-[#d2dfcc]">
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione um cirurgião" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {tabela.listaCirurgioes.map((cirurgiao, indexCirurgiao) => {
+                  {cirurgioes.map((cirurgiao, indexCirurgiao) => {
                     return(
-                      <SelectItem value={cirurgiao.nomeCirurgiao} key={"cirurgiao-"+cirurgiao.posicao+"-"+indexCirurgiao}>
-                        {cirurgiao.nomeCirurgiao}
+                      <SelectItem value={cirurgiao.cirurgiao} key={"cirurgiao-"+cirurgiao.id+"-"+indexCirurgiao}>
+                        {cirurgiao.cirurgiao}
                       </SelectItem>
                     );
                   })} 
@@ -144,16 +140,16 @@ function LinhaTabela({procedimento, control, indexLinhaTabela, setValue, tabela,
           render={({ field }) => (
             <FormItem>
               <Select onValueChange={(value) => { field.onChange(value); onChange(value); }} defaultValue={procedimento.nomeProcedimento}>
-                <FormControl className="w-[300px] h-6 border-none hover:bg-[#d2dfcc]">
+                <FormControl className="w-[300px] h-[23px] border-none hover:bg-[#d2dfcc]">
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione um procedimento" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {cirurgiao.linhasProcedimentos.map((procedimento, indexProcedimento) => {
+                  {procedimentosFiltrados.map((procedimento, indexProcedimento) => {
                     return(
-                      <SelectItem value={procedimento.nomeProcedimento} key={"procedimento-"+procedimento.posicao+"-"+indexProcedimento}>
-                        {procedimento.nomeProcedimento}
+                      <SelectItem value={procedimento.procedimento} key={"procedimento-"+procedimento.id+"-"+indexProcedimento}>
+                        {procedimento.procedimento}
                       </SelectItem>
                     );
                   })}
@@ -180,18 +176,7 @@ function LinhaTabela({procedimento, control, indexLinhaTabela, setValue, tabela,
   );
 }
 
-function calcularLinhaFinal(tabela) {
-  let linhaFinal = 0;
-
-  if (tabela.listaCirurgioes !== undefined) {
-    tabela.listaCirurgioes.map((cirurgiao) => {
-      cirurgiao.linhasProcedimentos.map(() => {
-        linhaFinal++;
-      });
-    });
-  }
-
-  linhaFinal += tabela.cabecalhosCirurgioes.length;
-
-  return linhaFinal;
+function filtrarProcedimentos(nomeCirurgiao, cirurgioes) {
+  let cirurgiao = cirurgioes.find(cirurgiao => cirurgiao.cirurgiao == nomeCirurgiao);
+  return cirurgiao.procedimentos;
 }

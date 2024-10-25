@@ -46,6 +46,8 @@ const FormSchema = z.object({
  
 function ConteudoTabela({dataCalendario, setData, session}) {
   const [tabela, setTabela] = useState(null);
+  const [especialidades, setEspecialidades] = useState(null)
+  const [cirurgioes, setCirurgioes] = useState(null)
   const [isLoading, setLoading] = useState(true);
   const { toast } = useToast();
   const imgRef = useRef(null);
@@ -61,7 +63,7 @@ function ConteudoTabela({dataCalendario, setData, session}) {
       setLoading(true);
 
       try {
-        const responseTabela = await fetch(process.env.NEXT_PUBLIC_API + '/api/ordem-tabela/teste/' + ConverterData(dataCalendario), {
+        const responseTabela = await fetch(process.env.NEXT_PUBLIC_API + '/api/ordem-tabela/' + ConverterData(dataCalendario), {
           method: "GET",
           headers: {
             authorization: session?.user.token,
@@ -70,6 +72,24 @@ function ConteudoTabela({dataCalendario, setData, session}) {
         const responseTabelaJson = await responseTabela.json();
         setTabela(responseTabelaJson);
         setValue("cabecalhos", montarCabecalhos(responseTabelaJson));
+
+        const responseEspecialidade = await fetch(process.env.NEXT_PUBLIC_API + '/api/especialidade/nomes', {
+          method: "GET",
+          headers: {
+            authorization: session?.user.token,
+          },
+        }); 
+        const responseEspecialidadeJson = await responseEspecialidade.json();
+        setEspecialidades(responseEspecialidadeJson);
+
+        const responseCirurgiao = await fetch(process.env.NEXT_PUBLIC_API + '/api/cirurgiao/nomes', {
+          method: "GET",
+          headers: {
+            authorization: session?.user.token,
+          },
+        }); 
+        const responseCirurgiaoJson = await responseCirurgiao.json();
+        setCirurgioes(responseCirurgiaoJson);
 
       } finally {
         setLoading(false);
@@ -114,14 +134,14 @@ function ConteudoTabela({dataCalendario, setData, session}) {
 
   return (
     <>
-      <div>
+      <div>   
         <HeaderEditarTabela data={dataCalendario} setData={setData}/> 
         {tabela != null ?
           <Form {...form}>
-            <LinhasOrdemTabelaEspecialidade tabela={tabela} watch={watchLinha} 
+            <LinhasOrdemTabelaEspecialidade tabela={tabela} watch={watchLinha} especialidades={especialidades}
               control={control} setValue={setValue} register={register}
             />
-            <LinhasOrdemTabelaCirurgiao tabela={tabela} control={control}
+            <LinhasOrdemTabelaCirurgiao tabela={tabela} control={control} cirurgioes={cirurgioes}
              setValue={setValue} register={register}
             />
             <div className="flex items-center justify-end gap-8 w-full mt-8">
