@@ -53,6 +53,7 @@ function ConteudoTabela({dataCalendario, setData, session}) {
   const imgRef = useRef(null);
   
   const { watch, register, handleSubmit, setValue, getValues, control } = useForm<OrdemTabelaFormData>();
+  const watchLinha = watch();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -103,11 +104,16 @@ function ConteudoTabela({dataCalendario, setData, session}) {
     console.log(tabela);
   }, [tabela]);
 
+  useEffect(() => {
+    console.log(watchLinha);
+  }, [watchLinha]);
+
+
   if (isLoading) return CarregandoSession()
 
-  async function onSubmit(dadosNovos) {
-    const linhas = montarValoresLinhas(dadosNovos, tabela.linhasEspecialidades, tabela.linhasCirurgioes);
-    const cabecalhos = montarValoresCabecalhos(dadosNovos);
+  async function onSubmit() {
+    const linhas = montarValoresLinhas(tabela);
+    const cabecalhos = montarValoresCabecalhos(tabela);
 
     const resultado = {
       data: ConverterData(dataCalendario),
@@ -130,19 +136,17 @@ function ConteudoTabela({dataCalendario, setData, session}) {
     // toast({description: "Tabela salva com sucesso!"})
   }
 
-  const watchLinha = watch();
-
   return (
     <>
       <div>   
         <HeaderEditarTabela data={dataCalendario} setData={setData}/> 
         {tabela != null ?
           <Form {...form}>
-            <LinhasOrdemTabelaEspecialidade tabela={tabela} watch={watchLinha} especialidades={especialidades}
+            <LinhasOrdemTabelaEspecialidade tabela={tabela} setTabela={setTabela} especialidades={especialidades}
               control={control} setValue={setValue} register={register}
             />
             <LinhasOrdemTabelaCirurgiao tabela={tabela} control={control} cirurgioes={cirurgioes}
-             setValue={setValue} register={register}
+             setValue={setValue} register={register} setTabela={setTabela}
             />
             <div className="flex items-center justify-end gap-8 w-full mt-8">
               <ButtonLocal texto={"Salvar"} color={"bg-green-800"} onClick={handleSubmit(onSubmit)} type={"button"} icon={"Salvar"}/>

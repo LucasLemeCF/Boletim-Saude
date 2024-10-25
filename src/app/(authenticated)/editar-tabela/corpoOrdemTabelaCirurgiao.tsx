@@ -17,7 +17,7 @@ import {
   SelectValue
 } from "../../../components/ui/select";
 
-export default function LinhasOrdemTabelaCirurgiao({ tabela, control, setValue, register, cirurgioes }) {
+export default function LinhasOrdemTabelaCirurgiao({ tabela, control, setValue, register, cirurgioes, setTabela }) {
   let qtdCabecalhosEspecialidade = tabela.cabecalhosEspecialidades.length
 
   return (
@@ -30,8 +30,8 @@ export default function LinhasOrdemTabelaCirurgiao({ tabela, control, setValue, 
             />
             {cabecalho.listaProcedimentos.map((procedimento, indexProcedimento) => {
               return(
-                <LinhaTabela key={indexProcedimento} procedimento={procedimento} cirurgioes={cirurgioes}
-                  control={control} indexLinhaTabela={indexProcedimento} setValue={setValue} 
+                <LinhaTabela key={indexProcedimento} procedimento={procedimento} cirurgioes={cirurgioes} indexCabecalho={indexCabecalho}
+                  control={control} indexProcedimento={indexProcedimento} setValue={setValue} setTabela={setTabela}
                 />
               )
             })}
@@ -85,12 +85,32 @@ function LinhaCabecalho({cabecalho, indexCabecalho, setValue, register, qtdCabec
   );
 }
 
-function LinhaTabela({procedimento, control, indexLinhaTabela, setValue, cirurgioes}) {
+function LinhaTabela({procedimento, control, indexProcedimento, indexCabecalho, setValue, cirurgioes, setTabela}) {
+  let procedimentosFiltrados = filtrarProcedimentos(procedimento.nomeCirurgiao, cirurgioes);
+  
+  function onChangeCirurgiao(value) {
+    setValue("procedimento." + indexProcedimento + ".cirurgiao", value);
+    setValue("procedimento." + indexProcedimento + ".procedimento", procedimento.nomeProcedimento);
+    setValue("procedimento." + indexProcedimento + ".posicao", procedimento.posicao);
+    setValue("procedimento." + indexProcedimento + ".tipo", "CIRURGIAO_LINHA");
+
+    setTabela((tabela) => {
+      let novoTabela = {...tabela};
+      const primeiroProcedimento = buscarPrimeiroProcedimento(value, cirurgioes);
+
+      novoTabela.cabecalhosCirurgioes[indexCabecalho].listaProcedimentos[indexProcedimento].idProcedimento = primeiroProcedimento.id;
+      novoTabela.cabecalhosCirurgioes[indexCabecalho].listaProcedimentos[indexProcedimento].nomeCirurgiao = value;
+      novoTabela.cabecalhosCirurgioes[indexCabecalho].listaProcedimentos[indexProcedimento].nomeProcedimento = primeiroProcedimento.procedimento;
+
+      return novoTabela;
+    });
+  }
+
   function onChange(value) {
-    setValue("procedimento." + indexLinhaTabela + ".cirurgiao", procedimento.nomeCirurgiao);
-    setValue("procedimento." + indexLinhaTabela + ".procedimento", value);
-    setValue("procedimento." + indexLinhaTabela + ".posicao", procedimento.posicao);
-    setValue("procedimento." + indexLinhaTabela + ".tipo", "CIRURGIAO_LINHA");
+    setValue("procedimento." + indexProcedimento + ".cirurgiao", procedimento.nomeCirurgiao);
+    setValue("procedimento." + indexProcedimento + ".procedimento", value);
+    setValue("procedimento." + indexProcedimento + ".posicao", procedimento.posicao);
+    setValue("procedimento." + indexProcedimento + ".tipo", "CIRURGIAO_LINHA");
   }
 
   let procedimentoForm = {
@@ -100,18 +120,16 @@ function LinhaTabela({procedimento, control, indexLinhaTabela, setValue, cirurgi
     tipo: "CIRURGIAO_LINHA"
   }
 
-  let procedimentosFiltrados = filtrarProcedimentos(procedimento.nomeCirurgiao, cirurgioes);
-
   return(
     <div className="flex items-center justify-between divide-x divide-y border-black bg-[#E2EFDB]">
       <div className="flex items-center justify-between border-black border-t w-[300px] h-[25px]">
         <FormField
           control={control}
-          name={"cirurgiao." + indexLinhaTabela}
+          name={"cirurgiao." + indexProcedimento}
           defaultValue={procedimento.nomeCirurgiao}
           render={({ field }) => (
             <FormItem>
-              <Select onValueChange={field.onChange} defaultValue={procedimento.nomeCirurgiao}>
+              <Select onValueChange={(value) => { field.onChange(value); onChangeCirurgiao(value); }} defaultValue={procedimento.nomeCirurgiao}>
                 <FormControl className="w-[300px] h-[23px] border-none hover:bg-[#d2dfcc]">
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione um cirurgião" />
@@ -135,7 +153,7 @@ function LinhaTabela({procedimento, control, indexLinhaTabela, setValue, cirurgi
       <div className="flex items-center justify-between border-black border-t w-[300px] h-[25px]">
         <FormField
           control={control}
-          name={"procedimento." + indexLinhaTabela}
+          name={"procedimento." + indexProcedimento}
           defaultValue={procedimentoForm}
           render={({ field }) => (
             <FormItem>
@@ -179,4 +197,9 @@ function LinhaTabela({procedimento, control, indexLinhaTabela, setValue, cirurgi
 function filtrarProcedimentos(nomeCirurgiao, cirurgioes) {
   let cirurgiao = cirurgioes.find(cirurgiao => cirurgiao.cirurgiao == nomeCirurgiao);
   return cirurgiao.procedimentos;
+}
+
+function buscarPrimeiroProcedimento(nomeCirurgiao, cirurgioes) {
+  let cirurgiao = cirurgioes.find(cirurgiao => cirurgiao.cirurgiao == nomeCirurgiao);
+  return cirurgiao.procedimentos[0];
 }

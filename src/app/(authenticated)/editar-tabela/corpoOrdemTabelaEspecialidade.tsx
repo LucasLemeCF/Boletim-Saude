@@ -17,8 +17,7 @@ import {
   SelectValue
 } from "../../../components/ui/select";
 
-export default function LinhasOrdemTabelaEspecialidade({ tabela, control, setValue, register, watch, especialidades }) {
-  const tamanhoCabecalho = tabela.cabecalhosEspecialidades.length;
+export default function LinhasOrdemTabelaEspecialidade({ tabela, control, setValue, register, setTabela, especialidades }) {
   let indexLinha = -1;
 
   return (
@@ -26,11 +25,11 @@ export default function LinhasOrdemTabelaEspecialidade({ tabela, control, setVal
       {tabela.cabecalhosEspecialidades.map((cabecalho, indexCabecalho) => {
         return(
           <div className="border border-t-0 border-black" key={indexCabecalho}>
-            <LinhaCabecalho register={register} indexCabecalho={indexCabecalho} setValue={setValue} watch={watch}/>
-            {cabecalho.linhasEspecialidades.map((linha, indexLinhaTabela) => { 
+            <LinhaCabecalho register={register} indexCabecalho={indexCabecalho} setValue={setValue} setTabela={setTabela}/>
+            {cabecalho.linhasEspecialidades.map((linha, indexEspecialidade) => { 
               return(
-                <LinhaTabela key={indexLinhaTabela} tabela={tabela} linha={linha} especialidades={especialidades}
-                  control={control} setValue={setValue} indexLinha={indexLinha}
+                <LinhaTabela key={indexEspecialidade} linha={linha} especialidades={especialidades} setTabela={setTabela}
+                  control={control} setValue={setValue} indexEspecialidade={indexEspecialidade} indexCabecalho={indexCabecalho}
                 />
               );
             })}
@@ -41,15 +40,12 @@ export default function LinhasOrdemTabelaEspecialidade({ tabela, control, setVal
   )
 }
 
-function LinhaCabecalho({ register, indexCabecalho, setValue, watch }) {
+function LinhaCabecalho({ register, indexCabecalho, setValue, setTabela }) {
   function onChange(value) {
     setValue("cabecalhos." + indexCabecalho + ".posicao", indexCabecalho);
     setValue("cabecalhos." + indexCabecalho + ".tipo", "ESPECIALIDADE_CABECALHO");
     setValue("cabecalhos." + indexCabecalho + ".textos.0.texto", value);
   }
-
-  console.log("Teste: ");
-  console.log(watch);
 
   return (
     <div className="flex items-center justify-between divide-x bg-[#E2EFDB]">
@@ -75,11 +71,21 @@ function LinhaCabecalho({ register, indexCabecalho, setValue, watch }) {
   );
 }
 
-function LinhaTabela({linha, tabela, control, setValue, indexLinha, especialidades}) {
+function LinhaTabela({linha, control, setValue, especialidades, setTabela, indexCabecalho, indexEspecialidade}) {
   function onChange(value) {
-    setValue("especialidade." + indexLinha + ".especialidade", value);
-    setValue("especialidade." + indexLinha + ".posicao", linha.posicao);
-    setValue("especialidade." + indexLinha + ".tipo", "ESPECIALIDADE_LINHA");
+    setValue("especialidade." + indexEspecialidade + ".especialidade", value);
+    setValue("especialidade." + indexEspecialidade + ".posicao", linha.posicao);
+    setValue("especialidade." + indexEspecialidade + ".tipo", "ESPECIALIDADE_LINHA");
+
+    setTabela((tabela) => {
+      let novoTabela = {...tabela};
+      const idEspecialidade = especialidades.find((especialidade) => especialidade.especialidade === value).id;
+
+      novoTabela.cabecalhosEspecialidades[indexCabecalho].linhasEspecialidades[indexEspecialidade].idEspecialidade = idEspecialidade;
+      novoTabela.cabecalhosEspecialidades[indexCabecalho].linhasEspecialidades[indexEspecialidade].nomeEspecialidade = value;
+
+      return novoTabela;
+    });
   }
 
   let especialidade = {
@@ -93,7 +99,7 @@ function LinhaTabela({linha, tabela, control, setValue, indexLinha, especialidad
       <div className="flex items-center justify-between border-black border-t w-[300px] h-[25px]">
         <FormField
           control={control}
-          name={"especialidade." + indexLinha}
+          name={"especialidade." + indexEspecialidade}
           defaultValue={especialidade}
           render={({ field }) => (
             <FormItem>

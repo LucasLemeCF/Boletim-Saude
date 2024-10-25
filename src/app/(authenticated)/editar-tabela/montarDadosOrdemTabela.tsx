@@ -1,34 +1,28 @@
 
-export function montarValoresLinhas(dadosTabela, especialidades, procedimentosCirurgioes) {
+export function montarValoresLinhas(tabela) {
     const linhas: any[] = [];
 
-    let posicao = 0;
-
-    dadosTabela.especialidade.map((linha) => {
-        especialidades.map((especialidade) => {
-            if (especialidade.nomeEspecialidade == linha.especialidade) {
+    if (tabela !== null) {
+        tabela.cabecalhosEspecialidades.map((cabecalho) => {
+            cabecalho.linhasEspecialidades.map((especialidade) => {
                 linhas.push({
-                    posicao: linha.posicao,
+                    posicao: especialidade.posicao,
                     tipo: "ESPECIALIDADE_LINHA",
                     componenteId: especialidade.idEspecialidade,
                 });
-                posicao = linha.posicao;
-            }
+            });
         });
-    });
 
-    dadosTabela.procedimento.map((linha) => {
-        procedimentosCirurgioes.map((procedimento) => {
-            if (procedimento.cirurgiao == linha.cirurgiao && procedimento.procedimento == linha.procedimento) {
+        tabela.cabecalhosCirurgioes.map((cabecalho) => {
+            cabecalho.listaProcedimentos.map((procedimento) => {
                 linhas.push({
-                    posicao: linha.posicao + posicao,
+                    posicao: procedimento.posicao,
                     tipo: "CIRURGIAO_LINHA",
-                    componenteId: procedimento.id,
+                    componenteId: procedimento.idProcedimento,
                 });
-
-            }
+            });
         });
-    });
+    }
 
     return linhas;
 }
@@ -64,41 +58,41 @@ export function montarCabecalhos(tabela) {
             });
         });
     }
-
-    console.log(cabecalhos)
    
     return cabecalhos;
 }
 
-export function montarValoresCabecalhos(dadosNovos) {
+export function montarValoresCabecalhos(tabela) {
     const cabecalhos = [] as any;
 
-    dadosNovos.cabecalhos.map((cabecalho) => {
-        if (cabecalho.tipo == "ESPECIALIDADE_CABECALHO") {
+    if (tabela !== null) {
+        tabela.cabecalhosEspecialidades.map((cabecalho) => {
             cabecalhos.push({
                 posicao: cabecalho.posicao,
                 tipo: "ESPECIALIDADE_CABECALHO",
                 textos: [
                     {
-                        texto: cabecalho.textos[0].texto,
+                        texto: cabecalho.textos[0],
                     }
                 ]
             });
-        } else {
+        });
+
+        tabela.cabecalhosCirurgioes.map((cabecalho) => {
             cabecalhos.push({
                 posicao: cabecalho.posicao,
                 tipo: "CIRURGIAO_CABECALHO",
                 textos: [
                     {
-                        texto: cabecalho.textos[0].texto,
+                        texto: cabecalho.textos[0],
                     },
                     {
-                        texto: cabecalho.textos[1].texto,
+                        texto: cabecalho.textos[1],
                     }
                 ]
             });
-        }
-    });
+        });
+    }
 
     return cabecalhos;
 }
