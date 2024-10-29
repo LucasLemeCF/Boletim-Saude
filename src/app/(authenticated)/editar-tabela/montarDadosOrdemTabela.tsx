@@ -3,23 +3,19 @@ export function montarValoresLinhas(tabela) {
     const linhas: any[] = [];
 
     if (tabela !== null) {
-        tabela.cabecalhosEspecialidades.map((cabecalho) => {
-            cabecalho.linhasEspecialidades.map((especialidade) => {
-                linhas.push({
-                    posicao: especialidade.posicao,
-                    tipo: "ESPECIALIDADE_LINHA",
-                    componenteId: especialidade.idEspecialidade,
-                });
+        tabela.especialidade.map((especialidade) => {
+            linhas.push({
+                posicao: especialidade.posicao,
+                tipo: "ESPECIALIDADE_LINHA",
+                componenteId: especialidade.especialidade,
             });
         });
 
-        tabela.cabecalhosCirurgioes.map((cabecalho) => {
-            cabecalho.listaProcedimentos.map((procedimento) => {
-                linhas.push({
-                    posicao: procedimento.posicao,
-                    tipo: "CIRURGIAO_LINHA",
-                    componenteId: procedimento.idProcedimento,
-                });
+        tabela.cirurgiao.map((cirurgiao) => {
+            linhas.push({
+                posicao: cirurgiao.posicao,
+                tipo: "CIRURGIAO_LINHA",
+                componenteId: cirurgiao.especialidade,
             });
         });
     }
@@ -66,31 +62,31 @@ export function montarValoresCabecalhos(tabela) {
     const cabecalhos = [] as any;
 
     if (tabela !== null) {
-        tabela.cabecalhosEspecialidades.map((cabecalho) => {
-            cabecalhos.push({
-                posicao: cabecalho.posicao,
-                tipo: "ESPECIALIDADE_CABECALHO",
-                textos: [
-                    {
-                        texto: cabecalho.textos[0],
-                    }
-                ]
-            });
-        });
-
-        tabela.cabecalhosCirurgioes.map((cabecalho) => {
-            cabecalhos.push({
-                posicao: cabecalho.posicao,
-                tipo: "CIRURGIAO_CABECALHO",
-                textos: [
-                    {
-                        texto: cabecalho.textos[0],
-                    },
-                    {
-                        texto: cabecalho.textos[1],
-                    }
-                ]
-            });
+        tabela.cabecalhos.map((cabecalho) => {
+            if (cabecalho.tipo == "ESPECIALIDADE_CABECALHO") {
+                cabecalhos.push({
+                    posicao: cabecalho.posicao,
+                    tipo: "ESPECIALIDADE_CABECALHO",
+                    textos: [
+                        {
+                            texto: cabecalho.textos[0],
+                        }
+                    ]
+                });
+            } else {
+                cabecalhos.push({
+                    posicao: cabecalho.posicao,
+                    tipo: "CIRURGIAO_CABECALHO",
+                    textos: [
+                        {
+                            texto: cabecalho.textos[0],
+                        },
+                        {
+                            texto: cabecalho.textos[1],
+                        }
+                    ]
+                });
+            }
         });
     }
 
@@ -198,5 +194,40 @@ function buscarNomeEspecialidade({linha, especialidades}) {
     });
   
     return nomeEspecialidade;
-  }
-  
+}
+
+export function montarEspecialidade(dadosTabela) {
+    const especialidades = [] as any;
+
+    if (dadosTabela !== undefined) {
+        dadosTabela.cabecalhosEspecialidades.map((cabecalho) => {
+            cabecalho.linhasEspecialidades.map((especialidade) => {
+                especialidades.push({
+                    posicao: especialidade.posicao,
+                    tipo: "ESPECIALIDADE_LINHA",
+                    especialidade: especialidade.nomeEspecialidade,
+                });
+            });
+        });
+    }
+
+    return especialidades;
+}
+
+export function montarProcedimentos(dadosTabela) {
+    const procedimentos = [] as any;
+
+    if (dadosTabela !== undefined) {
+        dadosTabela.cabecalhosCirurgioes.map((cabecalho) => {
+            cabecalho.listaProcedimentos.map((procedimento) => {
+                procedimentos.push({
+                    posicao: procedimento.posicao,
+                    tipo: "CIRURGIAO_LINHA",
+                    procedimento: procedimento.nomeCirurgiao,
+                });
+            });
+        });
+    }
+
+    return procedimentos;
+}

@@ -1,13 +1,20 @@
 import * as z from "zod";
 
+const procedimento = z.object({
+    cirurgiao: z.string(),
+    posicao: z.number(),
+    procedimento: z.string(),
+    tipo: z.string(),
+})
+
 const texto = z.object({
     texto: z.string(),
 })
 
-const linhasTabela =  z.object({
+const especialidade = z.object({
     posicao: z.number(),
     tipo: z.string(),
-    componenteId: z.string(),
+    especialidade: z.string(),
 })
 
 export const cabecalhosTabela = z.object({
@@ -17,9 +24,10 @@ export const cabecalhosTabela = z.object({
 })
 
 export const dadosOrdemTabelaSchema = z.object({
-    data: z.string(),
-    linhas: z.array(linhasTabela),
-    cabecalhos: z.array(cabecalhosTabela)
+    cabecalhos: z.array(cabecalhosTabela),
+    cirurgiao: z.array(z.string()),
+    especialidade: z.array(especialidade),
+    procedimento: z.array(procedimento),
 })
 
 export type OrdemTabelaFormData = z.infer<typeof dadosOrdemTabelaSchema>;
