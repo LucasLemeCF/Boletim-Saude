@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useSession } from 'next-auth/react';
 import { useEffect, useRef, useState } from 'react';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { CgSpinner } from "react-icons/cg";
 import { z } from 'zod';
 import { Form } from '../../../components/ui/form';
@@ -15,7 +15,7 @@ import ConverterData from '../../../utils/converterData';
 import LinhasOrdemTabelaCirurgiao from './corpoOrdemTabelaCirurgiao';
 import LinhasOrdemTabelaEspecialidade from './corpoOrdemTabelaEspecialidade';
 import HeaderEditarTabela from './headerEditarTabela';
-import { montarCabecalhos, montarEspecialidade, montarProcedimentos, montarValoresCabecalhos, montarValoresLinhas } from './montarDadosOrdemTabela';
+import { montarCabecalhos, montarValoresCabecalhos, montarValoresLinhas } from './montarDadosOrdemTabela';
 
 export default function Tabela() {
   const { data: session } = useSession();
@@ -54,18 +54,17 @@ function ConteudoTabela({dataCalendario, setData, session}) {
   
   const { watch, register, handleSubmit, setValue, getValues, control } = useForm<OrdemTabelaFormData>({
     defaultValues: {
-      cabecalhos: [],
-      especialidade: [],
-      cirurgiao: [],
-      procedimento: [],
+      cabecalhosEspecialidades: [],
+      cabecalhosCirurgioes: [],
     }
+    // defaultValues: {
+    //   cabecalhos: [],
+    //   especialidade: [],
+    //   cirurgiao: [],
+    //   procedimento: [],
+    // }
   });
   const watchLinha = watch();
-
-  const { fields, remove } = useFieldArray({
-    name: "especialidade",
-    control,
-  })
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -84,9 +83,10 @@ function ConteudoTabela({dataCalendario, setData, session}) {
         }); 
         const responseTabelaJson = await responseTabela.json();
         setTabela(responseTabelaJson);
-        setValue("cabecalhos", montarCabecalhos(responseTabelaJson));
-        setValue("especialidade", montarEspecialidade(responseTabelaJson));
-        setValue("procedimento", montarProcedimentos(responseTabelaJson));
+        setValue("cabecalhosEspecialidades", montarCabecalhos(responseTabelaJson));
+        // setValue("cabecalhos", montarCabecalhos(responseTabelaJson));
+        // setValue("especialidade", montarEspecialidade(responseTabelaJson));
+        // setValue("procedimento", montarProcedimentos(responseTabelaJson));
 
         const responseEspecialidade = await fetch(process.env.NEXT_PUBLIC_API + '/api/especialidade/nomes', {
           method: "GET",
@@ -115,7 +115,7 @@ function ConteudoTabela({dataCalendario, setData, session}) {
   }, [dataCalendario, getValues, session?.user.token, setValue]);
 
   useEffect(() => {
-    console.log(tabela);
+    // console.log(tabela);
   }, [tabela]);
 
   useEffect(() => {
@@ -157,7 +157,7 @@ function ConteudoTabela({dataCalendario, setData, session}) {
         {tabela != null ?
           <Form {...form}>
             <LinhasOrdemTabelaEspecialidade tabela={tabela} setTabela={setTabela} especialidades={especialidades}
-              control={control} setValue={setValue} getValues={getValues} register={register} fields={fields} remove={remove}
+              control={control} setValue={setValue} getValues={getValues} register={register}
             />
             <LinhasOrdemTabelaCirurgiao tabela={tabela} control={control} cirurgioes={cirurgioes}
              setValue={setValue} register={register} setTabela={setTabela}

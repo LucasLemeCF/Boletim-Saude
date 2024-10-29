@@ -23,39 +23,84 @@ export function montarValoresLinhas(tabela) {
     return linhas;
 }
 
+// export function montarCabecalhos(tabela) {
+//     const cabecalhos: any[] = [];
+
+//     if (tabela !== null) {
+//         tabela.cabecalhosEspecialidades.map((cabecalho) => {
+//             cabecalhos.push({
+//                 posicao: cabecalho.posicao,
+//                 tipo: "ESPECIALIDADE_CABECALHO",
+//                 textos: [
+//                     {
+//                         texto: cabecalho.textos[0],
+//                     }
+//                 ]
+//             });
+//         });
+
+//         tabela.cabecalhosCirurgioes.map((cabecalho) => {
+//             cabecalhos.push({
+//                 posicao: cabecalho.posicao,
+//                 tipo: "CIRURGIAO_CABECALHO",
+//                 textos: [
+//                     {
+//                         texto: cabecalho.textos[0],
+//                     },
+//                     {
+//                         texto: cabecalho.textos[1],
+//                     }
+//                 ]
+//             });
+//         });
+//     }
+   
+//     return cabecalhos;
+// }
+
 export function montarCabecalhos(tabela) {
-    const cabecalhos: any[] = [];
+    const cabecalhosEspecialidades: any[] = [];
 
     if (tabela !== null) {
         tabela.cabecalhosEspecialidades.map((cabecalho) => {
-            cabecalhos.push({
+            const linhasEspecialidades: any[] = [];
+
+            cabecalho.linhasEspecialidades.map((especialidade) => {
+                linhasEspecialidades.push({
+                    posicao: especialidade.posicao,
+                    idEspecialidade: especialidade.idEspecialidade,
+                    nomeEspecialidade: especialidade.nomeEspecialidade,
+                });
+            });
+
+            cabecalhosEspecialidades.push({
                 posicao: cabecalho.posicao,
-                tipo: "ESPECIALIDADE_CABECALHO",
                 textos: [
                     {
                         texto: cabecalho.textos[0],
                     }
-                ]
+                ],
+                linhasEspecialidades: linhasEspecialidades
             });
         });
 
-        tabela.cabecalhosCirurgioes.map((cabecalho) => {
-            cabecalhos.push({
-                posicao: cabecalho.posicao,
-                tipo: "CIRURGIAO_CABECALHO",
-                textos: [
-                    {
-                        texto: cabecalho.textos[0],
-                    },
-                    {
-                        texto: cabecalho.textos[1],
-                    }
-                ]
-            });
-        });
+        // tabela.cabecalhosCirurgioes.map((cabecalho) => {
+        //     cabecalhosEspecialidades.push({
+        //         posicao: cabecalho.posicao,
+        //         tipo: "CIRURGIAO_CABECALHO",
+        //         textos: [
+        //             {
+        //                 texto: cabecalho.textos[0],
+        //             },
+        //             {
+        //                 texto: cabecalho.textos[1],
+        //             }
+        //         ]
+        //     });
+        // });
     }
    
-    return cabecalhos;
+    return cabecalhosEspecialidades;
 }
 
 export function montarValoresCabecalhos(tabela) {

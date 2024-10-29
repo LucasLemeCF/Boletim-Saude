@@ -3,6 +3,7 @@
 import { FaArrowDown, FaArrowUp, FaTrashAlt } from "react-icons/fa";
 import { RiMenuAddLine } from "react-icons/ri";
  
+import { useFieldArray } from "react-hook-form";
 import {
   FormControl,
   FormField,
@@ -17,23 +18,31 @@ import {
   SelectValue
 } from "../../../components/ui/select";
 
-export default function LinhasOrdemTabelaEspecialidade({ tabela, control, setValue, getValues, register, setTabela, especialidades, fields, remove }) {
+export default function LinhasOrdemTabelaEspecialidade({ tabela, control, setValue, getValues, register, setTabela, especialidades }) {  
+  const { fields: fieldsCabecalho, remove: removeCabecalho } = useFieldArray({
+    name: `cabecalhosEspecialidades`,
+    control,
+  });
+
   return (
     <div>
-      {tabela.cabecalhosEspecialidades.map((cabecalho, indexCabecalho) => {
+      {fieldsCabecalho.map((cabecalho, indexCabecalho) => {
+        const { fields: fieldsEspecialidades, remove, update } = useFieldArray({
+          name: `cabecalhosEspecialidades[${indexCabecalho}].linhasEspecialidades`,
+          control,
+        });
+
+        console.log(fieldsEspecialidades)
+
         return(
           <div className="border border-t-0 border-black" key={indexCabecalho}>
             <LinhaCabecalho register={register} indexCabecalho={indexCabecalho} setValue={setValue}/>
-            {fields.map((linha, indexEspecialidade) => { 
-              let index = calcularIndex(indexCabecalho, tabela);
-
-              if (estaNoInterValoDoCabecalho(linha, cabecalho, indexCabecalho, tabela, index)) {
-                return(
-                  <LinhaTabela key={indexEspecialidade} linha={linha} especialidades={especialidades} remove={remove}
-                    control={control} setValue={setValue} indexEspecialidade={indexEspecialidade}
-                  />
-                );
-              }
+            {fieldsEspecialidades.map((linha, indexEspecialidade) => { 
+              return(
+                <LinhaTabela key={indexEspecialidade} linha={linha} especialidades={especialidades} remove={remove} update={update}
+                  control={control} setValue={setValue} indexEspecialidade={indexEspecialidade} indexCabecalho={indexCabecalho}
+                />
+              );
             })}
           </div>
         );
@@ -91,17 +100,14 @@ function LinhaCabecalho({ register, indexCabecalho, setValue }) {
   );
 }
 
-function LinhaTabela({linha, control, setValue, especialidades, indexEspecialidade, remove}) {
+function LinhaTabela({linha, control, setValue, especialidades, indexCabecalho, indexEspecialidade, remove, update}) {
   function onChange(value) {
-    setValue("especialidade." + indexEspecialidade + ".especialidade", value);
-    setValue("especialidade." + indexEspecialidade + ".posicao", linha.posicao);
-    setValue("especialidade." + indexEspecialidade + ".tipo", "ESPECIALIDADE_LINHA");
-  }
+    let novoValor = {
+      ...linha,
+      nomeEspecialidade: value
+    };
 
-  let especialidade = {
-    especialidade: linha.nomeEspecialidade,
-    posicao: linha.posicao,
-    tipo: "ESPECIALIDADE_LINHA"
+    update(indexEspecialidade, novoValor);
   }
 
   return(
@@ -109,11 +115,11 @@ function LinhaTabela({linha, control, setValue, especialidades, indexEspecialida
       <div className="flex items-center justify-between border-black border-t w-[300px] h-[25px]">
         <FormField
           control={control}
-          name={"especialidade." + indexEspecialidade}
-          defaultValue={especialidade}
+          name={`cabecalhosEspecialidades[${indexCabecalho}].linhasEspecialidades[${indexEspecialidade}].nomeEspecialidade`}
+          defaultValue={linha.nomeEspecialidade}
           render={({ field }) => (
             <FormItem>
-              <Select value={linha.especialidade} onValueChange={(value) => { field.onChange(value); onChange(value); }}>
+              <Select value={linha.nomeEspecialidade} onValueChange={(value) => { field.onChange(value); onChange(value); }}>
                 <FormControl className="w-[300px] h-[23px] border-none hover:bg-[#d2dfcc]">
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione uma especialidade" />
