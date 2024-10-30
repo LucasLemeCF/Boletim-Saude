@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useSession } from 'next-auth/react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { CgSpinner } from "react-icons/cg";
 import { z } from 'zod';
@@ -50,19 +50,12 @@ function ConteudoTabela({dataCalendario, setData, session}) {
   const [cirurgioes, setCirurgioes] = useState(null)
   const [isLoading, setLoading] = useState(true);
   const { toast } = useToast();
-  const imgRef = useRef(null);
   
   const { watch, register, handleSubmit, setValue, getValues, control } = useForm<OrdemTabelaFormData>({
     defaultValues: {
       cabecalhosEspecialidades: [],
       cabecalhosCirurgioes: [],
     }
-    // defaultValues: {
-    //   cabecalhos: [],
-    //   especialidade: [],
-    //   cirurgiao: [],
-    //   procedimento: [],
-    // }
   });
   const watchLinha = watch();
 
@@ -84,9 +77,6 @@ function ConteudoTabela({dataCalendario, setData, session}) {
         const responseTabelaJson = await responseTabela.json();
         setTabela(responseTabelaJson);
         setValue("cabecalhosEspecialidades", montarCabecalhos(responseTabelaJson));
-        // setValue("cabecalhos", montarCabecalhos(responseTabelaJson));
-        // setValue("especialidade", montarEspecialidade(responseTabelaJson));
-        // setValue("procedimento", montarProcedimentos(responseTabelaJson));
 
         const responseEspecialidade = await fetch(process.env.NEXT_PUBLIC_API + '/api/especialidade/nomes', {
           method: "GET",

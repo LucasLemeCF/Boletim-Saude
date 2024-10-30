@@ -27,7 +27,7 @@ export default function LinhasOrdemTabelaEspecialidade({ control, setValue, getV
   return (
     <div>
       {fieldsCabecalho.map((cabecalho, indexCabecalho) => {
-        const { fields: fieldsEspecialidades, remove, update } = useFieldArray({
+        const { fields: fieldsEspecialidades, remove, update, insert } = useFieldArray({
           name: `cabecalhosEspecialidades[${indexCabecalho}].linhasEspecialidades`,
           control,
         });
@@ -40,7 +40,7 @@ export default function LinhasOrdemTabelaEspecialidade({ control, setValue, getV
             {fieldsEspecialidades.map((linha, indexEspecialidade) => { 
               return(
                 <LinhaTabela key={indexEspecialidade} linha={linha} especialidades={especialidades} remove={remove} update={update} updateCabecalho={updateCabecalho}
-                  control={control} indexEspecialidade={indexEspecialidade} indexCabecalho={indexCabecalho} getValues={getValues}
+                  control={control} indexEspecialidade={indexEspecialidade} indexCabecalho={indexCabecalho} getValues={getValues} insert={insert} cabecalho={cabecalho}
                 />
               );
             })}
@@ -86,14 +86,22 @@ function LinhaCabecalho({ register, indexCabecalho, fieldsCabecalho, remove, upd
   );
 }
 
-function LinhaTabela({linha, control, getValues, especialidades, indexCabecalho, indexEspecialidade, remove, update, updateCabecalho}) {
+function LinhaTabela({linha, control, getValues, especialidades, indexCabecalho, indexEspecialidade, remove, update, updateCabecalho, insert, cabecalho}) {
   function onChange(value) {
     let novoValor = {
       ...linha,
-      nomeEspecialidade: value
+      nomeEspecialidade: value,
+      //Adicionar idEspecialidade
     };
 
     update(indexEspecialidade, novoValor);
+  }
+
+  function adicionarLina() {
+    const index = indexEspecialidade + 1;
+    const novaPosicao = linha.posicao + 1;
+    alterarPosicaoEspecialidadesAdicionado(novaPosicao, updateCabecalho, getValues);
+    insert(index, {nomeEspecialidade: "", posicao: novaPosicao});
   }
 
   function removerEspecialidade(indexEspecialidade) {
@@ -141,7 +149,9 @@ function LinhaTabela({linha, control, getValues, especialidades, indexCabecalho,
       <div className="flex items-center justify-center border-black w-[100px] h-[25px] px-1">
         <p className='font-semibold text-center text-black'><FaArrowDown className="w-[15px] h-[15px]"/></p>
       </div>
-      <div className="flex items-center justify-center border-black w-[100px] h-[25px] px-1">
+      <div className="flex items-center justify-center border-black w-[100px] h-[25px] px-1 hover:cursor-pointer hover:bg-green-200 hover:text-green-600"
+        onClick={() => adicionarLina()}
+      >
         <p className='font-semibold text-center text-black'><RiMenuAddLine className="w-[18px] h-[18px]"/></p>
       </div>
       <div className="flex items-center justify-center border-black w-[100px] h-[25px] px-1 hover:cursor-pointer hover:bg-red-200 hover:text-red-600"
@@ -220,4 +230,55 @@ function estaNoInterValoDoCabecalho(linha, cabecalho, indexCabecalho, tabela, in
       linha.posicao < tabela.cabecalhosEspecialidades[index].posicao || 
       indexCabecalho + 1 === tabela.cabecalhosEspecialidades.length
     )
+}
+
+function alterarPosicaoEspecialidadesAdicionado(posicaoAdicionada, updateCabecalho, getValues) {
+  const tabela = getValues();
+
+  tabela.cabecalhosEspecialidades.map((cabecalho, indexCabecalho) => {
+    let novoCabecalho = {
+      ...cabecalho
+    }
+
+    if (cabecalho.posicao >= posicaoAdicionada) {
+      let novaPosicao = calcularNovaPosicaoAdicao(cabecalho.posicao, posicaoAdicionada);
+      
+      novoCabecalho = {
+        ...novoCabecalho,
+        posicao: novaPosicao
+      };
+    }
+
+    const linhasEspecialidades: any[] = [];
+    
+    cabecalho.linhasEspecialidades.map((linha) => {
+      const index = calcularIndex(indexCabecalho, tabela);
+
+      if (estaNoInterValoDoCabecalho(linha, cabecalho, indexCabecalho, tabela, index)) {
+        let novaPosicao = calcularNovaPosicaoAdicao(linha.posicao, posicaoAdicionada);
+
+        let novaLinha = {
+          ...linha,
+          posicao: novaPosicao
+        };
+
+        linhasEspecialidades.push(novaLinha);
+      }
+    });
+
+    novoCabecalho = {
+      ...novoCabecalho,
+      linhasEspecialidades: linhasEspecialidades
+    };
+
+    updateCabecalho(indexCabecalho, novoCabecalho);
+  });
+}
+
+function calcularNovaPosicaoAdicao(posicaoAntiga, posicaoRemovida) {
+  if (posicaoAntiga >= posicaoRemovida) {
+    return posicaoAntiga + 1;
+  } else {
+    return posicaoAntiga;
+  }
 }

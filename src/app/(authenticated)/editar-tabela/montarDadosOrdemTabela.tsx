@@ -27,41 +27,6 @@ export function montarValoresLinhas(tabela) {
     return linhas;
 }
 
-// export function montarCabecalhos(tabela) {
-//     const cabecalhos: any[] = [];
-
-//     if (tabela !== null) {
-//         tabela.cabecalhosEspecialidades.map((cabecalho) => {
-//             cabecalhos.push({
-//                 posicao: cabecalho.posicao,
-//                 tipo: "ESPECIALIDADE_CABECALHO",
-//                 textos: [
-//                     {
-//                         texto: cabecalho.textos[0],
-//                     }
-//                 ]
-//             });
-//         });
-
-//         tabela.cabecalhosCirurgioes.map((cabecalho) => {
-//             cabecalhos.push({
-//                 posicao: cabecalho.posicao,
-//                 tipo: "CIRURGIAO_CABECALHO",
-//                 textos: [
-//                     {
-//                         texto: cabecalho.textos[0],
-//                     },
-//                     {
-//                         texto: cabecalho.textos[1],
-//                     }
-//                 ]
-//             });
-//         });
-//     }
-   
-//     return cabecalhos;
-// }
-
 export function montarCabecalhos(tabela) {
     const cabecalhosEspecialidades: any[] = [];
 
