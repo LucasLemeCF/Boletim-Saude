@@ -27,20 +27,20 @@ export default function LinhasOrdemTabelaEspecialidade({ control, setValue, getV
   return (
     <div>
       {fieldsCabecalho.map((cabecalho, indexCabecalho) => {
-        const { fields: fieldsEspecialidades, remove, update, insert } = useFieldArray({
+        const { fields: fieldsEspecialidades, remove, update, insert, move } = useFieldArray({
           name: `cabecalhosEspecialidades[${indexCabecalho}].linhasEspecialidades`,
           control,
         });
 
         return(
           <div className="border border-t-0 border-black" key={indexCabecalho}>
-            <LinhaCabecalho register={register} indexCabecalho={indexCabecalho} fieldsCabecalho={fieldsCabecalho} 
-              remove={remove} updateCabecalho={updateCabecalho}
+            <LinhaCabecalho register={register} indexCabecalho={indexCabecalho} 
+              updateCabecalho={updateCabecalho} fieldsCabecalho={fieldsCabecalho} 
             />
             {fieldsEspecialidades.map((linha, indexEspecialidade) => { 
               return(
-                <LinhaTabela key={indexEspecialidade} linha={linha} especialidades={especialidades} remove={remove} update={update} updateCabecalho={updateCabecalho}
-                  control={control} indexEspecialidade={indexEspecialidade} indexCabecalho={indexCabecalho} getValues={getValues} insert={insert} cabecalho={cabecalho}
+                <LinhaTabela key={indexEspecialidade} linha={linha} especialidades={especialidades} remove={remove} update={update} updateCabecalho={updateCabecalho} 
+                  control={control} indexEspecialidade={indexEspecialidade} indexCabecalho={indexCabecalho} getValues={getValues} insert={insert} move={move} fieldsEspecialidades={fieldsEspecialidades}
                 />
               );
             })}
@@ -51,7 +51,7 @@ export default function LinhasOrdemTabelaEspecialidade({ control, setValue, getV
   )
 }
 
-function LinhaCabecalho({ register, indexCabecalho, fieldsCabecalho, remove, updateCabecalho }) {
+function LinhaCabecalho({ register, indexCabecalho, fieldsCabecalho, updateCabecalho }) {
   function onChange(value) {
     let novoValor = {
       ...fieldsCabecalho[indexCabecalho],
@@ -86,7 +86,7 @@ function LinhaCabecalho({ register, indexCabecalho, fieldsCabecalho, remove, upd
   );
 }
 
-function LinhaTabela({linha, control, getValues, especialidades, indexCabecalho, indexEspecialidade, remove, update, updateCabecalho, insert, cabecalho}) {
+function LinhaTabela({linha, control, getValues, especialidades, indexCabecalho, indexEspecialidade, remove, update, updateCabecalho, insert, move, fieldsEspecialidades}) {
   function onChange(value) {
     let novoValor = {
       ...linha,
@@ -107,6 +107,30 @@ function LinhaTabela({linha, control, getValues, especialidades, indexCabecalho,
   function removerEspecialidade(indexEspecialidade) {
     remove(indexEspecialidade);
     alterarPosicaoEspecialidades(linha.posicao, updateCabecalho, getValues);
+  }
+
+  function descer() {
+    if (indexEspecialidade + 1 < fieldsEspecialidades.length) {
+      fieldsEspecialidades.map((especialidade) => {
+        if (especialidade.posicao === linha.posicao) {
+          let novaEspecialidade = {
+            ...especialidade,
+            posicao: linha.posicao + 1
+          };
+
+          update(indexEspecialidade, novaEspecialidade);
+        } else if (especialidade.posicao === linha.posicao + 1) {
+          let novaEspecialidade = {
+            ...especialidade,
+            posicao: linha.posicao
+          };
+
+          update(indexEspecialidade + 1, novaEspecialidade);
+        }
+      });
+
+      move(indexEspecialidade, indexEspecialidade + 1);
+    }
   }
 
   return(
@@ -146,10 +170,12 @@ function LinhaTabela({linha, control, getValues, especialidades, indexCabecalho,
       <div className="flex items-center justify-center border-black w-[100px] h-[25px] px-1">
         <p className='font-semibold text-center text-black'><FaArrowUp className="w-[15px] h-[15px]"/></p>
       </div>
-      <div className="flex items-center justify-center border-black w-[100px] h-[25px] px-1">
+      <div className="flex items-center justify-center border-black w-[100px] h-[25px] px-1 hover:cursor-pointer hover:bg-[#d2dfcc]"
+        onClick={() => descer()}
+      >
         <p className='font-semibold text-center text-black'><FaArrowDown className="w-[15px] h-[15px]"/></p>
       </div>
-      <div className="flex items-center justify-center border-black w-[100px] h-[25px] px-1 hover:cursor-pointer hover:bg-green-200 hover:text-green-600"
+      <div className="flex items-center justify-center border-black w-[100px] h-[25px] px-1 hover:cursor-pointer hover:bg-[#d2dfcc]"
         onClick={() => adicionarLina()}
       >
         <p className='font-semibold text-center text-black'><RiMenuAddLine className="w-[18px] h-[18px]"/></p>

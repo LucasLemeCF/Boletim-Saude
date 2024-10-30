@@ -105,7 +105,9 @@ function ConteudoTabela({dataCalendario, setData, session}) {
   }, [dataCalendario, getValues, session?.user.token, setValue]);
 
   useEffect(() => {
-    console.log(watchLinha);
+    if (watchLinha.cabecalhosEspecialidades.length > 0) {
+      console.log(watchLinha.cabecalhosEspecialidades[0].linhasEspecialidades);
+    }
   }, [watchLinha]);
 
 
