@@ -115,11 +115,7 @@ function ConteudoTabela({dataCalendario, setData, session}) {
   }, [dataCalendario, getValues, session?.user.token, setValue]);
 
   useEffect(() => {
-    // console.log(tabela);
-  }, [tabela]);
-
-  useEffect(() => {
-    // console.log(watchLinha);
+    console.log(watchLinha);
   }, [watchLinha]);
 
 
@@ -156,7 +152,7 @@ function ConteudoTabela({dataCalendario, setData, session}) {
         <HeaderEditarTabela data={dataCalendario} setData={setData}/> 
         {tabela != null ?
           <Form {...form}>
-            <LinhasOrdemTabelaEspecialidade tabela={tabela} setTabela={setTabela} especialidades={especialidades}
+            <LinhasOrdemTabelaEspecialidade especialidades={especialidades}
               control={control} setValue={setValue} getValues={getValues} register={register}
             />
             <LinhasOrdemTabelaCirurgiao tabela={tabela} control={control} cirurgioes={cirurgioes}

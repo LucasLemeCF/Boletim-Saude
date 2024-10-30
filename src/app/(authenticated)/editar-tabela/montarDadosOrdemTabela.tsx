@@ -3,19 +3,23 @@ export function montarValoresLinhas(tabela) {
     const linhas: any[] = [];
 
     if (tabela !== null) {
-        tabela.especialidade.map((especialidade) => {
-            linhas.push({
-                posicao: especialidade.posicao,
-                tipo: "ESPECIALIDADE_LINHA",
-                componenteId: especialidade.especialidade,
+        tabela.cabecalhosEspecialidades.map((cabecalho) => {
+            cabecalho.linhasEspecialidades.map((especialidade) => {
+                linhas.push({
+                    posicao: especialidade.posicao,
+                    tipo: "ESPECIALIDADE_LINHA",
+                    componenteId: especialidade.especialidade,
+                });
             });
         });
 
-        tabela.cirurgiao.map((cirurgiao) => {
-            linhas.push({
-                posicao: cirurgiao.posicao,
-                tipo: "CIRURGIAO_LINHA",
-                componenteId: cirurgiao.especialidade,
+        tabela.cabecalhosCirurgioes.map((cirurgiao) => {
+            cirurgiao.listaProcedimentos.map((procedimento) => {
+                linhas.push({
+                    posicao: procedimento.posicao,
+                    tipo: "CIRURGIAO_LINHA",
+                    componenteId: procedimento.idProcedimento,
+                });
             });
         });
     }
@@ -75,29 +79,10 @@ export function montarCabecalhos(tabela) {
 
             cabecalhosEspecialidades.push({
                 posicao: cabecalho.posicao,
-                textos: [
-                    {
-                        texto: cabecalho.textos[0],
-                    }
-                ],
+                textos: [cabecalho.textos[0]],
                 linhasEspecialidades: linhasEspecialidades
             });
         });
-
-        // tabela.cabecalhosCirurgioes.map((cabecalho) => {
-        //     cabecalhosEspecialidades.push({
-        //         posicao: cabecalho.posicao,
-        //         tipo: "CIRURGIAO_CABECALHO",
-        //         textos: [
-        //             {
-        //                 texto: cabecalho.textos[0],
-        //             },
-        //             {
-        //                 texto: cabecalho.textos[1],
-        //             }
-        //         ]
-        //     });
-        // });
     }
    
     return cabecalhosEspecialidades;
@@ -107,31 +92,31 @@ export function montarValoresCabecalhos(tabela) {
     const cabecalhos = [] as any;
 
     if (tabela !== null) {
-        tabela.cabecalhos.map((cabecalho) => {
-            if (cabecalho.tipo == "ESPECIALIDADE_CABECALHO") {
-                cabecalhos.push({
-                    posicao: cabecalho.posicao,
-                    tipo: "ESPECIALIDADE_CABECALHO",
-                    textos: [
-                        {
-                            texto: cabecalho.textos[0],
-                        }
-                    ]
-                });
-            } else {
-                cabecalhos.push({
-                    posicao: cabecalho.posicao,
-                    tipo: "CIRURGIAO_CABECALHO",
-                    textos: [
-                        {
-                            texto: cabecalho.textos[0],
-                        },
-                        {
-                            texto: cabecalho.textos[1],
-                        }
-                    ]
-                });
-            }
+        tabela.cabecalhosEspecialidades.map((cabecalho) => {
+            cabecalhos.push({
+                posicao: cabecalho.posicao,
+                tipo: "ESPECIALIDADE_CABECALHO",
+                textos: [
+                    {
+                        texto: cabecalho.textos[0],
+                    }
+                ]
+            });
+        });
+
+        tabela.cabecalhosCirurgioes.map((cirurgiao) => {
+            cabecalhos.push({
+                posicao: cirurgiao.posicao,
+                tipo: "CIRURGIAO_CABECALHO",
+                textos: [
+                    {
+                        texto: cirurgiao.textos[0],
+                    },
+                    {
+                        texto: cirurgiao.textos[1],
+                    }
+                ]
+            });
         });
     }
 

@@ -69,7 +69,8 @@ function LinhaCabecalho({cabecalho, indexCabecalho, setValue, register, qtdCabec
         name={`cabecalhos.${index}.textos.1.texto`} {...register(`cabecalhos.${Number(index)}.textos.1.texto`)}
         onBlur={(e) => {onChangeProcedimento(e.target.value)}}
       />
-      <div className="flex items-center justify-center border-black bg-[#337B5B] w-[100px] h-[25px] px-1">
+      <div className="flex items-center justify-between border-black bg-[#337B5B] w-[400px] h-[25px]"></div>
+      {/* <div className="flex items-center justify-center border-black bg-[#337B5B] w-[100px] h-[25px] px-1">
         <p className='font-semibold text-center text-white'><FaArrowUp className="w-[16px] h-[16px]"/></p>
       </div>
       <div className="flex items-center justify-center border-black bg-[#337B5B] w-[100px] h-[25px] px-1">
@@ -80,7 +81,7 @@ function LinhaCabecalho({cabecalho, indexCabecalho, setValue, register, qtdCabec
       </div>
       <div className="flex items-center justify-center border-black bg-[#337B5B] w-[100px] h-[25px] px-1">
         <p className='font-semibold text-center text-white'><FaTrashAlt className="w-[16px] h-[16px]"/></p>
-      </div>
+      </div> */}
     </div>
   );
 }

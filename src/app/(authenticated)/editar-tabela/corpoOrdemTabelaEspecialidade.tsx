@@ -18,8 +18,8 @@ import {
   SelectValue
 } from "../../../components/ui/select";
 
-export default function LinhasOrdemTabelaEspecialidade({ tabela, control, setValue, getValues, register, setTabela, especialidades }) {  
-  const { fields: fieldsCabecalho, remove: removeCabecalho, update: updateCabecalho } = useFieldArray({
+export default function LinhasOrdemTabelaEspecialidade({ control, setValue, getValues, register, especialidades }) {  
+  const { fields: fieldsCabecalho, update: updateCabecalho } = useFieldArray({
     name: `cabecalhosEspecialidades`,
     control,
   });
@@ -32,11 +32,11 @@ export default function LinhasOrdemTabelaEspecialidade({ tabela, control, setVal
           control,
         });
 
-        // console.log(fieldsEspecialidades)
-
         return(
           <div className="border border-t-0 border-black" key={indexCabecalho}>
-            <LinhaCabecalho register={register} indexCabecalho={indexCabecalho} setValue={setValue}/>
+            <LinhaCabecalho register={register} indexCabecalho={indexCabecalho} fieldsCabecalho={fieldsCabecalho} 
+              remove={remove} updateCabecalho={updateCabecalho}
+            />
             {fieldsEspecialidades.map((linha, indexEspecialidade) => { 
               return(
                 <LinhaTabela key={indexEspecialidade} linha={linha} especialidades={especialidades} remove={remove} update={update} updateCabecalho={updateCabecalho}
@@ -51,22 +51,26 @@ export default function LinhasOrdemTabelaEspecialidade({ tabela, control, setVal
   )
 }
 
-function LinhaCabecalho({ register, indexCabecalho, setValue }) {
+function LinhaCabecalho({ register, indexCabecalho, fieldsCabecalho, remove, updateCabecalho }) {
   function onChange(value) {
-    setValue("cabecalhos." + indexCabecalho + ".posicao", indexCabecalho);
-    setValue("cabecalhos." + indexCabecalho + ".tipo", "ESPECIALIDADE_CABECALHO");
-    setValue("cabecalhos." + indexCabecalho + ".textos.0.texto", value);
+    let novoValor = {
+      ...fieldsCabecalho[indexCabecalho],
+      textos: [value]
+    };
+
+    updateCabecalho(indexCabecalho, novoValor);
   }
 
   return (
     <div className="flex items-center justify-between divide-x bg-[#E2EFDB]">
       <input className="flex items-center justify-between border-black font-semibold text-center text-white bg-[#337B5B] w-[300px] h-[25px] focus:border-[#337B5B] focus:border-2 focus:outline-none focus:ring-0" 
         placeholder="Insira o nome do cabeçalho"
-        name={`cabecalhos.${indexCabecalho}.textos.0.texto`} {...register(`cabecalhos.${Number(indexCabecalho)}.textos.0.texto`)}
+        name={`cabecalhosEspecialidades.${Number(indexCabecalho)}.textos.0`} {...register(`cabecalhosEspecialidades.${Number(indexCabecalho)}.textos.0`)}
         onBlur={(e) => {onChange(e.target.value)}}
       />
       <div className="flex items-center justify-between border-black bg-[#337B5B] w-[300px] h-[25px]"></div>
-      <div className="flex items-center justify-center border-black bg-[#337B5B] w-[100px] h-[25px] px-1">
+      <div className="flex items-center justify-between border-black bg-[#337B5B] w-[400px] h-[25px]"></div>
+      {/* <div className="flex items-center justify-center border-black bg-[#337B5B] w-[100px] h-[25px] px-1">
         <p className='font-semibold text-center text-white'><FaArrowUp className="w-[16px] h-[16px]"/></p>
       </div>
       <div className="flex items-center justify-center border-black bg-[#337B5B] w-[100px] h-[25px] px-1">
@@ -75,9 +79,9 @@ function LinhaCabecalho({ register, indexCabecalho, setValue }) {
       <div className="flex items-center justify-center border-black bg-[#337B5B] w-[100px] h-[25px] px-1">
         <p className='font-semibold text-center text-white'><RiMenuAddLine className="w-[18px] h-[18px]"/></p>
       </div>
-      <div className="flex items-center justify-center border-black bg-[#337B5B] w-[100px] h-[25px] px-1">
+      <div className="flex items-center justify-center border-black w-[100px] h-[25px] px-1 bg-[#337B5B] hover:cursor-pointer hover:bg-red-500 hover:text-red-300">
         <p className='font-semibold text-center text-white'><FaTrashAlt className="w-[16px] h-[16px]"/></p>
-      </div>
+      </div> */}
     </div>
   );
 }
@@ -187,9 +191,6 @@ function alterarPosicaoEspecialidades(posicaoRemovida, updateCabecalho, getValue
       ...novoCabecalho,
       linhasEspecialidades: linhasEspecialidades
     };
-
-    console.log("Teste");
-    console.log(novoCabecalho);
 
     updateCabecalho(indexCabecalho, novoCabecalho);
   });
