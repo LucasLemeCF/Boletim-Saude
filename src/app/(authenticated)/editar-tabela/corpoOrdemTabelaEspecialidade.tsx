@@ -19,7 +19,7 @@ import {
 } from "../../../components/ui/select";
 
 export default function LinhasOrdemTabelaEspecialidade({ tabela, control, setValue, getValues, register, setTabela, especialidades }) {  
-  const { fields: fieldsCabecalho, remove: removeCabecalho } = useFieldArray({
+  const { fields: fieldsCabecalho, remove: removeCabecalho, update: updateCabecalho } = useFieldArray({
     name: `cabecalhosEspecialidades`,
     control,
   });
@@ -32,15 +32,15 @@ export default function LinhasOrdemTabelaEspecialidade({ tabela, control, setVal
           control,
         });
 
-        console.log(fieldsEspecialidades)
+        // console.log(fieldsEspecialidades)
 
         return(
           <div className="border border-t-0 border-black" key={indexCabecalho}>
             <LinhaCabecalho register={register} indexCabecalho={indexCabecalho} setValue={setValue}/>
             {fieldsEspecialidades.map((linha, indexEspecialidade) => { 
               return(
-                <LinhaTabela key={indexEspecialidade} linha={linha} especialidades={especialidades} remove={remove} update={update}
-                  control={control} setValue={setValue} indexEspecialidade={indexEspecialidade} indexCabecalho={indexCabecalho}
+                <LinhaTabela key={indexEspecialidade} linha={linha} especialidades={especialidades} remove={remove} update={update} updateCabecalho={updateCabecalho}
+                  control={control} indexEspecialidade={indexEspecialidade} indexCabecalho={indexCabecalho} getValues={getValues}
                 />
               );
             })}
@@ -49,24 +49,6 @@ export default function LinhasOrdemTabelaEspecialidade({ tabela, control, setVal
       })}
     </div>
   )
-}
-
-function calcularIndex(indexCabecalho, tabela) {
-  let index = indexCabecalho;
-
-  if (indexCabecalho + 1 < tabela.cabecalhosEspecialidades.length) {
-    index = indexCabecalho + 1;
-  }
-
-  return index;
-}
-
-function estaNoInterValoDoCabecalho(linha, cabecalho, indexCabecalho, tabela, index) {
-  return linha.posicao > cabecalho.posicao 
-    && (
-      linha.posicao < tabela.cabecalhosEspecialidades[index].posicao || 
-      indexCabecalho + 1 === tabela.cabecalhosEspecialidades.length
-    )
 }
 
 function LinhaCabecalho({ register, indexCabecalho, setValue }) {
@@ -100,7 +82,7 @@ function LinhaCabecalho({ register, indexCabecalho, setValue }) {
   );
 }
 
-function LinhaTabela({linha, control, setValue, especialidades, indexCabecalho, indexEspecialidade, remove, update}) {
+function LinhaTabela({linha, control, getValues, especialidades, indexCabecalho, indexEspecialidade, remove, update, updateCabecalho}) {
   function onChange(value) {
     let novoValor = {
       ...linha,
@@ -108,6 +90,11 @@ function LinhaTabela({linha, control, setValue, especialidades, indexCabecalho, 
     };
 
     update(indexEspecialidade, novoValor);
+  }
+
+  function removerEspecialidade(indexEspecialidade) {
+    remove(indexEspecialidade);
+    alterarPosicaoEspecialidades(linha.posicao, updateCabecalho, getValues);
   }
 
   return(
@@ -154,7 +141,7 @@ function LinhaTabela({linha, control, setValue, especialidades, indexCabecalho, 
         <p className='font-semibold text-center text-black'><RiMenuAddLine className="w-[18px] h-[18px]"/></p>
       </div>
       <div className="flex items-center justify-center border-black w-[100px] h-[25px] px-1 hover:cursor-pointer hover:bg-red-200 hover:text-red-600"
-        onClick={() => remove(indexEspecialidade)}
+        onClick={() => removerEspecialidade(indexEspecialidade)}
       >
         <FaTrashAlt className="w-[15px] h-[15px]"/>
       </div>
@@ -162,42 +149,74 @@ function LinhaTabela({linha, control, setValue, especialidades, indexCabecalho, 
   );
 }
 
-// function alterarTabelaBase(tabela, setTabela, indexCabecalho, posicaoRemovida) {
-//   let novoTabela = {...tabela};
+function alterarPosicaoEspecialidades(posicaoRemovida, updateCabecalho, getValues) {
+  const tabela = getValues();
 
-//   novoTabela.cabecalhosEspecialidades[indexCabecalho].linhasEspecialidades.map((especialidade, index) => {
-//     if (especialidade.posicao === posicaoRemovida) {
-//       novoTabela.cabecalhosEspecialidades[indexCabecalho].linhasEspecialidades.splice(index, 1);
-//     }
-//   });
+  tabela.cabecalhosEspecialidades.map((cabecalho, indexCabecalho) => {
+    let novoCabecalho = {
+      ...cabecalho
+    }
 
-//   novoTabela.cabecalhosEspecialidades[indexCabecalho].linhasEspecialidades.map((especialidade) => {
-//     especialidade.posicao = calcularNovaPosicao(especialidade.posicao, posicaoRemovida);
-//   });
+    if (cabecalho.posicao > posicaoRemovida) {
+      let novaPosicao = calcularNovaPosicao(cabecalho.posicao, posicaoRemovida);
+      
+      novoCabecalho = {
+        ...novoCabecalho,
+        posicao: novaPosicao
+      };
+    }
 
-//   setTabela(novoTabela);
-// }
+    const linhasEspecialidades: any[] = [];
+    
+    cabecalho.linhasEspecialidades.map((linha) => {
+      const index = calcularIndex(indexCabecalho, tabela);
 
-// function alterarFormulario(getValues, setValue, posicaoRemovida) {
-//   let especialidadesWatch = getValues("especialidade");
+      if (estaNoInterValoDoCabecalho(linha, cabecalho, indexCabecalho, tabela, index)) {
+        let novaPosicao = calcularNovaPosicao(linha.posicao, posicaoRemovida);
 
-//   especialidadesWatch.map((especialidade, index) => {
-//     if (especialidade.posicao === posicaoRemovida) {
-//       especialidadesWatch.splice(index, 1);
-//     }
-//   });
+        let novaLinha = {
+          ...linha,
+          posicao: novaPosicao
+        };
 
-//   especialidadesWatch.map((especialidade) => {
-//     especialidade.posicao = calcularNovaPosicao(especialidade.posicao, posicaoRemovida);
-//   });
+        linhasEspecialidades.push(novaLinha);
+      }
+    });
 
-//   setValue("especialidade", especialidadesWatch);
-// }
+    novoCabecalho = {
+      ...novoCabecalho,
+      linhasEspecialidades: linhasEspecialidades
+    };
 
-// function calcularNovaPosicao(posicaoAntiga, posicaoRemovida) {
-//   if (posicaoAntiga > posicaoRemovida) {
-//     return posicaoAntiga - 1;
-//   } else {
-//     return posicaoAntiga;
-//   }
-// }
+    console.log("Teste");
+    console.log(novoCabecalho);
+
+    updateCabecalho(indexCabecalho, novoCabecalho);
+  });
+}
+
+function calcularNovaPosicao(posicaoAntiga, posicaoRemovida) {
+  if (posicaoAntiga > posicaoRemovida) {
+    return posicaoAntiga - 1;
+  } else {
+    return posicaoAntiga;
+  }
+}
+
+function calcularIndex(indexCabecalho, tabela) {
+  let index = indexCabecalho;
+
+  if (indexCabecalho + 1 < tabela.cabecalhosEspecialidades.length) {
+    index = indexCabecalho + 1;
+  }
+
+  return index;
+}
+
+function estaNoInterValoDoCabecalho(linha, cabecalho, indexCabecalho, tabela, index) {
+  return linha.posicao > cabecalho.posicao 
+    && (
+      linha.posicao < tabela.cabecalhosEspecialidades[index].posicao || 
+      indexCabecalho + 1 === tabela.cabecalhosEspecialidades.length
+    )
+}

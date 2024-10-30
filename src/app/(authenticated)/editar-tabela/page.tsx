@@ -119,7 +119,7 @@ function ConteudoTabela({dataCalendario, setData, session}) {
   }, [tabela]);
 
   useEffect(() => {
-    console.log(watchLinha);
+    // console.log(watchLinha);
   }, [watchLinha]);
 
 
