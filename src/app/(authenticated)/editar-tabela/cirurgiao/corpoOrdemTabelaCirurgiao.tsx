@@ -17,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue
 } from "../../../../components/ui/select";
-import { adicionarLinha, alterarCirurgiao, alterarProcedimento, removerLinha } from "./modificarLinhaCirurgiao";
+import { adicionarLinha, alterarCirurgiao, alterarProcedimento, descer, removerLinha, subir } from "./modificarLinhaCirurgiao";
 
 export default function LinhasOrdemTabelaCirurgiao({ tabela, control, setValue, register, cirurgioes, getValues }) {
   const { fields: fieldsCabecalho, update: updateCabecalho } = useFieldArray({
@@ -160,10 +160,14 @@ function LinhaTabela({procedimento, control, indexProcedimento, indexCabecalho, 
           )}
         />
       </div>
-      <div className="flex items-center justify-center border-black w-[100px] h-[25px] px-1">
+      <div className="flex items-center justify-center border-black w-[100px] h-[25px] px-1 hover:cursor-pointer hover:bg-[#d2dfcc]"
+        onClick={() => subir(indexProcedimento, fieldsProcedimentos, procedimento, update, move)}
+      >
         <p className='font-semibold text-center text-black'><FaArrowUp className="w-[15px] h-[15px]"/></p>
       </div>
-      <div className="flex items-center justify-center border-black w-[100px] h-[25px] px-1">
+      <div className="flex items-center justify-center border-black w-[100px] h-[25px] px-1 hover:cursor-pointer hover:bg-[#d2dfcc]"
+        onClick={() => descer(indexProcedimento, fieldsProcedimentos, procedimento, update, move)}
+      >
         <p className='font-semibold text-center text-black'><FaArrowDown className="w-[15px] h-[15px]"/></p>
       </div>
       <div className="flex items-center justify-center border-black w-[100px] h-[25px] px-1 hover:cursor-pointer hover:bg-[#d2dfcc]"

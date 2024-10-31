@@ -164,3 +164,51 @@ function calcularNovaPosicaoAdicao(posicaoAntiga, posicaoRemovida) {
     return posicaoAntiga;
   }
 }
+
+export function descer(indexProcedimento, fieldsProcedimentos, linha, update, move) {
+  if (indexProcedimento + 1 < fieldsProcedimentos.length) {
+    fieldsProcedimentos.map((procedimento) => {
+      if (procedimento.posicao === linha.posicao) {
+        let novaEspecialidade = {
+          ...procedimento,
+          posicao: linha.posicao + 1
+        };
+
+        update(indexProcedimento, novaEspecialidade);
+      } else if (procedimento.posicao === linha.posicao + 1) {
+        let novaEspecialidade = {
+          ...procedimento,
+          posicao: linha.posicao
+        };
+
+        update(indexProcedimento + 1, novaEspecialidade);
+      }
+    });
+
+    move(indexProcedimento, indexProcedimento + 1);
+  }
+}
+
+export function subir(indexProcedimento, fieldsProcedimentos, linha, update, move) {
+  if (indexProcedimento > 0) {
+    fieldsProcedimentos.map((procedimento) => {
+      if (procedimento.posicao === linha.posicao) {
+          let novaEspecialidade = {
+            ...procedimento,
+            posicao: linha.posicao - 1
+          };
+
+        update(indexProcedimento, novaEspecialidade);
+      } else if (procedimento.posicao === linha.posicao - 1) {
+          let novaEspecialidade = {
+            ...procedimento,
+            posicao: linha.posicao
+          };
+
+        update(indexProcedimento - 1, novaEspecialidade);
+      }
+    });
+
+    move(indexProcedimento, indexProcedimento - 1);
+  }
+}
