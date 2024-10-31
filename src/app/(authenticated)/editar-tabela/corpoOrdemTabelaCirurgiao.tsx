@@ -3,6 +3,7 @@
 import { FaArrowDown, FaArrowUp, FaTrashAlt } from "react-icons/fa";
 import { RiMenuAddLine } from "react-icons/ri";
  
+import { useFieldArray } from "react-hook-form";
 import {
   FormControl,
   FormField,
@@ -17,57 +18,67 @@ import {
   SelectValue
 } from "../../../components/ui/select";
 
-export default function LinhasOrdemTabelaCirurgiao({ tabela, control, setValue, register, cirurgioes, setTabela }) {
-  let qtdCabecalhosEspecialidade = tabela.cabecalhosEspecialidades.length
+export default function LinhasOrdemTabelaCirurgiao({ tabela, control, setValue, register, cirurgioes, getValues }) {
+  const { fields: fieldsCabecalho, update: updateCabecalho } = useFieldArray({
+    name: `cabecalhosCirurgioes`,
+    control,
+  });
+  
+  let qtdCabecalhosEspecialidade = tabela.cabecalhosEspecialidades.length;
 
   return (
     <div>
-      {tabela.cabecalhosCirurgioes.map((cabecalho, indexCabecalho) => {
-        return(
+      {fieldsCabecalho.map((cabecalho, indexCabecalho) => {
+        const { fields: fieldsProcedimentos, remove, update, insert, move } = useFieldArray({
+          name: `cabecalhosCirurgioes[${indexCabecalho}].listaProcedimentos`,
+          control,
+        });
+
+        return (
           <div className="border border-t-0 border-black" key={indexCabecalho}>
             <LinhaCabecalho cabecalho={cabecalho} key={"cabecalho-"+indexCabecalho} indexCabecalho={indexCabecalho} 
-              setValue={setValue} register={register} qtdCabecalhosEspecialidade={qtdCabecalhosEspecialidade}
+              setValue={setValue} register={register} qtdCabecalhosEspecialidade={qtdCabecalhosEspecialidade} fieldsCabecalho={fieldsCabecalho}
             />
-            {cabecalho.listaProcedimentos.map((procedimento, indexProcedimento) => {
+            {fieldsProcedimentos.map((procedimento, indexProcedimento) => { 
               return(
-                <LinhaTabela key={indexProcedimento} procedimento={procedimento} cirurgioes={cirurgioes} indexCabecalho={indexCabecalho}
-                  control={control} indexProcedimento={indexProcedimento} setValue={setValue} setTabela={setTabela}
-                />
-              )
+                <LinhaTabela key={indexProcedimento} procedimento={procedimento} cirurgioes={cirurgioes} remove={remove} update={update}
+                control={control} indexProcedimento={indexProcedimento} indexCabecalho={indexCabecalho} updateCabecalho={updateCabecalho}
+                getValues={getValues} insert={insert} move={move} fieldsProcedimentos={fieldsProcedimentos}            />
+              );
             })}
           </div>
-        );
+        )
       })}
     </div>
   )
 }
 
-function LinhaCabecalho({cabecalho, indexCabecalho, setValue, register, qtdCabecalhosEspecialidade}) {
-  let index = indexCabecalho + qtdCabecalhosEspecialidade
+function LinhaCabecalho({cabecalho, indexCabecalho, setValue, register, qtdCabecalhosEspecialidade, fieldsCabecalho}) {
+  // let index = indexCabecalho + qtdCabecalhosEspecialidade
 
-  function onChangeCirurgiao(value) {
-    setValue("cabecalhos." + index + ".posicao", cabecalho);
-    setValue("cabecalhos." + index + ".tipo", "ESPECIALIDADE_CABECALHO");
-    setValue("cabecalhos." + index + ".textos.0.texto", value);
-  }
+  // function onChangeCirurgiao(value) {
+  //   setValue("cabecalhos." + index + ".posicao", cabecalho);
+  //   setValue("cabecalhos." + index + ".tipo", "ESPECIALIDADE_CABECALHO");
+  //   setValue("cabecalhos." + index + ".textos.0.texto", value);
+  // }
 
-  function onChangeProcedimento(value) {
-    setValue("cabecalhos." + index + ".posicao", cabecalho);
-    setValue("cabecalhos." + index + ".tipo", "ESPECIALIDADE_CABECALHO");
-    setValue("cabecalhos." + index + ".textos.1.texto", value);
-  }
+  // function onChangeProcedimento(value) {
+  //   setValue("cabecalhos." + index + ".posicao", cabecalho);
+  //   setValue("cabecalhos." + index + ".tipo", "ESPECIALIDADE_CABECALHO");
+  //   setValue("cabecalhos." + index + ".textos.1.texto", value);
+  // }
 
   return (
     <div className="flex items-center justify-between divide-x bg-[#E2EFDB]">
       <input className="flex items-center justify-between border-black font-semibold text-center text-white bg-[#337B5B] w-[300px] h-[25px] focus:border-[#337B5B] focus:border-2 focus:outline-none focus:ring-0" 
         placeholder="Insira o nome do cabeçalho"
-        name={`cabecalhos.${index}.textos.0.texto`} {...register(`cabecalhos.${Number(index)}.textos.0.texto`)}
-        onBlur={(e) => {onChangeCirurgiao(e.target.value)}}
+        name={`cabecalhosCirurgioes[${Number(indexCabecalho)}].textos.0`} {...register(`cabecalhosCirurgioes[${Number(indexCabecalho)}].textos.0`)}
+        // onBlur={(e) => {onChangeCirurgiao(e.target.value)}}
       />
       <input className="flex items-center justify-between border-black font-semibold text-center text-white bg-[#337B5B] w-[300px] h-[25px] focus:border-[#337B5B] focus:border-2 focus:outline-none focus:ring-0" 
         placeholder="Insira o nome do cabeçalho"
-        name={`cabecalhos.${index}.textos.1.texto`} {...register(`cabecalhos.${Number(index)}.textos.1.texto`)}
-        onBlur={(e) => {onChangeProcedimento(e.target.value)}}
+        name={`cabecalhosCirurgioes[${indexCabecalho}].textos.1`} {...register(`cabecalhosCirurgioes[${indexCabecalho}].textos.1`)}
+        // onBlur={(e) => {onChangeProcedimento(e.target.value)}}
       />
       <div className="flex items-center justify-between border-black bg-[#337B5B] w-[400px] h-[25px]"></div>
       {/* <div className="flex items-center justify-center border-black bg-[#337B5B] w-[100px] h-[25px] px-1">
@@ -86,39 +97,28 @@ function LinhaCabecalho({cabecalho, indexCabecalho, setValue, register, qtdCabec
   );
 }
 
-function LinhaTabela({procedimento, control, indexProcedimento, indexCabecalho, setValue, cirurgioes, setTabela}) {
+function LinhaTabela({procedimento, control, indexProcedimento, indexCabecalho, updateCabecalho,
+    cirurgioes, remove, update, getValues, insert, move, fieldsProcedimentos}
+  ) {
   let procedimentosFiltrados = filtrarProcedimentos(procedimento.nomeCirurgiao, cirurgioes);
   
   function onChangeCirurgiao(value) {
-    setValue("procedimento." + indexProcedimento + ".cirurgiao", value);
-    setValue("procedimento." + indexProcedimento + ".procedimento", procedimento.nomeProcedimento);
-    setValue("procedimento." + indexProcedimento + ".posicao", procedimento.posicao);
-    setValue("procedimento." + indexProcedimento + ".tipo", "CIRURGIAO_LINHA");
+    let novoValor = {
+      ...procedimento, 
+      nomeCirurgiao: value
+    };
 
-    setTabela((tabela) => {
-      let novoTabela = {...tabela};
-      const primeiroProcedimento = buscarPrimeiroProcedimento(value, cirurgioes);
-
-      novoTabela.cabecalhosCirurgioes[indexCabecalho].listaProcedimentos[indexProcedimento].idProcedimento = primeiroProcedimento.id;
-      novoTabela.cabecalhosCirurgioes[indexCabecalho].listaProcedimentos[indexProcedimento].nomeCirurgiao = value;
-      novoTabela.cabecalhosCirurgioes[indexCabecalho].listaProcedimentos[indexProcedimento].nomeProcedimento = primeiroProcedimento.procedimento;
-
-      return novoTabela;
-    });
+    update(indexProcedimento, novoValor);
   }
 
-  function onChange(value) {
-    setValue("procedimento." + indexProcedimento + ".cirurgiao", procedimento.nomeCirurgiao);
-    setValue("procedimento." + indexProcedimento + ".procedimento", value);
-    setValue("procedimento." + indexProcedimento + ".posicao", procedimento.posicao);
-    setValue("procedimento." + indexProcedimento + ".tipo", "CIRURGIAO_LINHA");
-  }
+  function onChangeProcedimento(value) {
+    let novoValor = {
+      ...procedimento,
+      nomeProcedimento: value,
+      idProcedimento: buscarIdProcedimento(value, procedimento.nomeCirurgiao, cirurgioes)
+    };
 
-  let procedimentoForm = {
-    cirurgiao: procedimento.nomeCirurgiao,
-    procedimento: procedimento.nomeProcedimento,
-    posicao: procedimento.posicao,
-    tipo: "CIRURGIAO_LINHA"
+    update(indexProcedimento, novoValor);
   }
 
   return(
@@ -155,10 +155,9 @@ function LinhaTabela({procedimento, control, indexProcedimento, indexCabecalho, 
         <FormField
           control={control}
           name={"procedimento." + indexProcedimento}
-          defaultValue={procedimentoForm}
           render={({ field }) => (
             <FormItem>
-              <Select onValueChange={(value) => { field.onChange(value); onChange(value); }} defaultValue={procedimento.nomeProcedimento}>
+              <Select onValueChange={(value) => { field.onChange(value); onChangeProcedimento(value); }} defaultValue={procedimento.nomeProcedimento}>
                 <FormControl className="w-[300px] h-[23px] border-none hover:bg-[#d2dfcc]">
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione um procedimento" />
@@ -200,7 +199,18 @@ function filtrarProcedimentos(nomeCirurgiao, cirurgioes) {
   return cirurgiao.procedimentos;
 }
 
-function buscarPrimeiroProcedimento(nomeCirurgiao, cirurgioes) {
-  let cirurgiao = cirurgioes.find(cirurgiao => cirurgiao.cirurgiao == nomeCirurgiao);
-  return cirurgiao.procedimentos[0];
+function buscarIdProcedimento(nomeProcedimento, nomeCirurgiao, cirurgioes) {
+  let idProcedimento = undefined;
+
+  cirurgioes.map(cirurgiao => {
+    if (cirurgiao.cirurgiao == nomeCirurgiao) {
+      cirurgiao.procedimentos.map(procedimento => {
+        if(procedimento.procedimento == nomeProcedimento) {
+          idProcedimento = procedimento.id;
+        }
+      });
+    }
+  });
+
+  return idProcedimento;
 }

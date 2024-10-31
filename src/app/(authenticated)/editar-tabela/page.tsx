@@ -15,7 +15,7 @@ import ConverterData from '../../../utils/converterData';
 import LinhasOrdemTabelaCirurgiao from './corpoOrdemTabelaCirurgiao';
 import LinhasOrdemTabelaEspecialidade from './corpoOrdemTabelaEspecialidade';
 import HeaderEditarTabela from './headerEditarTabela';
-import { montarCabecalhos, montarValoresCabecalhos, montarValoresLinhas } from './montarDadosOrdemTabela';
+import { montarCabecalhosCirurgioes, montarCabecalhosEspecialidades, montarValoresCabecalhos, montarValoresLinhas } from './montarDadosOrdemTabela';
 
 export default function Tabela() {
   const { data: session } = useSession();
@@ -76,7 +76,8 @@ function ConteudoTabela({dataCalendario, setData, session}) {
         }); 
         const responseTabelaJson = await responseTabela.json();
         setTabela(responseTabelaJson);
-        setValue("cabecalhosEspecialidades", montarCabecalhos(responseTabelaJson));
+        setValue("cabecalhosEspecialidades", montarCabecalhosEspecialidades(responseTabelaJson));
+        setValue("cabecalhosCirurgioes", montarCabecalhosCirurgioes(responseTabelaJson));
 
         const responseEspecialidade = await fetch(process.env.NEXT_PUBLIC_API + '/api/especialidade/nomes', {
           method: "GET",
@@ -105,9 +106,7 @@ function ConteudoTabela({dataCalendario, setData, session}) {
   }, [dataCalendario, getValues, session?.user.token, setValue]);
 
   useEffect(() => {
-    if (watchLinha.cabecalhosEspecialidades.length > 0) {
-      console.log(watchLinha.cabecalhosEspecialidades[0].linhasEspecialidades);
-    }
+    console.log(watchLinha);
   }, [watchLinha]);
 
 
@@ -145,10 +144,10 @@ function ConteudoTabela({dataCalendario, setData, session}) {
         {tabela != null ?
           <Form {...form}>
             <LinhasOrdemTabelaEspecialidade especialidades={especialidades}
-              control={control} setValue={setValue} getValues={getValues} register={register}
+              control={control} getValues={getValues} register={register}
             />
             <LinhasOrdemTabelaCirurgiao tabela={tabela} control={control} cirurgioes={cirurgioes}
-             setValue={setValue} register={register} setTabela={setTabela}
+             setValue={setValue} register={register} getValues={getValues}
             />
             <div className="flex items-center justify-end gap-8 w-full mt-8">
               <ButtonLocal texto={"Salvar"} color={"bg-green-800"} onClick={handleSubmit(onSubmit)} type={"button"} icon={"Salvar"}/>

@@ -18,7 +18,7 @@ import {
   SelectValue
 } from "../../../components/ui/select";
 
-export default function LinhasOrdemTabelaEspecialidade({ control, setValue, getValues, register, especialidades }) {  
+export default function LinhasOrdemTabelaEspecialidade({ control, getValues, register, especialidades }) {  
   const { fields: fieldsCabecalho, update: updateCabecalho } = useFieldArray({
     name: `cabecalhosEspecialidades`,
     control,
@@ -87,11 +87,11 @@ function LinhaCabecalho({ register, indexCabecalho, fieldsCabecalho, updateCabec
 }
 
 function LinhaTabela({linha, control, getValues, especialidades, indexCabecalho, indexEspecialidade, remove, update, updateCabecalho, insert, move, fieldsEspecialidades}) {
-  function onChange(value) {
+  function atualizarLinha(value) {
     let novoValor = {
       ...linha,
       nomeEspecialidade: value,
-      //Adicionar idEspecialidade
+      idEspecialidade: buscarIdEspecialidade(value, especialidades)
     };
 
     update(indexEspecialidade, novoValor);
@@ -133,6 +133,30 @@ function LinhaTabela({linha, control, getValues, especialidades, indexCabecalho,
     }
   }
 
+  function subir() {
+    if (indexEspecialidade > 0) {
+      fieldsEspecialidades.map((especialidade) => {
+        if (especialidade.posicao === linha.posicao) {
+          let novaEspecialidade = {
+            ...especialidade,
+            posicao: linha.posicao - 1
+          };
+
+          update(indexEspecialidade, novaEspecialidade);
+        } else if (especialidade.posicao === linha.posicao - 1) {
+          let novaEspecialidade = {
+            ...especialidade,
+            posicao: linha.posicao
+          };
+
+          update(indexEspecialidade - 1, novaEspecialidade);
+        }
+      });
+
+      move(indexEspecialidade, indexEspecialidade - 1);
+    }
+  }
+
   return(
     <div className="flex items-center justify-between divide-x divide-y border-black bg-[#E2EFDB]">
       <div className="flex items-center justify-between border-black border-t w-[300px] h-[25px]">
@@ -142,7 +166,7 @@ function LinhaTabela({linha, control, getValues, especialidades, indexCabecalho,
           defaultValue={linha.nomeEspecialidade}
           render={({ field }) => (
             <FormItem>
-              <Select value={linha.nomeEspecialidade} onValueChange={(value) => { field.onChange(value); onChange(value); }}>
+              <Select value={linha.nomeEspecialidade} onValueChange={(value) => { field.onChange(value); atualizarLinha(value); }}>
                 <FormControl className="w-[300px] h-[23px] border-none hover:bg-[#d2dfcc]">
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione uma especialidade" />
@@ -167,7 +191,9 @@ function LinhaTabela({linha, control, getValues, especialidades, indexCabecalho,
         />
       </div>
       <div className="flex items-center justify-between border-black w-[300px] h-[25px]"></div>
-      <div className="flex items-center justify-center border-black w-[100px] h-[25px] px-1">
+      <div className="flex items-center justify-center border-black w-[100px] h-[25px] px-1 hover:cursor-pointer hover:bg-[#d2dfcc]"
+        onClick={() => subir()}
+      >
         <p className='font-semibold text-center text-black'><FaArrowUp className="w-[15px] h-[15px]"/></p>
       </div>
       <div className="flex items-center justify-center border-black w-[100px] h-[25px] px-1 hover:cursor-pointer hover:bg-[#d2dfcc]"
@@ -307,4 +333,16 @@ function calcularNovaPosicaoAdicao(posicaoAntiga, posicaoRemovida) {
   } else {
     return posicaoAntiga;
   }
+}
+
+function buscarIdEspecialidade(nomeEspecialidade, especialidades) {
+  let idEspecialidade = undefined;
+
+  especialidades.map((especialidade) => {
+    if (especialidade.especialidade === nomeEspecialidade) {
+      idEspecialidade = especialidade.id;
+    }
+  });
+
+  return idEspecialidade;
 }
