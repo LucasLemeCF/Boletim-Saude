@@ -102,7 +102,7 @@ function LinhaTabela({procedimento, control, indexProcedimento, indexCabecalho, 
   ) {
   let procedimentosFiltrados = filtrarProcedimentos(procedimento.nomeCirurgiao, cirurgioes);
   
-  function onChangeCirurgiao(value) {
+  function alterarCirurgiao(value) {
     let novoValor = {
       ...procedimento, 
       nomeCirurgiao: value
@@ -111,7 +111,7 @@ function LinhaTabela({procedimento, control, indexProcedimento, indexCabecalho, 
     update(indexProcedimento, novoValor);
   }
 
-  function onChangeProcedimento(value) {
+  function alterarProcedimento(value) {
     let novoValor = {
       ...procedimento,
       nomeProcedimento: value,
@@ -119,6 +119,11 @@ function LinhaTabela({procedimento, control, indexProcedimento, indexCabecalho, 
     };
 
     update(indexProcedimento, novoValor);
+  }
+
+  function removerLinha() {
+    remove(indexProcedimento);
+    // alterarPosicaoProcedimento(procedimento.posicao, updateCabecalho, getValues);
   }
 
   return(
@@ -130,7 +135,7 @@ function LinhaTabela({procedimento, control, indexProcedimento, indexCabecalho, 
           defaultValue={procedimento.nomeCirurgiao}
           render={({ field }) => (
             <FormItem>
-              <Select onValueChange={(value) => { field.onChange(value); onChangeCirurgiao(value); }} defaultValue={procedimento.nomeCirurgiao}>
+              <Select onValueChange={(value) => { field.onChange(value); alterarCirurgiao(value); }} defaultValue={procedimento.nomeCirurgiao}>
                 <FormControl className="w-[300px] h-[23px] border-none hover:bg-[#d2dfcc]">
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione um cirurgião" />
@@ -157,7 +162,7 @@ function LinhaTabela({procedimento, control, indexProcedimento, indexCabecalho, 
           name={"procedimento." + indexProcedimento}
           render={({ field }) => (
             <FormItem>
-              <Select onValueChange={(value) => { field.onChange(value); onChangeProcedimento(value); }} defaultValue={procedimento.nomeProcedimento}>
+              <Select onValueChange={(value) => { field.onChange(value); alterarProcedimento(value); }} defaultValue={procedimento.nomeProcedimento}>
                 <FormControl className="w-[300px] h-[23px] border-none hover:bg-[#d2dfcc]">
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione um procedimento" />
@@ -187,8 +192,10 @@ function LinhaTabela({procedimento, control, indexProcedimento, indexCabecalho, 
       <div className="flex items-center justify-center border-black w-[100px] h-[25px] px-1">
         <p className='font-semibold text-center text-black'><RiMenuAddLine className="w-[18px] h-[18px]"/></p>
       </div>
-      <div className="flex items-center justify-center border-black w-[100px] h-[25px] px-1">
-        <p className='font-semibold text-center text-black'><FaTrashAlt className="w-[15px] h-[15px]"/></p>
+      <div className="flex items-center justify-center border-black w-[100px] h-[25px] px-1 hover:cursor-pointer hover:bg-red-200 hover:text-red-600"
+        onClick={() => removerLinha()}
+      >
+        <FaTrashAlt className="w-[15px] h-[15px]"/>
       </div>
     </div>
   );
@@ -213,4 +220,73 @@ function buscarIdProcedimento(nomeProcedimento, nomeCirurgiao, cirurgioes) {
   });
 
   return idProcedimento;
+}
+
+function alterarPosicaoProcedimento(posicaoRemovida, updateCabecalho, getValues) {
+  const tabela = getValues();
+
+  tabela.cabecalhosEspecialidades.map((cabecalho, indexCabecalho) => {
+    let novoCabecalho = {
+      ...cabecalho
+    }
+
+    if (cabecalho.posicao > posicaoRemovida) {
+      let novaPosicao = calcularNovaPosicao(cabecalho.posicao, posicaoRemovida);
+      
+      novoCabecalho = {
+        ...novoCabecalho,
+        posicao: novaPosicao
+      };
+    }
+
+    const linhasEspecialidades: any[] = [];
+    
+    cabecalho.linhasEspecialidades.map((linha) => {
+      const index = calcularIndex(indexCabecalho, tabela);
+
+      if (estaNoInterValoDoCabecalho(linha, cabecalho, indexCabecalho, tabela, index)) {
+        let novaPosicao = calcularNovaPosicao(linha.posicao, posicaoRemovida);
+
+        let novaLinha = {
+          ...linha,
+          posicao: novaPosicao
+        };
+
+        linhasEspecialidades.push(novaLinha);
+      }
+    });
+
+    novoCabecalho = {
+      ...novoCabecalho,
+      linhasEspecialidades: linhasEspecialidades
+    };
+
+    updateCabecalho(indexCabecalho, novoCabecalho);
+  });
+}
+
+function calcularNovaPosicao(posicaoAntiga, posicaoRemovida) {
+  if (posicaoAntiga > posicaoRemovida) {
+    return posicaoAntiga - 1;
+  } else {
+    return posicaoAntiga;
+  }
+}
+
+function calcularIndex(indexCabecalho, tabela) {
+  let index = indexCabecalho;
+
+  if (indexCabecalho + 1 < tabela.cabecalhosEspecialidades.length) {
+    index = indexCabecalho + 1;
+  }
+
+  return index;
+}
+
+function estaNoInterValoDoCabecalho(linha, cabecalho, indexCabecalho, tabela, index) {
+  return linha.posicao > cabecalho.posicao 
+    && (
+      linha.posicao < tabela.cabecalhosEspecialidades[index].posicao || 
+      indexCabecalho + 1 === tabela.cabecalhosEspecialidades.length
+    )
 }
