@@ -106,4 +106,61 @@ function estaNoInterValoDoCabecalho(linha, cabecalho, indexCabecalho, tabela, in
       indexCabecalho + 1 === tabela.cabecalhosCirurgioes.length
     )
 }
-  
+
+export function adicionarLinha(indexProcedimento, insert, procedimento, updateCabecalho, getValues) {
+  const index = indexProcedimento + 1;
+  const novaPosicao = procedimento.posicao + 1;
+  alterarPosicaoEspecialidadesAdicionado(novaPosicao, updateCabecalho, getValues);
+  insert(index, {nomeCirurgiao: "", nomeProcedimento: "", posicao: novaPosicao});
+}
+
+function alterarPosicaoEspecialidadesAdicionado(posicaoAdicionada, updateCabecalho, getValues) {
+  const tabela = getValues();
+
+  tabela.cabecalhosCirurgioes.map((cabecalho, indexCabecalho) => {
+    let novoCabecalho = {
+      ...cabecalho
+    }
+
+    if (cabecalho.posicao >= posicaoAdicionada) {
+      let novaPosicao = calcularNovaPosicaoAdicao(cabecalho.posicao, posicaoAdicionada);
+      
+      novoCabecalho = {
+        ...novoCabecalho,
+        posicao: novaPosicao
+      };
+    }
+
+    const listaProcedimentos: any[] = [];
+    
+    cabecalho.listaProcedimentos.map((linha) => {
+    const index = calcularIndex(indexCabecalho, tabela);
+
+    if (estaNoInterValoDoCabecalho(linha, cabecalho, indexCabecalho, tabela, index)) {
+      let novaPosicao = calcularNovaPosicaoAdicao(linha.posicao, posicaoAdicionada);
+
+      let novaLinha = {
+        ...linha,
+        posicao: novaPosicao
+      };
+
+      listaProcedimentos.push(novaLinha);
+    }
+    });
+
+    novoCabecalho = {
+      ...novoCabecalho,
+      listaProcedimentos: listaProcedimentos
+    };
+
+    updateCabecalho(indexCabecalho, novoCabecalho);
+  });
+}
+
+function calcularNovaPosicaoAdicao(posicaoAntiga, posicaoRemovida) {
+  if (posicaoAntiga >= posicaoRemovida) {
+    return posicaoAntiga + 1;
+  } else {
+    return posicaoAntiga;
+  }
+}

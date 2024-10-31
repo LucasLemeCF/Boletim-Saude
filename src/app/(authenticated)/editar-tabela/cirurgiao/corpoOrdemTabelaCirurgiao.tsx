@@ -17,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue
 } from "../../../../components/ui/select";
-import { alterarCirurgiao, alterarProcedimento, removerLinha } from "./modificarLinhaCirurgiao";
+import { adicionarLinha, alterarCirurgiao, alterarProcedimento, removerLinha } from "./modificarLinhaCirurgiao";
 
 export default function LinhasOrdemTabelaCirurgiao({ tabela, control, setValue, register, cirurgioes, getValues }) {
   const { fields: fieldsCabecalho, update: updateCabecalho } = useFieldArray({
@@ -166,7 +166,9 @@ function LinhaTabela({procedimento, control, indexProcedimento, indexCabecalho, 
       <div className="flex items-center justify-center border-black w-[100px] h-[25px] px-1">
         <p className='font-semibold text-center text-black'><FaArrowDown className="w-[15px] h-[15px]"/></p>
       </div>
-      <div className="flex items-center justify-center border-black w-[100px] h-[25px] px-1">
+      <div className="flex items-center justify-center border-black w-[100px] h-[25px] px-1 hover:cursor-pointer hover:bg-[#d2dfcc]"
+        onClick={() => adicionarLinha(indexProcedimento, insert, procedimento, updateCabecalho, getValues)}
+      >
         <p className='font-semibold text-center text-black'><RiMenuAddLine className="w-[18px] h-[18px]"/></p>
       </div>
       <div className="flex items-center justify-center border-black w-[100px] h-[25px] px-1 hover:cursor-pointer hover:bg-red-200 hover:text-red-600"
@@ -180,5 +182,10 @@ function LinhaTabela({procedimento, control, indexProcedimento, indexCabecalho, 
 
 function filtrarProcedimentos(nomeCirurgiao, cirurgioes) {
   let cirurgiao = cirurgioes.find(cirurgiao => cirurgiao.cirurgiao == nomeCirurgiao);
+
+  if (cirurgiao === undefined) {
+    return [];
+  }
+
   return cirurgiao.procedimentos;
 }
