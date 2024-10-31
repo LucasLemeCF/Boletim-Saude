@@ -12,8 +12,8 @@ import { useToast } from '../../../components/ui/use-toast';
 import { OrdemTabelaFormData } from '../../../schemas/responseOrdemTabela';
 import ButtonLocal from '../../../utils/ButtonLocal';
 import ConverterData from '../../../utils/converterData';
-import LinhasOrdemTabelaCirurgiao from './corpoOrdemTabelaCirurgiao';
-import LinhasOrdemTabelaEspecialidade from './corpoOrdemTabelaEspecialidade';
+import LinhasOrdemTabelaCirurgiao from './cirurgiao/corpoOrdemTabelaCirurgiao';
+import LinhasOrdemTabelaEspecialidade from './especialidade/corpoOrdemTabelaEspecialidade';
 import HeaderEditarTabela from './headerEditarTabela';
 import { montarCabecalhosCirurgioes, montarCabecalhosEspecialidades, montarValoresCabecalhos, montarValoresLinhas } from './montarDadosOrdemTabela';
 

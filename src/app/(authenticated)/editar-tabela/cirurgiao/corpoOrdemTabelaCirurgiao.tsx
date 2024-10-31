@@ -9,14 +9,15 @@ import {
   FormField,
   FormItem,
   FormMessage
-} from "../../../components/ui/form";
+} from "../../../../components/ui/form";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue
-} from "../../../components/ui/select";
+} from "../../../../components/ui/select";
+import { alterarCirurgiao, alterarProcedimento, removerLinha } from "./modificarLinhaCirurgiao";
 
 export default function LinhasOrdemTabelaCirurgiao({ tabela, control, setValue, register, cirurgioes, getValues }) {
   const { fields: fieldsCabecalho, update: updateCabecalho } = useFieldArray({
@@ -101,30 +102,6 @@ function LinhaTabela({procedimento, control, indexProcedimento, indexCabecalho, 
     cirurgioes, remove, update, getValues, insert, move, fieldsProcedimentos}
   ) {
   let procedimentosFiltrados = filtrarProcedimentos(procedimento.nomeCirurgiao, cirurgioes);
-  
-  function alterarCirurgiao(value) {
-    let novoValor = {
-      ...procedimento, 
-      nomeCirurgiao: value
-    };
-
-    update(indexProcedimento, novoValor);
-  }
-
-  function alterarProcedimento(value) {
-    let novoValor = {
-      ...procedimento,
-      nomeProcedimento: value,
-      idProcedimento: buscarIdProcedimento(value, procedimento.nomeCirurgiao, cirurgioes)
-    };
-
-    update(indexProcedimento, novoValor);
-  }
-
-  function removerLinha() {
-    remove(indexProcedimento);
-    // alterarPosicaoProcedimento(procedimento.posicao, updateCabecalho, getValues);
-  }
 
   return(
     <div className="flex items-center justify-between divide-x divide-y border-black bg-[#E2EFDB]">
@@ -135,7 +112,7 @@ function LinhaTabela({procedimento, control, indexProcedimento, indexCabecalho, 
           defaultValue={procedimento.nomeCirurgiao}
           render={({ field }) => (
             <FormItem>
-              <Select onValueChange={(value) => { field.onChange(value); alterarCirurgiao(value); }} defaultValue={procedimento.nomeCirurgiao}>
+              <Select value={procedimento.nomeCirurgiao} onValueChange={(value) => { field.onChange(value); alterarCirurgiao(value, procedimento, indexProcedimento, update)}}>
                 <FormControl className="w-[300px] h-[23px] border-none hover:bg-[#d2dfcc]">
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione um cirurgião" />
@@ -162,7 +139,7 @@ function LinhaTabela({procedimento, control, indexProcedimento, indexCabecalho, 
           name={"procedimento." + indexProcedimento}
           render={({ field }) => (
             <FormItem>
-              <Select onValueChange={(value) => { field.onChange(value); alterarProcedimento(value); }} defaultValue={procedimento.nomeProcedimento}>
+              <Select value={procedimento.nomeProcedimento} onValueChange={(value) => { field.onChange(value); alterarProcedimento(value, procedimento, indexProcedimento, update, cirurgioes)}}>
                 <FormControl className="w-[300px] h-[23px] border-none hover:bg-[#d2dfcc]">
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione um procedimento" />
@@ -193,7 +170,7 @@ function LinhaTabela({procedimento, control, indexProcedimento, indexCabecalho, 
         <p className='font-semibold text-center text-black'><RiMenuAddLine className="w-[18px] h-[18px]"/></p>
       </div>
       <div className="flex items-center justify-center border-black w-[100px] h-[25px] px-1 hover:cursor-pointer hover:bg-red-200 hover:text-red-600"
-        onClick={() => removerLinha()}
+        onClick={() => removerLinha(remove, indexProcedimento)}
       >
         <FaTrashAlt className="w-[15px] h-[15px]"/>
       </div>
@@ -204,89 +181,4 @@ function LinhaTabela({procedimento, control, indexProcedimento, indexCabecalho, 
 function filtrarProcedimentos(nomeCirurgiao, cirurgioes) {
   let cirurgiao = cirurgioes.find(cirurgiao => cirurgiao.cirurgiao == nomeCirurgiao);
   return cirurgiao.procedimentos;
-}
-
-function buscarIdProcedimento(nomeProcedimento, nomeCirurgiao, cirurgioes) {
-  let idProcedimento = undefined;
-
-  cirurgioes.map(cirurgiao => {
-    if (cirurgiao.cirurgiao == nomeCirurgiao) {
-      cirurgiao.procedimentos.map(procedimento => {
-        if(procedimento.procedimento == nomeProcedimento) {
-          idProcedimento = procedimento.id;
-        }
-      });
-    }
-  });
-
-  return idProcedimento;
-}
-
-function alterarPosicaoProcedimento(posicaoRemovida, updateCabecalho, getValues) {
-  const tabela = getValues();
-
-  tabela.cabecalhosEspecialidades.map((cabecalho, indexCabecalho) => {
-    let novoCabecalho = {
-      ...cabecalho
-    }
-
-    if (cabecalho.posicao > posicaoRemovida) {
-      let novaPosicao = calcularNovaPosicao(cabecalho.posicao, posicaoRemovida);
-      
-      novoCabecalho = {
-        ...novoCabecalho,
-        posicao: novaPosicao
-      };
-    }
-
-    const linhasEspecialidades: any[] = [];
-    
-    cabecalho.linhasEspecialidades.map((linha) => {
-      const index = calcularIndex(indexCabecalho, tabela);
-
-      if (estaNoInterValoDoCabecalho(linha, cabecalho, indexCabecalho, tabela, index)) {
-        let novaPosicao = calcularNovaPosicao(linha.posicao, posicaoRemovida);
-
-        let novaLinha = {
-          ...linha,
-          posicao: novaPosicao
-        };
-
-        linhasEspecialidades.push(novaLinha);
-      }
-    });
-
-    novoCabecalho = {
-      ...novoCabecalho,
-      linhasEspecialidades: linhasEspecialidades
-    };
-
-    updateCabecalho(indexCabecalho, novoCabecalho);
-  });
-}
-
-function calcularNovaPosicao(posicaoAntiga, posicaoRemovida) {
-  if (posicaoAntiga > posicaoRemovida) {
-    return posicaoAntiga - 1;
-  } else {
-    return posicaoAntiga;
-  }
-}
-
-function calcularIndex(indexCabecalho, tabela) {
-  let index = indexCabecalho;
-
-  if (indexCabecalho + 1 < tabela.cabecalhosEspecialidades.length) {
-    index = indexCabecalho + 1;
-  }
-
-  return index;
-}
-
-function estaNoInterValoDoCabecalho(linha, cabecalho, indexCabecalho, tabela, index) {
-  return linha.posicao > cabecalho.posicao 
-    && (
-      linha.posicao < tabela.cabecalhosEspecialidades[index].posicao || 
-      indexCabecalho + 1 === tabela.cabecalhosEspecialidades.length
-    )
 }

@@ -9,15 +9,15 @@ import {
   FormField,
   FormItem,
   FormMessage
-} from "../../../components/ui/form";
+} from "../../../../components/ui/form";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue
-} from "../../../components/ui/select";
-import { adicionarLina, atualizarLinha, descer, removerEspecialidade, subir } from "./modificarLinhaEspecialidade";
+} from "../../../../components/ui/select";
+import { adicionarLinha, atualizarLinha, descer, removerEspecialidade, subir } from "./modificarLinhaEspecialidade";
 
 export default function LinhasOrdemTabelaEspecialidade({ control, getValues, register, especialidades }) {  
   const { fields: fieldsCabecalho, update: updateCabecalho } = useFieldArray({
@@ -133,7 +133,7 @@ function LinhaTabela({linha, control, getValues, especialidades, indexCabecalho,
         <p className='font-semibold text-center text-black'><FaArrowDown className="w-[15px] h-[15px]"/></p>
       </div>
       <div className="flex items-center justify-center border-black w-[100px] h-[25px] px-1 hover:cursor-pointer hover:bg-[#d2dfcc]"
-        onClick={() => adicionarLina(indexEspecialidade, insert, linha, updateCabecalho, getValues)}
+        onClick={() => adicionarLinha(indexEspecialidade, insert, linha, updateCabecalho, getValues)}
       >
         <p className='font-semibold text-center text-black'><RiMenuAddLine className="w-[18px] h-[18px]"/></p>
       </div>

@@ -8,7 +8,7 @@ export function atualizarLinha(value, linha, especialidades, indexEspecialidade,
     update(indexEspecialidade, novoValor);
 }
 
-export function adicionarLina(indexEspecialidade, insert, linha, updateCabecalho, getValues) {
+export function adicionarLinha(indexEspecialidade, insert, linha, updateCabecalho, getValues) {
     const index = indexEspecialidade + 1;
     const novaPosicao = linha.posicao + 1;
     alterarPosicaoEspecialidadesAdicionado(novaPosicao, updateCabecalho, getValues);
@@ -25,15 +25,15 @@ export function descer(indexEspecialidade, fieldsEspecialidades, linha, update, 
         fieldsEspecialidades.map((especialidade) => {
         if (especialidade.posicao === linha.posicao) {
             let novaEspecialidade = {
-            ...especialidade,
-            posicao: linha.posicao + 1
+                ...especialidade,
+                posicao: linha.posicao + 1
             };
 
             update(indexEspecialidade, novaEspecialidade);
         } else if (especialidade.posicao === linha.posicao + 1) {
             let novaEspecialidade = {
-            ...especialidade,
-            posicao: linha.posicao
+                ...especialidade,
+                posicao: linha.posicao
             };
 
             update(indexEspecialidade + 1, novaEspecialidade);
@@ -48,17 +48,17 @@ export function subir(indexEspecialidade, fieldsEspecialidades, linha, update, m
     if (indexEspecialidade > 0) {
       fieldsEspecialidades.map((especialidade) => {
         if (especialidade.posicao === linha.posicao) {
-          let novaEspecialidade = {
-            ...especialidade,
-            posicao: linha.posicao - 1
-          };
+            let novaEspecialidade = {
+                ...especialidade,
+                posicao: linha.posicao - 1
+            };
 
           update(indexEspecialidade, novaEspecialidade);
         } else if (especialidade.posicao === linha.posicao - 1) {
-          let novaEspecialidade = {
-            ...especialidade,
-            posicao: linha.posicao
-          };
+            let novaEspecialidade = {
+                ...especialidade,
+                posicao: linha.posicao
+            };
 
           update(indexEspecialidade - 1, novaEspecialidade);
         }
@@ -73,7 +73,7 @@ function alterarPosicaoEspecialidades(posicaoRemovida, updateCabecalho, getValue
 
         tabela.cabecalhosEspecialidades.map((cabecalho, indexCabecalho) => {
             let novoCabecalho = {
-            ...cabecalho
+                ...cabecalho
             }
 
         if (cabecalho.posicao > posicaoRemovida) {
@@ -103,8 +103,8 @@ function alterarPosicaoEspecialidades(posicaoRemovida, updateCabecalho, getValue
         });
 
         novoCabecalho = {
-        ...novoCabecalho,
-        linhasEspecialidades: linhasEspecialidades
+            ...novoCabecalho,
+            linhasEspecialidades: linhasEspecialidades
         };
 
         updateCabecalho(indexCabecalho, novoCabecalho);
