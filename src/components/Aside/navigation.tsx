@@ -1,14 +1,13 @@
 "use client"
 
-// import { Link } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 const navLinks = [
     {name: "Boletim Médico", href: "/tabela"},
     {name: "Relatórios", href: "/relatorios"},
-    // {name: "Editar Boletim", href: "/editar-tabela"},
+    {name: "Editar Boletim", href: "/editar-tabela"},
     {name: "Especialidades", href: "/especialidades"},
-    // {name: "Cirurgioes", href: "/cirurgiaos"}
+    {name: "Cirurgioes", href: "/cirurgioes"}
 ]
 
 export function Navigation() {
