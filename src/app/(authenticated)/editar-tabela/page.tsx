@@ -113,28 +113,25 @@ function ConteudoTabela({dataCalendario, setData, session}) {
   if (isLoading) return CarregandoSession()
 
   async function onSubmit() {
-    const linhas = montarValoresLinhas(getValues());;
-    const cabecalhos = montarValoresCabecalhos(getValues());
-
     const resultado = {
       data: ConverterData(dataCalendario),
-      linhas: linhas,
-      cabecalhos:cabecalhos
+      linhas: montarValoresLinhas(getValues()),
+      cabecalhos: montarValoresCabecalhos(getValues())
     }
 
     console.log(resultado);
 
-    // const requestOptions = {
-    //   method: 'POST',
-    //   headers: { 
-    //     'Content-Type': 'application/json',
-    //     'authorization': session?.user.token,
-    //   },
-    //   body: JSON.stringify(resultado)
-    // };
+    const requestOptions = {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'authorization': session?.user.token,
+      },
+      body: JSON.stringify(resultado)
+    };
 
-    // fetch(process.env.NEXT_PUBLIC_API + '/api/tabela', requestOptions).then(response => response)
-    // toast({description: "Tabela salva com sucesso!"})
+    fetch(process.env.NEXT_PUBLIC_API + '/api/ordem-tabela', requestOptions).then(response => response)
+    toast({description: "Tabela salva com sucesso!"})
   }
 
   return (
