@@ -170,7 +170,7 @@ function LinhaTabela({procedimento, control, indexProcedimento, indexCabecalho, 
         <p className='font-semibold text-center text-black'><RiMenuAddLine className="w-[18px] h-[18px]"/></p>
       </div>
       <div className="flex items-center justify-center border-black w-[100px] h-[25px] px-1 hover:cursor-pointer hover:bg-red-200 hover:text-red-600"
-        onClick={() => removerLinha(remove, indexProcedimento)}
+        onClick={() => removerLinha(remove, indexProcedimento, procedimento, updateCabecalho, getValues)}
       >
         <FaTrashAlt className="w-[15px] h-[15px]"/>
       </div>
