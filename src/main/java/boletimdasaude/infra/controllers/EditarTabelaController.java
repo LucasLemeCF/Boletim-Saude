@@ -28,17 +28,10 @@ public class EditarTabelaController {
     }
 
     @GetMapping(path = "/{data}")
-    public ResponseEntity<OrdemTabela> buscarOrdemTabela(
+    public ResponseEntity<OrdemTabelaResponse> buscarOrdemTabela(
             @PathVariable(value="data") String data
     ) {
         return ResponseEntity.ok().body(editarTabelaInteractor.buscarOrdemTabela(data));
-    }
-
-    @GetMapping(path = "/teste/{data}")
-    public ResponseEntity<OrdemTabelaResponse> buscarOrdemTabelaNovo(
-            @PathVariable(value="data") String data
-    ) {
-        return ResponseEntity.ok().body(editarTabelaInteractor.buscarOrdemTabelaNovo(data));
     }
 
 }

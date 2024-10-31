@@ -23,11 +23,7 @@ public class EditarOrdemTabelaInteractor {
         return tabelaRepository.editarOrdemTabela(ordemTabela);
     }
 
-    public OrdemTabela buscarOrdemTabela(String data) {
-        return tabelaRepository.buscarOrdemTabela(data);
-    }
-
-    public OrdemTabelaResponse buscarOrdemTabelaNovo(String data) {
+    public OrdemTabelaResponse buscarOrdemTabela(String data) {
         return montarOrdemTabelaInteractor.criarOrdemTabelaResponse(data);
     }
 

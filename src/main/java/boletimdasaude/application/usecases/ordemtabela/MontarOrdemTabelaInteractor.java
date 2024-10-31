@@ -10,7 +10,6 @@ import boletimdasaude.application.responses.tabela.TabelaCabecalhoEspecialidades
 import boletimdasaude.application.responses.tabela.TabelaCirurgioesResponse;
 import boletimdasaude.application.responses.tabela.TabelaEspecialidadesResponse;
 import boletimdasaude.domain.cirurgiao.Cirurgiao;
-import boletimdasaude.domain.cirurgiao.ProcedimentoCirurgiao;
 import boletimdasaude.domain.ordemtabela.TextoCabecalhoTabela;
 
 import java.util.ArrayList;
@@ -39,93 +38,126 @@ public class MontarOrdemTabelaInteractor {
     public OrdemTabelaResponse criarOrdemTabelaResponse(String data) {
         this.data = data;
 
-        List<CabecalhoResponse> cabecalhosEspecialidades = criarCabecalhosEspecialidades();
-        List<CabecalhoResponse> cabecalhosCirurgioes = criarCabecalhosCirurgioes();
-        List<LinhaEspecialidadeResponse> linhasEspecialidades = criarLinhasEspecialidades();
-        List<CirurgiaoResponse> listaCirurgioes = criarCirurgioes();
+        List<CabecalhoEspecialidadeResponse> cabecalhosEspecialidades = criarCabecalhosEspecialidades();
+        List<CabecalhoCirurgiaoResponse> cabecalhosCirurgioes = criarCabecalhosCirurgioes();
 
         return new OrdemTabelaResponse(
                 data,
                 cabecalhosEspecialidades,
-                cabecalhosCirurgioes,
-                linhasEspecialidades,
-                listaCirurgioes
+                cabecalhosCirurgioes
         );
     }
 
-    private List<CabecalhoResponse> criarCabecalhosEspecialidades() {
-        List<CabecalhoResponse> resultado = new ArrayList<>();
+    private List<CabecalhoEspecialidadeResponse> criarCabecalhosEspecialidades() {
+        List<CabecalhoEspecialidadeResponse> resultado = new ArrayList<>();
 
         List<TabelaCabecalhoEspecialidadesResponse> listaCabecalhosEspecialidades = tabelaRepository.buscarCabecalhosEspecialidades(data);
 
-        for (TabelaCabecalhoEspecialidadesResponse cabecalho : listaCabecalhosEspecialidades) {
+        for (int index = 0; index < listaCabecalhosEspecialidades.size(); index++) {
             List<String> textos = new ArrayList<>();
 
-            for (TextoCabecalhoTabela texto : cabecalho.textos()) {
+            for (TextoCabecalhoTabela texto : listaCabecalhosEspecialidades.get(index).textos()) {
                 textos.add(texto.texto());
             }
 
-            resultado.add(new CabecalhoResponse(cabecalho.posicao(), textos));
+            int nextIndex = calculaProximoIndexEspecialidade(index, listaCabecalhosEspecialidades);
+
+            resultado.add(
+                new CabecalhoEspecialidadeResponse(
+                    listaCabecalhosEspecialidades.get(index).posicao(),
+                    textos,
+                    criarLinhasEspecialidades(listaCabecalhosEspecialidades.get(index).posicao(), listaCabecalhosEspecialidades.get(nextIndex).posicao())
+                )
+            );
         }
 
         return resultado;
     }
 
-    private List<CabecalhoResponse> criarCabecalhosCirurgioes() {
-        List<CabecalhoResponse> resultado = new ArrayList<>();
+    private int calculaProximoIndexEspecialidade(int index, List<TabelaCabecalhoEspecialidadesResponse> listaCabecalhosEspecialidades) {
+        int nextIndex = index + 1;
 
-        List<TabelaCabecalhoCirurgioesResponse> listaCabecalhosCirurgioes = tabelaRepository.buscarCabecalhosCirurgioes(data);
-
-        for (TabelaCabecalhoCirurgioesResponse cabecalho : listaCabecalhosCirurgioes) {
-            List<String> textos = new ArrayList<>();
-
-            for (TextoCabecalhoTabela texto : cabecalho.textos()) {
-                textos.add(texto.texto());
-            }
-
-            resultado.add(new CabecalhoResponse(cabecalho.posicao(), textos));
+        if (nextIndex < listaCabecalhosEspecialidades.size()) {
+            return nextIndex;
         }
 
-        return resultado;
+        return index;
     }
 
-    private List<LinhaEspecialidadeResponse> criarLinhasEspecialidades() {
+    private List<LinhaEspecialidadeResponse> criarLinhasEspecialidades(Long posicaoCabecalho, Long posicaoProximoCabecalho) {
         List<LinhaEspecialidadeResponse> resultado = new ArrayList<>();
 
         List<TabelaEspecialidadesResponse> listaEspecialidades = resultadoMensalEspecialidadeRepository.buscarDadosEspecialidades(data);
 
         for (TabelaEspecialidadesResponse especialidade : listaEspecialidades) {
-            resultado.add(new LinhaEspecialidadeResponse(
-                    especialidade.posicao(),
-                    especialidade.especialidadeId(),
-                    especialidade.especialidade()
-            ));
+            if (estaNoIntervalo(posicaoCabecalho, posicaoProximoCabecalho, especialidade)) {
+                resultado.add(new LinhaEspecialidadeResponse(
+                        especialidade.posicao(),
+                        especialidade.especialidadeId(),
+                        especialidade.especialidade()
+                ));
+            }
         }
 
         return resultado;
     }
 
-    private List<CirurgiaoResponse> criarCirurgioes() {
-        List<CirurgiaoResponse> resultado = new ArrayList<>();
+    private boolean estaNoIntervalo(Long posicaoCabecalho, Long posicaoProximoCabecalho, TabelaEspecialidadesResponse especialidade) {
+        return passouDoPrimeiroIntervalo(posicaoCabecalho, especialidade)
+                && naoPassouDoUltimoIntervalo(posicaoCabecalho, posicaoProximoCabecalho, especialidade);
+    }
 
-        List<Cirurgiao> listaCirurgioes = cirurgiaoRepository.buscarTodosCirurgioesComDadosMes(data);
-        List<TabelaCirurgioesResponse> listaProcedimentos = resultadoMensalCirurgiaoRepository.buscarDadosCirurgioes(data);
+    private boolean passouDoPrimeiroIntervalo(Long posicaoCabecalho, TabelaEspecialidadesResponse especialidade) {
+        return posicaoCabecalho <= especialidade.posicao();
+    }
 
-        for (Cirurgiao cirurgiao : listaCirurgioes) {
-            resultado.add(new CirurgiaoResponse(
-                    cirurgiao.nome(),
-                    montarLinhasProcedimentos(cirurgiao.nome(), listaProcedimentos)
-            ));
+    private boolean naoPassouDoUltimoIntervalo(Long posicaoCabecalho, Long posicaoProximoCabecalho, TabelaEspecialidadesResponse especialidade) {
+        return especialidade.posicao() < posicaoProximoCabecalho || posicaoProximoCabecalho.equals(posicaoCabecalho);
+    }
+
+    private List<CabecalhoCirurgiaoResponse> criarCabecalhosCirurgioes() {
+        List<CabecalhoCirurgiaoResponse> resultado = new ArrayList<>();
+
+        List<TabelaCabecalhoCirurgioesResponse> listaCabecalhosCirurgioes = tabelaRepository.buscarCabecalhosCirurgioes(data);
+
+        for (int index = 0; index < listaCabecalhosCirurgioes.size(); index++) {
+            List<String> textos = new ArrayList<>();
+
+            for (TextoCabecalhoTabela texto : listaCabecalhosCirurgioes.get(index).textos()) {
+                textos.add(texto.texto());
+            }
+
+            int nextIndex = calculaProximoIndexCirurgiao(index, listaCabecalhosCirurgioes);
+
+            resultado.add(
+                    new CabecalhoCirurgiaoResponse(
+                            listaCabecalhosCirurgioes.get(index).posicao(),
+                            textos,
+                            montarLinhasProcedimentos(listaCabecalhosCirurgioes.get(index).posicao(), listaCabecalhosCirurgioes.get(nextIndex).posicao())
+                    )
+            );
         }
 
         return resultado;
     }
 
-    private List<LinhaProcedimentoResponse> montarLinhasProcedimentos(String nomeCirurgiao, List<TabelaCirurgioesResponse> listaProcedimentos) {
+    private int calculaProximoIndexCirurgiao(int index, List<TabelaCabecalhoCirurgioesResponse> listaCabecalhosCirurgioes) {
+        int nextIndex = index + 1;
+
+        if (nextIndex < listaCabecalhosCirurgioes.size()) {
+            return nextIndex;
+        }
+
+        return index;
+    }
+
+    private List<LinhaProcedimentoResponse> montarLinhasProcedimentos(Long posicaoCabecalho, Long posicaoProximoCabecalho) {
         List<LinhaProcedimentoResponse> resultado = new ArrayList<>();
 
+        List<TabelaCirurgioesResponse> listaProcedimentos = resultadoMensalCirurgiaoRepository.buscarDadosCirurgioes(data);
+
         for (TabelaCirurgioesResponse procedimento : listaProcedimentos) {
-            if (procedimento.cirurgiao().equals(nomeCirurgiao)) {
+            if (estaNoIntervalo(posicaoCabecalho, posicaoProximoCabecalho, procedimento)) {
                 resultado.add(new LinhaProcedimentoResponse(
                         procedimento.posicao(),
                         procedimento.procedimentoId(),
@@ -136,6 +168,19 @@ public class MontarOrdemTabelaInteractor {
         }
 
         return resultado;
+    }
+
+    private boolean estaNoIntervalo(Long posicaoCabecalho, Long posicaoProximoCabecalho, TabelaCirurgioesResponse procedimento) {
+        return passouDoPrimeiroIntervalo(posicaoCabecalho, procedimento)
+                && naoPassouDoUltimoIntervalo(posicaoCabecalho, posicaoProximoCabecalho, procedimento);
+    }
+
+    private boolean passouDoPrimeiroIntervalo(Long posicaoCabecalho, TabelaCirurgioesResponse procedimento) {
+        return posicaoCabecalho <= procedimento.posicao();
+    }
+
+    private boolean naoPassouDoUltimoIntervalo(Long posicaoCabecalho, Long posicaoProximoCabecalho, TabelaCirurgioesResponse procedimento) {
+        return procedimento.posicao() < posicaoProximoCabecalho || posicaoProximoCabecalho.equals(posicaoCabecalho);
     }
 
 }
