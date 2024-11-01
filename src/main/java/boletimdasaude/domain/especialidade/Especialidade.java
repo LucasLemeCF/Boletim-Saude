@@ -8,6 +8,7 @@ public record Especialidade(
     String medicoAtual,
     int metaDiariaAtual,
     int metaMensalAtual,
-    List<ResultadoMensalEspecialidade> resultadosMensais
+    List<ResultadoMensalEspecialidade> resultadosMensais,
+    boolean ativo
 ) {
 }

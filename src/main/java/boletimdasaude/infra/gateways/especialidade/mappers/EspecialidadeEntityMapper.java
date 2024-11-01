@@ -13,7 +13,8 @@ public class EspecialidadeEntityMapper {
                 domain.medicoAtual(),
                 domain.metaDiariaAtual(),
                 domain.metaMensalAtual(),
-                ResultadoMensalEspecialidadeMapper.toEntityList(domain.resultadosMensais())
+                ResultadoMensalEspecialidadeMapper.toEntityList(domain.resultadosMensais()),
+                domain.ativo()
         );
     }
 
@@ -24,7 +25,8 @@ public class EspecialidadeEntityMapper {
                 entity.getMedicoAtual(),
                 entity.getMetaDiariaAtual(),
                 entity.getMetaMensalAtual(),
-                ResultadoMensalEspecialidadeMapper.toDomainList(entity.getResultadosMensais())
+                ResultadoMensalEspecialidadeMapper.toDomainList(entity.getResultadosMensais()),
+                entity.isAtivo()
         );
     }
 
@@ -41,7 +43,8 @@ public class EspecialidadeEntityMapper {
                 entityOptional.getMedicoAtual(),
                 entityOptional.getMetaDiariaAtual(),
                 entityOptional.getMetaMensalAtual(),
-                ResultadoMensalEspecialidadeMapper.toDomainList(entityOptional.getResultadosMensais())
+                ResultadoMensalEspecialidadeMapper.toDomainList(entityOptional.getResultadosMensais()),
+                entityOptional.isAtivo()
         ));
     }
 

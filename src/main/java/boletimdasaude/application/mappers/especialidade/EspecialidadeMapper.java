@@ -14,7 +14,8 @@ public class EspecialidadeMapper {
                 request.medico(),
                 request.metaDiaria(),
                 request.metaMensal(),
-                new ArrayList<>()
+                new ArrayList<>(),
+                true
         );
     }
 

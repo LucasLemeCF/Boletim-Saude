@@ -21,22 +21,26 @@ public class EspecialidadeEntity {
     private int metaMensalAtual;
     @OneToMany(mappedBy = "especialidade", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ResultadoMensalEspecialidadeEntity> resultadosMensais;
+    @Column(name = "DES_ATIVO")
+    private boolean ativo;
 
-    public EspecialidadeEntity(String especialidade, String medicoAtual, int metaDiariaAtual, int metaMensalAtual, List<ResultadoMensalEspecialidadeEntity> resultadosMensais) {
+    public EspecialidadeEntity(String especialidade, String medicoAtual, int metaDiariaAtual, int metaMensalAtual, List<ResultadoMensalEspecialidadeEntity> resultadosMensais, boolean ativo) {
         this.especialidade = especialidade;
         this.medicoAtual = medicoAtual;
         this.metaDiariaAtual = metaDiariaAtual;
         this.metaMensalAtual = metaMensalAtual;
         this.resultadosMensais = resultadosMensais;
+        this.ativo = ativo;
     }
 
-    public EspecialidadeEntity(Long id, String especialidade, String medicoAtual, int metaDiariaAtual, int metaMensalAtual, List<ResultadoMensalEspecialidadeEntity> resultadosMensais) {
+    public EspecialidadeEntity(Long id, String especialidade, String medicoAtual, int metaDiariaAtual, int metaMensalAtual, List<ResultadoMensalEspecialidadeEntity> resultadosMensais, boolean ativo) {
         this.id = id;
         this.especialidade = especialidade;
         this.medicoAtual = medicoAtual;
         this.metaDiariaAtual = metaDiariaAtual;
         this.metaMensalAtual = metaMensalAtual;
         this.resultadosMensais = resultadosMensais;
+        this.ativo = ativo;
     }
 
     public EspecialidadeEntity() {}
@@ -71,4 +75,7 @@ public class EspecialidadeEntity {
 
     public void setResultadosMensais(List<ResultadoMensalEspecialidadeEntity> resultadosMensais) { this.resultadosMensais = resultadosMensais; }
 
+    public boolean isAtivo() {return ativo;}
+
+    public void setAtivo(boolean ativo) {this.ativo = ativo;}
 }

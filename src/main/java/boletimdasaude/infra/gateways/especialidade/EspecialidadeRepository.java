@@ -11,7 +11,6 @@ import boletimdasaude.infra.persitence.especialidade.entities.EspecialidadeEntit
 import boletimdasaude.infra.persitence.especialidade.entities.ResultadoMensalEspecialidadeEntity;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,12 +18,10 @@ public class EspecialidadeRepository implements IEspecialidadeRepository, ITabel
 
     private final IEspecialidadeRepositoryJpa repository;
     private final EspecialidadeEntityMapper especialidadeEntityMapper;
-    private final ResultadoMensalEspecialidadeMapper resultadoMensalEspecialidadeMapper;
 
     public EspecialidadeRepository(IEspecialidadeRepositoryJpa repository, EspecialidadeEntityMapper especialidadeEntityMapper, ResultadoMensalEspecialidadeMapper resultadoMensalEspecialidadeMapper) {
         this.repository = repository;
         this.especialidadeEntityMapper = especialidadeEntityMapper;
-        this.resultadoMensalEspecialidadeMapper = resultadoMensalEspecialidadeMapper;
     }
 
     @Override
@@ -97,7 +94,8 @@ public class EspecialidadeRepository implements IEspecialidadeRepository, ITabel
                 especialidade.medicoAtual() != null ? especialidade.medicoAtual() : oldEntity.getMedicoAtual(),
                 especialidade.metaDiariaAtual(),
                 especialidade.metaMensalAtual(),
-                oldEntity.getResultadosMensais()
+                oldEntity.getResultadosMensais(),
+                oldEntity.isAtivo()
         );
 
         return EspecialidadeEntityMapper.toDomain(repository.saveAndFlush(newEntity));
@@ -105,12 +103,23 @@ public class EspecialidadeRepository implements IEspecialidadeRepository, ITabel
 
     @Override
     public String excluirEspecialidade(Long id) {
-        return repository.findById(id)
-                .map(especialidade -> {
-                    repository.delete(especialidade);
-                    return "Especialidade excluida com sucesso";
-                })
-                .orElseThrow(() -> new NotFoundException(String.format("ID %s não encontrado", id)));
+        EspecialidadeEntity entity = repository.findById(id)
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException(String.format("ID %s não econtrado", id))
+        );
+
+        entity.setAtivo(false);
+        repository.saveAndFlush(entity);
+
+        return "Especialidade excluida com sucesso";
+
+//        return repository.findById(id)
+//                .map(especialidade -> {
+//                    repository.delete(especialidade);
+//                    return "Especialidade excluida com sucesso";
+//                })
+//                .orElseThrow(() -> new NotFoundException(String.format("ID %s não encontrado", id)));
     }
 
 }

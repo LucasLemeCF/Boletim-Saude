@@ -20,7 +20,17 @@ public class EspecialidadeInteractor {
     }
 
     public List<Especialidade> buscarTodasEspecialidades() {
-        return especialidadeRepository.buscarTodasEspecialidades();
+        List<Especialidade> resultado = new ArrayList<>();
+
+        List<Especialidade> especialidades = especialidadeRepository.buscarTodasEspecialidades();
+
+        for (Especialidade especialidade : especialidades) {
+            if (especialidade.ativo()) {
+                resultado.add(especialidade);
+            }
+        }
+
+        return resultado;
     }
 
     public List<EspecialidadeResponse> buscarTodosNomesDeEspecialidade() {
@@ -29,7 +39,9 @@ public class EspecialidadeInteractor {
         List<Especialidade> especialidades = especialidadeRepository.buscarTodasEspecialidades();
 
         for (Especialidade especialidade : especialidades) {
-            especialidadesResponse.add(new EspecialidadeResponse(especialidade.id(), especialidade.especialidade()));
+            if (especialidade.ativo()) {
+                especialidadesResponse.add(new EspecialidadeResponse(especialidade.id(), especialidade.especialidade()));
+            }
         }
 
         return especialidadesResponse;
