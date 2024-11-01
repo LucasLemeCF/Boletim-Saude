@@ -147,7 +147,7 @@ function ConteudoTabela({dataCalendario, setData, session}) {
              setValue={setValue} register={register} getValues={getValues}
             />
             <div className="flex items-center justify-end gap-8 w-full mt-8">
-              <ButtonLocal texto={"Salvar"} color={"bg-green-800"} onClick={handleSubmit(onSubmit)} type={"button"} icon={"Salvar"}/>
+              <ButtonLocal texto={"Salvar"} color={"bg-[#337B5B] hover:bg-[#2f7053]"} onClick={handleSubmit(onSubmit)} type={"button"} icon={"Salvar"}/>
             </div>
           </Form>
           : <DadosNaoEncontrados/>      
