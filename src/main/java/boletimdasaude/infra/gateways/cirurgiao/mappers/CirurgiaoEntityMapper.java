@@ -12,7 +12,8 @@ public class CirurgiaoEntityMapper {
     public CirurgiaoEntity toEntity(Cirurgiao domain) {
         return new CirurgiaoEntity(
                 domain.nome(),
-                ProcedimentoCirurgiaoEntityMapper.toEntityList(domain.procedimentos())
+                ProcedimentoCirurgiaoEntityMapper.toEntityList(domain.procedimentos()),
+                domain.ativo()
         );
     }
 
@@ -20,7 +21,8 @@ public class CirurgiaoEntityMapper {
         return new Cirurgiao(
                 entity.getId(),
                 entity.getNome(),
-                ProcedimentoCirurgiaoEntityMapper.toDomainList(entity.getProcedimentos())
+                ProcedimentoCirurgiaoEntityMapper.toDomainList(entity.getProcedimentos()),
+                entity.isAtivo()
         );
     }
 

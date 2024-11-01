@@ -11,7 +11,8 @@ public class CirurgiaoMapper {
         return new Cirurgiao(
                 null,
                 request.nome(),
-                new ArrayList<>()
+                new ArrayList<>(),
+                true
         );
     }
 

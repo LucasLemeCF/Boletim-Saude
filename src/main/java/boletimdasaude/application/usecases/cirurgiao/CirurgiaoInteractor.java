@@ -3,11 +3,9 @@ package boletimdasaude.application.usecases.cirurgiao;
 import boletimdasaude.application.gateways.cirurgiao.ICirurgiaoRepository;
 import boletimdasaude.application.responses.cirurgiao.CirurgiaoResponse;
 import boletimdasaude.application.responses.cirurgiao.ProcedimentoCirurgiaoResponse;
-import boletimdasaude.application.responses.especialidade.EspecialidadeResponse;
 import boletimdasaude.domain.cirurgiao.Cirurgiao;
 import boletimdasaude.domain.cirurgiao.ProcedimentoCirurgiao;
 import boletimdasaude.domain.cirurgiao.ResultadoMensalCirurgiao;
-import boletimdasaude.domain.especialidade.Especialidade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +23,17 @@ public class CirurgiaoInteractor {
     }
 
     public List<Cirurgiao> buscarTodosCirurgioes() {
-        return cirurgiaoRepository.buscarTodosCirurgioes();
+        List<Cirurgiao> resultado = new ArrayList<>();
+
+        List<Cirurgiao> cirurgioes = cirurgiaoRepository.buscarTodosCirurgioes();
+
+        for (Cirurgiao cirurgiao : cirurgioes) {
+            if (cirurgiao.ativo()) {
+                resultado.add(cirurgiao);
+            }
+        }
+
+        return resultado;
     }
 
     public List<CirurgiaoResponse> buscarTodosNomesDeCirurgioes() {
@@ -34,13 +42,15 @@ public class CirurgiaoInteractor {
         List<Cirurgiao> cirurgioes = cirurgiaoRepository.buscarTodosCirurgioes();
 
         for (Cirurgiao cirurgiao : cirurgioes) {
-            List<ProcedimentoCirurgiaoResponse> listaProcedimentos = new ArrayList<>();
+            if (cirurgiao.ativo()) {
+                List<ProcedimentoCirurgiaoResponse> listaProcedimentos = new ArrayList<>();
 
-            for (ProcedimentoCirurgiao procedimento : cirurgiao.procedimentos()) {
-                listaProcedimentos.add(new ProcedimentoCirurgiaoResponse(procedimento.id(), procedimento.nome()));
+                for (ProcedimentoCirurgiao procedimento : cirurgiao.procedimentos()) {
+                    listaProcedimentos.add(new ProcedimentoCirurgiaoResponse(procedimento.id(), procedimento.nome()));
+                }
+
+                cirurgioesResponse.add(new CirurgiaoResponse(cirurgiao.id(), cirurgiao.nome(), listaProcedimentos));
             }
-
-            cirurgioesResponse.add(new CirurgiaoResponse(cirurgiao.id(), cirurgiao.nome(), listaProcedimentos));
         }
 
         return cirurgioesResponse;

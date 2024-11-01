@@ -15,16 +15,20 @@ public class CirurgiaoEntity {
     private String nome;
     @OneToMany(mappedBy = "cirurgiao", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProcedimentoCirurgiaoEntity> procedimentos;
+    @Column(name = "DES_ATIVO")
+    private boolean ativo;
 
-    public CirurgiaoEntity(String nome, List<ProcedimentoCirurgiaoEntity> procedimentos) {
+    public CirurgiaoEntity(String nome, List<ProcedimentoCirurgiaoEntity> procedimentos, boolean ativo) {
         this.nome = nome;
         this.procedimentos = procedimentos;
+        this.ativo = ativo;
     }
 
-    public CirurgiaoEntity(Long id, String nome, List<ProcedimentoCirurgiaoEntity> procedimentos) {
+    public CirurgiaoEntity(Long id, String nome, List<ProcedimentoCirurgiaoEntity> procedimentos, boolean ativo) {
         this.id = id;
         this.nome = nome;
         this.procedimentos = procedimentos;
+        this.ativo = ativo;
     }
 
     public CirurgiaoEntity() {}
@@ -52,5 +56,9 @@ public class CirurgiaoEntity {
     public void setProcedimentos(List<ProcedimentoCirurgiaoEntity> procedimentos) {
         this.procedimentos = procedimentos;
     }
+
+    public boolean isAtivo() {return ativo;}
+
+    public void setAtivo(boolean ativo) {this.ativo = ativo;}
 
 }

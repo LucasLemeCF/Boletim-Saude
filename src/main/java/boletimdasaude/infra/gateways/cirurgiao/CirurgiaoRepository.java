@@ -98,7 +98,8 @@ public class CirurgiaoRepository implements ICirurgiaoRepository {
         CirurgiaoEntity newEntity = new CirurgiaoEntity(
                 id,
                 cirurgiao.nome() != null ? cirurgiao.nome() : oldEntity.getNome(),
-                oldEntity.getProcedimentos()
+                oldEntity.getProcedimentos(),
+                oldEntity.isAtivo()
         );
 
         return CirurgiaoEntityMapper.toDomain(cirurgiaoRepository.save(newEntity));
@@ -106,13 +107,16 @@ public class CirurgiaoRepository implements ICirurgiaoRepository {
 
     @Override
     public String excluirCirurgiao(Long id) {
-        return cirurgiaoRepository.findById(id)
-                .map(cirurgiao -> {
-                    cirurgiaoRepository.delete(cirurgiao);
-                    return "Cirurgiao excluido com sucesso";
-                })
-                .orElseThrow(() -> new NotFoundException(String.format("ID %s não encontrado", id))
+        CirurgiaoEntity entity = cirurgiaoRepository.findById(id)
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException(String.format("ID %s não econtrado", id))
         );
+
+        entity.setAtivo(false);
+        cirurgiaoRepository.save(entity);
+
+        return "Cirurgiao excluido com sucesso";
     }
 
 }
