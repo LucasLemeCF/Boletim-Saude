@@ -11,7 +11,8 @@ public class ProcedimentoCirurgiaoMapper {
         return new ProcedimentoCirurgiao(
                 null,
                 request.nome(),
-                new ArrayList<>()
+                new ArrayList<>(),
+                true
         );
     }
 

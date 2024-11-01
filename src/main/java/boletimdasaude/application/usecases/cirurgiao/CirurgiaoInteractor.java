@@ -29,7 +29,15 @@ public class CirurgiaoInteractor {
 
         for (Cirurgiao cirurgiao : cirurgioes) {
             if (cirurgiao.ativo()) {
-                resultado.add(cirurgiao);
+                List<ProcedimentoCirurgiao> listaProcedimentos = new ArrayList<>();
+
+                for (ProcedimentoCirurgiao procedimento : cirurgiao.procedimentos()) {
+                    if(procedimento.ativo()) {
+                        listaProcedimentos.add(procedimento);
+                    }
+                }
+
+                resultado.add(new Cirurgiao(cirurgiao.id(), cirurgiao.nome(), listaProcedimentos, cirurgiao.ativo()));
             }
         }
 
@@ -46,7 +54,9 @@ public class CirurgiaoInteractor {
                 List<ProcedimentoCirurgiaoResponse> listaProcedimentos = new ArrayList<>();
 
                 for (ProcedimentoCirurgiao procedimento : cirurgiao.procedimentos()) {
-                    listaProcedimentos.add(new ProcedimentoCirurgiaoResponse(procedimento.id(), procedimento.nome()));
+                    if(procedimento.ativo()) {
+                        listaProcedimentos.add(new ProcedimentoCirurgiaoResponse(procedimento.id(), procedimento.nome()));
+                    }
                 }
 
                 cirurgioesResponse.add(new CirurgiaoResponse(cirurgiao.id(), cirurgiao.nome(), listaProcedimentos));

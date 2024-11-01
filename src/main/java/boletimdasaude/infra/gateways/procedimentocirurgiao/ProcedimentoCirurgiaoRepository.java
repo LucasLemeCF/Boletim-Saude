@@ -70,13 +70,15 @@ public class ProcedimentoCirurgiaoRepository implements IProcedimentoCirurgiaoRe
 
     @Override
     public String excluirProcedimentoCirurgiao(Long id) {
-        return procedimentoCirurgiaoRepositoryJpa.findById(id)
-                .map(procedimentoCirurgiao -> {
-                    procedimentoCirurgiaoRepositoryJpa.delete(procedimentoCirurgiao);
-                    return "Procedimento de cirurgiao excluido com sucesso";
-                })
-                .orElseThrow(() -> new NotFoundException(String.format("ID %s não encontrado", id))
+        ProcedimentoCirurgiaoEntity entity = procedimentoCirurgiaoRepositoryJpa.findById(id)
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException(String.format("ID %s não econtrado", id))
                 );
-    }
 
+        entity.setAtivo(false);
+        procedimentoCirurgiaoRepositoryJpa.save(entity);
+
+        return "Procedimento de cirurgião excluido com sucesso";
+    }
 }

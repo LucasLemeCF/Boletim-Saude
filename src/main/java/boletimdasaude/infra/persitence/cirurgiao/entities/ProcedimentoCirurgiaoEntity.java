@@ -18,16 +18,13 @@ public class ProcedimentoCirurgiaoEntity {
     @ManyToOne
     @JoinColumn(name="ID_CIRURGIAO", nullable = true)
     private CirurgiaoEntity cirurgiao;
+    @Column(name = "DES_ATIVO")
+    private boolean ativo;
 
-    public ProcedimentoCirurgiaoEntity(Long id, String nome, List<ResultadoMensalCirurgiaoEntity> resultadosMensais) {
-        this.id = id;
+    public ProcedimentoCirurgiaoEntity(String nome, List<ResultadoMensalCirurgiaoEntity> resultadosMensais, boolean ativo) {
         this.nome = nome;
         this.resultadosMensais = resultadosMensais;
-    }
-
-    public ProcedimentoCirurgiaoEntity(String nome, List<ResultadoMensalCirurgiaoEntity> resultadosMensais) {
-        this.nome = nome;
-        this.resultadosMensais = resultadosMensais;
+        this.ativo = ativo;
     }
 
     public ProcedimentoCirurgiaoEntity() {}
@@ -63,5 +60,9 @@ public class ProcedimentoCirurgiaoEntity {
     public void setCirurgiao(CirurgiaoEntity cirurgiao) {
         this.cirurgiao = cirurgiao;
     }
+
+    public boolean isAtivo() {return ativo;}
+
+    public void setAtivo(boolean ativo) {this.ativo = ativo; }
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 public record ProcedimentoCirurgiao(
         Long id,
         String nome,
-        List<ResultadoMensalCirurgiao> resultadosMensais
+        List<ResultadoMensalCirurgiao> resultadosMensais,
+        boolean ativo
 ) {
 }

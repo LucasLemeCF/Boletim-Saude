@@ -27,7 +27,17 @@ public class ProcedimentoCirurgiaoInteractor {
     }
 
     public List<ProcedimentoCirurgiao> buscarTodosProcedimentosCirurgioes() {
-        return procedimentoCirurgiaoRepository.buscarTodosProcedimentosCirurgioes();
+        List<ProcedimentoCirurgiao> resultado = new ArrayList<>();
+
+        List<ProcedimentoCirurgiao> procedimentos = procedimentoCirurgiaoRepository.buscarTodosProcedimentosCirurgioes();
+
+        for (ProcedimentoCirurgiao procedimento: procedimentos) {
+            if (procedimento.ativo()) {
+                resultado.add(procedimento);
+            }
+        }
+
+        return resultado;
     }
 
     public List<ProcedimentoResponse> buscarTodosNomesDeProcedimentos() {
@@ -37,7 +47,9 @@ public class ProcedimentoCirurgiaoInteractor {
 
         for (Cirurgiao cirurgiao : cirurgioes) {
             for (ProcedimentoCirurgiao procedimento : cirurgiao.procedimentos()) {
-                procedimentoCirurgioesResponse.add(new ProcedimentoResponse(procedimento.id(), cirurgiao.nome(), procedimento.nome()));
+                if (procedimento.ativo()) {
+                    procedimentoCirurgioesResponse.add(new ProcedimentoResponse(procedimento.id(), cirurgiao.nome(), procedimento.nome()));
+                }
             }
         }
 
@@ -51,9 +63,18 @@ public class ProcedimentoCirurgiaoInteractor {
         List<Cirurgiao> listaCirurgioes = cirurgiaoRepository.buscarTodosCirurgioes();
 
         for (Cirurgiao cirurgiao : listaCirurgioes) {
-            if (Objects.equals(cirurgiao.id(), id)) {
+            if (Objects.equals(cirurgiao.id(), id) && cirurgiao.ativo()) {
                 nomeCirurgiao = cirurgiao.nome();
-                procedimentos.addAll(cirurgiao.procedimentos());
+
+                List<ProcedimentoCirurgiao> procedimentosCirurgiao = new ArrayList<>();
+
+                for (ProcedimentoCirurgiao procedimento : cirurgiao.procedimentos()) {
+                    if (procedimento.ativo()) {
+                        procedimentosCirurgiao.add(procedimento);
+                    }
+                }
+
+                procedimentos.addAll(procedimentosCirurgiao);
             }
         }
 

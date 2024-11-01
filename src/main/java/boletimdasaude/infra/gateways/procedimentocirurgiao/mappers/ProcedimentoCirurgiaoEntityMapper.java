@@ -12,7 +12,8 @@ public class ProcedimentoCirurgiaoEntityMapper {
     public static ProcedimentoCirurgiaoEntity toEntity(ProcedimentoCirurgiao domain) {
         return new ProcedimentoCirurgiaoEntity(
                 domain.nome(),
-                ResultadoMensalCirurgiaoMapper.toEntityList(domain.resultadosMensais())
+                ResultadoMensalCirurgiaoMapper.toEntityList(domain.resultadosMensais()),
+                domain.ativo()
         );
     }
 
@@ -26,7 +27,8 @@ public class ProcedimentoCirurgiaoEntityMapper {
         return new ProcedimentoCirurgiao(
                 entity.getId(),
                 entity.getNome(),
-                ResultadoMensalCirurgiaoMapper.toDomainList(entity.getResultadosMensais())
+                ResultadoMensalCirurgiaoMapper.toDomainList(entity.getResultadosMensais()),
+                entity.isAtivo()
         );
     }
 
@@ -40,7 +42,8 @@ public class ProcedimentoCirurgiaoEntityMapper {
         return Optional.of(new ProcedimentoCirurgiao(
                 entityOptional.getId(),
                 entityOptional.getNome(),
-                ResultadoMensalCirurgiaoMapper.toDomainList(entityOptional.getResultadosMensais())
+                ResultadoMensalCirurgiaoMapper.toDomainList(entityOptional.getResultadosMensais()),
+                entityOptional.isAtivo()
         ));
     }
 
