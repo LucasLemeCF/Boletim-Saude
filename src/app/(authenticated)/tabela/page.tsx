@@ -24,15 +24,13 @@ export default function Tabela() {
   const [data, setData] = useState(new Date());
   
   return (
-    <main className="flex flex-col items-center justify-between bg-[#F8FAFC] overscroll-none">
-      <div className="flex flex-col items-center justify-between pt-[50px] pb-[25px]">
-        <div className="flex flex-col items-center justify-between mt-0 mb-0 border-collapse">
-          {
-            session ?
-            <ConteudoTabela dataCalendario={data} setData={setData} session={session}/>
-            : CarregandoSession()
-          }
-        </div>
+    <main className="flex flex-col items-center justify-between pt-[50px] pb-[25px] bg-[#F8FAFC] overflow-x-auto">
+      <div className="flex flex-col items-center justify-between mt-0 mb-0 border-collapse">
+        {
+          session ?
+          <ConteudoTabela dataCalendario={data} setData={setData} session={session}/>
+          : CarregandoSession()
+        }
       </div>
     </main>
   )
@@ -133,8 +131,10 @@ function ConteudoTabela({dataCalendario, setData, session}) {
           : <DadosNaoEncontrados/>      
         }
       </div>
-      <div className="flex items-center justify-end gap-8 w-full mt-8">
-        <ButtonLocal texto={"Baixar"} color={"bg-blue-800"} onClick={BaixarTabela} type={"button"} icon={"Baixar"}/>
+      <div className="flex items-center justify-center sm:justify-end gap-8 w-full mt-8">
+        <div className="hidden sm:block">
+          <ButtonLocal texto={"Baixar"} color={"bg-blue-800"} onClick={BaixarTabela} type={"button"} icon={"Baixar"}/>
+        </div>
         <ButtonLocal texto={"Salvar"} color={"bg-green-800"} onClick={handleSubmit(onSubmit)} type={"button"} icon={"Salvar"}/>
       </div>
       <Toaster/>

@@ -4,11 +4,11 @@ export function RodapeTotal({dadosTabela, linhasTabela}) {
 
   return (
     <div className="flex border border-t-0 divide-x border-black bg-[#337B5B] w-full">
-      <div className="flex items-center justify-center border-black w-[600px]">
-        <p className="font-semibold text-white">Total de Atendimentos + Cirurgias no Mês</p>
+      <div className="flex items-center justify-center border-black w-[300px] sm:w-[600px]">
+        <p className="font-semibold text-white text-sm sm:text-base">Total de Atendimentos + Cirurgias no Mês</p>
       </div>
 
-      <div className="flex items-center justify-center border-black w-[300px]">
+      <div className="flex items-center justify-center border-black w-[100px] sm:w-[300px]">
         <p className="font-semibold text-white">{totalDia}</p>
       </div>
     </div>

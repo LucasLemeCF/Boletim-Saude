@@ -3,11 +3,11 @@
 import { usePathname } from "next/navigation";
 
 const navLinks = [
-    {name: "Boletim Médico", href: "/tabela"},
-    {name: "Relatórios", href: "/relatorios"},
-    {name: "Editar Boletim", href: "/editar-tabela"},
-    {name: "Especialidades", href: "/especialidades"},
-    {name: "Cirurgioes", href: "/cirurgioes"}
+    {name: "Boletim Médico", href: "/tabela", hidden:""},
+    {name: "Relatórios", href: "/relatorios", hidden:""},
+    {name: "Editar Boletim", href: "/editar-tabela", hidden:"hidden sm:flex"},
+    {name: "Especialidades", href: "/especialidades", hidden:"hidden sm:flex"},
+    {name: "Cirurgioes", href: "/cirurgioes", hidden:"hidden sm:flex"}
 ]
 
 export function Navigation() {
@@ -19,7 +19,9 @@ export function Navigation() {
                 const active = pathName.startsWith(link.href);
 
                 return (  
-                    <a key={link.name} href={link.href} className={`flex items-center self-stretch rounded-[6px] py-2 px-3 hover:cursor-pointer ${active ? 'bg-teal-50' : 'hover:bg-teal-50/25'}`}>
+                    <a key={link.name} href={link.href} className={`flex items-center self-stretch rounded-[6px] py-2 px-3 hover:cursor-pointer 
+                        ${active ? 'bg-teal-50' : 'hover:bg-teal-50/25'}` + ` ${link.hidden}`
+                    }>
                         <div className={`text-lg ${active ? 'text-green-900' : 'text-white'}`}>
                             {link.name}
                         </div>

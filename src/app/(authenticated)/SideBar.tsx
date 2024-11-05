@@ -12,11 +12,11 @@ export function SideBar({children}:SidebarProps) {
     const [open, setOpen] = useState(true);
 
     return(
-        <div className='flex flex-row w-screen'>
+        <div className='flex flex-row w-full '>
             <Aside open={open} setOpen={setOpen}/>
-            <div className={`flex flex-col w-full`}>
+            <div className='flex flex-col w-full'>
                 <Header open={open} setOpen={setOpen}/>
-                <div className={`${open ? 'ml-64' : 'ml-0'} transform duration-500 ease-in-out`}>
+                <div className={`${open ? 'ml-64' : 'ml-0'} transform duration-500 ease-in-out overflow-hidden`}>
                     {children}
                 </div>
             </div>
