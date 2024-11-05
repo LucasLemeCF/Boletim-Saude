@@ -14,11 +14,11 @@ export function SideBar({children}:SidebarProps) {
     return(
         <div className='flex flex-row w-screen'>
             <Aside open={open} setOpen={setOpen}/>
-            <div className={`flex flex-col w-full transform duration-500 ease-in-out`}
-                style={{transform: `${open ? 'ml-64' : 'ml-0'}`}}
-            >
+            <div className={`flex flex-col w-full`}>
                 <Header open={open} setOpen={setOpen}/>
-                {children}
+                <div className={`${open ? 'ml-64' : 'ml-0'} transform duration-500 ease-in-out`}>
+                    {children}
+                </div>
             </div>
         </div>
     );
