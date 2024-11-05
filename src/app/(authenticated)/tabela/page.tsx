@@ -74,6 +74,7 @@ function ConteudoTabela({dataCalendario, setData, session}) {
         }); 
         const dataResponse = await response.json();
         setDadosTabela(dataResponse);
+        console.log(dataResponse);
         setValue("linhas", montarValoresLinhas(dataResponse))
       } finally {
         setLoading(false);

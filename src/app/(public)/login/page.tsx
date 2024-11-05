@@ -19,7 +19,7 @@ import { LoginSchema } from '../../../schemas/login';
 
 export default function Login() {
   return ( 
-    <div className="bg-white w-[540px] px-[72px] py-12 rounded-[20px] flex flex-col items-center justify-between shadow-[6px_6px_8px_0_rgba(0,0,0,0.25)]">
+    <div className="bg-white w-full sm:w-[540px] mx-4 sm:mx-0 px-6 sm:px-[72px] py-8 sm:py-12 rounded-[20px] flex flex-col items-center justify-between shadow-[6px_6px_8px_0_rgba(0,0,0,0.25)]">
       <Logo/>
       <FormLogin/>
     </div>

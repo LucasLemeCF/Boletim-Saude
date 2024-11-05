@@ -31,7 +31,7 @@ function somarAtendimentosDia(dadosTabela, linhasTabela) {
       cabecalho.cirurgioes.map((cirurgiao) => {
         if (cirurgiao.procedimento != "Procedimento Anestésico") {
           linhasTabela.map((linha) => {
-            if (!Number.isNaN(linha.pacientesAtendidos) && linha.posicao === cirurgiao.posicao) {
+            if (!Number.isNaN(linha.pacientesAtendidos) && linha.posicao === cirurgiao.posicao && linha.pacientesAtendidos > 0) {
               totalDia += linha.pacientesAtendidos;
             }
           });

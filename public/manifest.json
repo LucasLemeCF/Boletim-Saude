@@ -1,6 +1,6 @@
 {
-    "theme_color": "#8936FF",
-    "background_color": "#2EC6FE",
+    "theme_color": "#337B5B",
+    "background_color": "#FFFFF",
     "icons": [
         {
             "purpose": "maskable",
@@ -19,8 +19,8 @@
     "display": "minimal-ui",
     "dir": "auto",
     "lang": "pt-BR",
-    "name": "Boletim Saúde - Itaberá SP",
-    "short_name": "Boletim Saúde",
+    "name": "Aplicativo",
+    "short_name": "Aplicativo",
     "start_url": "/",
     "scope": "/"
 }
