@@ -5,14 +5,12 @@ import BarChartPorcentagem from "../../../../components/Charts/Especialidade/Bar
 
 export function CapaEspecialidade({especialidades, mes, ano, chartRef}) {
     return (
-        <>
-            <div className={`flex flex-col justify-items-start border-b border-black w-[891px] h-[1260px] pt-4 pb-8`}>
-                {titulo(mes, ano)} 
-                <BarChartCapaEspecialidade especialiade={especialidades} chartRef={chartRef}/>
-                {descricao(especialidades)}
-                <BarChartPorcentagem dadosMes={especialidades} chartRef={chartRef}/>
-            </div>
-        </>
+        <div className={`flex flex-col justify-items-start border-b border-black w-full sm:w-[891px] pt-4 pb-8`}>
+            {titulo(mes, ano)} 
+            <BarChartCapaEspecialidade especialiade={especialidades} chartRef={chartRef}/>
+            {descricao(especialidades)}
+            <BarChartPorcentagem dadosMes={especialidades} chartRef={chartRef}/>
+        </div>
     );
 }
 
@@ -20,7 +18,7 @@ const titulo = (mes, ano) => {
     return (
         <div className="flex justify-between h-[60px] px-8">
             <div className="w-[60px]"></div>
-            <div className="text-center font-bold text-xl ml-4">Relatório de Atendimentos de {mes} de {ano}</div>
+            <div className="text-center font-bold text-lg sm:text-xl sm:ml-4">Relatório de Atendimentos de {mes} de {ano}</div>
             <Image 
                 src="/logo.png"
                 width={60}

@@ -16,54 +16,105 @@ function BarChartCapaEspecialidade({ especialiade, chartRef }) {
   });
 
   return (
-    <div className="chart-container mt-4 px-8">
-      <Bar
-        ref={el => chartRef.current[0] = el}
-        height='50vh'
-        width='80vw'
-        type='bar'
-        data={chartData}
-        plugins={[topNumber]}
-        options={{
-          indexAxis: 'y',
-          plugins: {
-            legend: {
-              display: false
-            },
-            title: {
-              display: true,
-              text: 'Total de atendimentos',
-              font: {
-                size: 16,
-                weight: 'bold'
-              }
-            }
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-              grace: 1,
-              ticks: {
-                padding: 0,
-                font: {
-                  size: 12
-                }
+    <div>
+      <div className="hidden sm:block chart-container mt-4 px-8">
+        <Bar
+          ref={el => chartRef.current[0] = el}
+          height='50vh'
+          width='80vw'
+          type='bar'
+          data={chartData}
+          plugins={[topNumber]}
+          options={{
+            indexAxis: 'y',
+            plugins: {
+              legend: {
+                display: false
               },
-            },
-            x: {
-              ticks: {
-                padding: 0,
+              title: {
+                display: true,
+                text: 'Total de atendimentos',
                 font: {
-                  size: 12
+                  size: 16,
+                  weight: 'bold'
+                }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                grace: 1,
+                ticks: {
+                  padding: 0,
+                  font: {
+                    size: 12
+                  }
                 },
-                callback: function (value) {
-                  return value;
-                },
+              },
+              x: {
+                ticks: {
+                  padding: 0,
+                  font: {
+                    size: 12
+                  },
+                  callback: function (value) {
+                    return value;
+                  },
+                }
               }
             }
-          }
-        }}
-      />
+          }}
+        />
+      </div>
+
+      <div className="block sm:hidden chart-container mt-4">
+        <Bar
+          height='550px'
+          width='400px'
+          type='bar'
+          data={chartData}
+          plugins={[topNumber]}
+          options={{
+            indexAxis: 'y',
+            plugins: {
+              legend: {
+                display: false
+              },
+              title: {
+                display: true,
+                text: 'Total de atendimentos',
+                font: {
+                  size: 16,
+                  weight: 'bold'
+                }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                grace: 1,
+                ticks: {
+                  padding: 0,
+                  font: {
+                    size: 10
+                  }
+                },
+              },
+              x: {
+                ticks: {
+                  padding: 0,
+                  font: {
+                    size: 12
+                  },
+                  callback: function (value) {
+                    return value;
+                  },
+                }
+              }
+            }
+          }}
+        />
+      </div>
     </div>
   );
 }

@@ -9,7 +9,7 @@ export function CorpoEspecialidade({especialidade, chartRef, index}) {
   const dadosMes = reorganizarDados(especialidade.resultadosMensais[0]);
 
   return (
-    <div className={`flex flex-col justify-items-start border-b border-black w-[891px] h-[630px] p-8`}> 
+    <div className={`flex flex-col justify-items-start border-b border-black w-[400px] sm:w-[891px] sm:h-[630px] py-8`}> 
       {titulo(especialidade)}
       {descricao(dadosMes)}
       <LineChartEspecialidade dadosMes={dadosMes} chartRef={chartRef} index={index}/>
