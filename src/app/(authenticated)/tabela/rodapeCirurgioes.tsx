@@ -6,17 +6,17 @@ export function RodapeCirurgioes({dadosTabela, linhasTabela}) {
 
   return (
     <div className="flex border border-t-0 divide-x border-black bg-[#337B5B] w-full">
-      <div className="flex items-center justify-center border-black w-[300px] sm:w-[600px]">
+      <div className="flex items-center justify-center border-black w-[600px]">
         <p className="font-semibold text-white">Total de Cirurgias</p>
       </div>
 
       <div className="flex items-center justify-center border-black w-[100px]">
         <p className="font-semibold text-white">{totalDia}</p>
       </div>
-      <div className="hidden sm:flex items-center justify-center border-black w-[100px]">
+      <div className="flex items-center justify-center border-black w-[100px]">
         <p className="font-semibold text-white">{totalMes}</p>
       </div>
-      <div className="hidden sm:flex items-center justify-center border-black w-[100px]">
+      <div className="flex items-center justify-center border-black w-[100px]">
         <p className="font-semibold text-white">{totalAno}</p>
       </div>
     </div>

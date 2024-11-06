@@ -56,17 +56,17 @@ const cabecalhoCirurgioes = (cabecalho, tamanhoCabecalhoAnterior, qtdLinhasEspec
           <p className='w-full font-semibold text-center text-white'>{cabecalho.textos[0].texto}</p>
         </div>
 
-        <div className="hidden sm:flex items-center justify-between border-black w-[300px] h-[50px] px-1">
+        <div className="flex items-center justify-between border-black w-[300px] h-[50px] px-1">
           <p className='w-full font-semibold text-center text-white'>{cabecalho.textos[1].texto}</p>
         </div>
 
         <div className="flex items-center justify-center border-black font-semibold text-center text-white w-[100px] h-[50px]">
           <p>Diário</p>
         </div>
-        <div className="hidden sm:flex items-center justify-center border-black font-semibold text-center text-white w-[100px] h-[50px]">
+        <div className="flex items-center justify-center border-black font-semibold text-center text-white w-[100px] h-[50px]">
           <p>Mensal</p>
         </div>
-        <div className="hidden sm:flex items-center justify-center border-black font-semibold text-center text-white w-[100px] h-[50px]">
+        <div className="flex items-center justify-center border-black font-semibold text-center text-white w-[100px] h-[50px]">
           <p>Anual</p>
         </div>
       </div>
@@ -93,27 +93,24 @@ const linhaCirurgiao = (cirurgiao, posicaoLinha, register, watchLinha) => {
 
   return (
     <div className="flex items-center justify-between divide-x divide-y border-black bg-[#E2EFDB]">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-center sm:justify-between
-        border-black border-t w-[300px] h-[50px] sm:h-[25px] px-1"
-      >
+      <div className="flex flex-row items-center justify-between border-black border-t w-[300px] h-[25px] px-1">
         <p>{cirurgiao.cirurgiao}</p>
-        <p className="sm:hidden">{cirurgiao.procedimento}</p>
       </div>
 
-      <div className="hidden sm:flex items-center justify-between border-black border-t w-[300px] h-[25px] px-1">
+      <div className="flex items-center justify-between border-black border-t w-[300px] h-[25px] px-1">
         <p>{cirurgiao.procedimento}</p>
       </div>
 
-      <input className="flex items-center justify-center border-black text-center w-[100px] h-[50px] sm:h-[25px] bg-[#E2EFDB] focus:outline-green-600 focus:outline-4" 
+      <input className="flex items-center justify-center border-black text-center w-[100px] h-[25px] bg-[#E2EFDB] focus:outline-green-600 focus:outline-4" 
         name={`linhas.${posicaoLinha}.pacientesAtendidos`}
         {...register(`linhas.${Number(posicaoLinha)}.pacientesAtendidos`, { valueAsNumber: true, required: "Digite os numeros restantes" })}
       />
 
-      <div className="hidden sm:flex items-center justify-center border-black w-[100px] h-[25px]">
+      <div className="flex items-center justify-center border-black w-[100px] h-[25px]">
         <p>{cirurgiao.pacientesAtendidosMes - cirurgiao.pacientesAtendidosDia + pacientesAtendidos}</p>
       </div>
 
-      <div className="hidden sm:flex items-center justify-center border-black w-[100px] h-[25px]">
+      <div className="flex items-center justify-center border-black w-[100px] h-[25px]">
         <p>{cirurgiao.pacientesAtendidosAno - cirurgiao.pacientesAtendidosDia + pacientesAtendidos}</p>
       </div>
     </div>

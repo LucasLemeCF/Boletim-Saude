@@ -61,20 +61,20 @@ function CabecalhoEspecialidade({ cabecalho, tamanhoCabecalhoAnterior, indexCabe
         <div className="flex items-center justify-center border-black font-semibold text-center text-white w-[100px] h-[50px]">
           <p>Pacientes Atendidos</p>
         </div>
-        <div className="hidden sm:flex items-center justify-center border-black font-semibold text-center text-white w-[100px] h-[50px]">
+        <div className="flex items-center justify-center border-black font-semibold text-center text-white w-[100px] h-[50px]">
           <p>Meta de Atend.</p>
         </div>
-        <div className="hidden sm:flex items-center justify-center border-black text-center text-white w-[100px] h-[50px]">
+        <div className="flex items-center justify-center border-black text-center text-white w-[100px] h-[50px]">
           <p>%</p>
         </div>
 
-        <div className="hidden sm:flex items-center justify-center border-black font-semibold text-center text-white w-[100px] h-[50px]">
+        <div className="flex items-center justify-center border-black font-semibold text-center text-white w-[100px] h-[50px]">
           <p>Pacientes Atendidos</p>
         </div>
-        <div className="hidden sm:flex items-center justify-center border-black font-semibold text-center text-white w-[100px] h-[50px]">
+        <div className="flex items-center justify-center border-black font-semibold text-center text-white w-[100px] h-[50px]">
           <p>Meta de Atend.</p>
         </div>
-        <div className="hidden sm:flex items-center justify-center border-black text-center text-white w-[100px] h-[50px]">
+        <div className="flex items-center justify-center border-black text-center text-white w-[100px] h-[50px]">
           <p>%</p>
         </div>
       </div>
@@ -127,20 +127,20 @@ function LinhaEspecialidade({especialidade, posicaoLinha, register, watchLinha}:
         })}
       />
      
-      <div className="hidden sm:flex items-center justify-center border-black font-semibold w-[100px] h-[25px]">
+      <div className="flex items-center justify-center border-black font-semibold w-[100px] h-[25px]">
         <p>{especialidade.metaDiaria}</p>
       </div>
-      <div className="hidden sm:flex items-center justify-center border-black w-[100px] h-[25px]">
+      <div className="flex items-center justify-center border-black w-[100px] h-[25px]">
         <p>{calcularPorcentagem(pacientesAtendidos, especialidade.metaDiaria)}%</p>
       </div>
 
-      <div className="hidden sm:flex items-center justify-center border-black font-semibold w-[100px] h-[25px]">
+      <div className="flex items-center justify-center border-black font-semibold w-[100px] h-[25px]">
         <p>{(especialidade.pacientesAtendidosMes - especialidade.pacientesAtendidosDia + pacientesAtendidos)}</p>
       </div>
-      <div className="hidden sm:flex items-center justify-center border-black font-semibold w-[100px] h-[25px]">
+      <div className="flex items-center justify-center border-black font-semibold w-[100px] h-[25px]">
         <p>{especialidade.metaMensal}</p>
       </div>
-      <div className="hidden sm:flex items-center justify-center border-black w-[100px] h-[25px]">
+      <div className="flex items-center justify-center border-black w-[100px] h-[25px]">
         <p>{calcularPorcentagem((especialidade.pacientesAtendidosMes - especialidade.pacientesAtendidosDia + pacientesAtendidos), especialidade.metaMensal)}%</p>
       </div>
     </div>
