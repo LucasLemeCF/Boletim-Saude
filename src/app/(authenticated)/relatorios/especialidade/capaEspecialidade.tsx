@@ -16,17 +16,33 @@ export function CapaEspecialidade({especialidades, mes, ano, chartRef}) {
 
 const titulo = (mes, ano) => {
     return (
-        <div className="flex justify-between h-[60px] px-8">
-            <div className="w-[60px]"></div>
-            <div className="text-center font-bold text-lg sm:text-xl sm:ml-4">Relatório de Atendimentos de {mes} de {ano}</div>
-            <Image 
-                src="/logo.png"
-                width={60}
-                height={60}
-                alt="Logo Itaberá SP"
-                className="mr-4"
-            />
-        </div>
+        <>
+            <div className="hidden sm:flex justify-between h-[60px] px-8">
+                <div className="w-[60px]"></div>
+                <div className="text-center font-bold text-xl ml-4">Relatório de Atendimentos de {mes} de {ano}</div>
+                <Image 
+                    src="/logo.png"
+                    width={60}
+                    height={60}
+                    alt="Logo Itaberá SP"
+                    className="mr-4"
+                />
+            </div>
+            <div className="flex sm:hidden justify-between h-[45px]">
+                <div className="w-[60px]"></div>
+                <div>
+                    <div className="text-center font-bold text-lg">Relatório de Atendimentos de</div>
+                    <div className="text-center font-bold text-lg">{mes} de {ano}</div>
+                </div>
+                <Image 
+                    src="/logo.png"
+                    width={45}
+                    height={45}
+                    alt="Logo Itaberá SP"
+                    className="mr-4"
+                />
+            </div>
+        </>
     )
 }
 
