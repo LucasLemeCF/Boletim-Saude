@@ -62,15 +62,15 @@ function ConteudoTabela({dataCalendario, setData, session}) {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await fetch(process.env.NEXT_PUBLIC_API + '/api/tabela/' + ConverterData(dataCalendario), {
+        const requestOptions = {
           method: "GET",
           headers: {
             authorization: session?.user.token,
           },
-        }); 
+        };
+        const response = await fetch(process.env.NEXT_PUBLIC_API_INTERNAL + '/api/tabela/' + ConverterData(dataCalendario), requestOptions)
         const dataResponse = await response.json();
         setDadosTabela(dataResponse);
-        console.log(dataResponse);
         setValue("linhas", montarValoresLinhas(dataResponse))
       } finally {
         setLoading(false);
@@ -98,14 +98,14 @@ function ConteudoTabela({dataCalendario, setData, session}) {
       body: JSON.stringify(resultado)
     };
 
-    fetch(process.env.NEXT_PUBLIC_API + '/api/tabela', requestOptions).then(response => response)
+    fetch(process.env.NEXT_PUBLIC_API_INTERNAL + '/api/tabela', requestOptions).then(response => response)
     toast({description: "Tabela salva com sucesso!"})
   }
 
   const watchLinha = watch("linhas");
 
   return (
-    <>
+    <div className="flex flex-col">
       <div ref={imgRef} className='mx-2 sm:mx-0'>
         <HeaderTabela data={dataCalendario} setData={setData}/> 
         {(dadosTabela != null) && (TemDadosEspecialidades({dadosTabela}) || TemDadadosCirurgioes({dadosTabela})) ?
@@ -136,7 +136,7 @@ function ConteudoTabela({dataCalendario, setData, session}) {
         <ButtonLocal texto={"Salvar"} color={"bg-green-800"} onClick={handleSubmit(onSubmit)} type={"button"} icon={"Salvar"}/>
       </div>
       <Toaster/>
-    </>
+    </div>
   )
 }
 

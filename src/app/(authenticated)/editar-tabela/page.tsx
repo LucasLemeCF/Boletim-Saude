@@ -68,7 +68,7 @@ function ConteudoTabela({dataCalendario, setData, session}) {
       setLoading(true);
 
       try {
-        const responseTabela = await fetch(process.env.NEXT_PUBLIC_API + '/api/ordem-tabela/' + ConverterData(dataCalendario), {
+        const responseTabela = await fetch(process.env.NEXT_PUBLIC_API_INTERNAL + '/api/ordem-tabela/' + ConverterData(dataCalendario), {
           method: "GET",
           headers: {
             authorization: session?.user.token,
@@ -79,7 +79,7 @@ function ConteudoTabela({dataCalendario, setData, session}) {
         setValue("cabecalhosEspecialidades", montarCabecalhosEspecialidades(responseTabelaJson));
         setValue("cabecalhosCirurgioes", montarCabecalhosCirurgioes(responseTabelaJson));
 
-        const responseEspecialidade = await fetch(process.env.NEXT_PUBLIC_API + '/api/especialidade/nomes', {
+        const responseEspecialidade = await fetch(process.env.NEXT_PUBLIC_API_INTERNAL + '/api/especialidade/nomes', {
           method: "GET",
           headers: {
             authorization: session?.user.token,
@@ -88,7 +88,7 @@ function ConteudoTabela({dataCalendario, setData, session}) {
         const responseEspecialidadeJson = await responseEspecialidade.json();
         setEspecialidades(responseEspecialidadeJson);
 
-        const responseCirurgiao = await fetch(process.env.NEXT_PUBLIC_API + '/api/cirurgiao/nomes', {
+        const responseCirurgiao = await fetch(process.env.NEXT_PUBLIC_API_INTERNAL + '/api/cirurgiao/nomes', {
           method: "GET",
           headers: {
             authorization: session?.user.token,
@@ -105,11 +105,6 @@ function ConteudoTabela({dataCalendario, setData, session}) {
     fetchData();
   }, [dataCalendario, getValues, session?.user.token, setValue]);
 
-  useEffect(() => {
-    console.log(watchLinha);
-  }, [watchLinha]);
-
-
   if (isLoading) return CarregandoSession()
 
   async function onSubmit() {
@@ -118,8 +113,6 @@ function ConteudoTabela({dataCalendario, setData, session}) {
       linhas: montarValoresLinhas(getValues()),
       cabecalhos: montarValoresCabecalhos(getValues())
     }
-
-    console.log(resultado);
 
     const requestOptions = {
       method: 'POST',
@@ -130,7 +123,7 @@ function ConteudoTabela({dataCalendario, setData, session}) {
       body: JSON.stringify(resultado)
     };
 
-    fetch(process.env.NEXT_PUBLIC_API + '/api/ordem-tabela', requestOptions).then(response => response)
+    fetch(process.env.NEXT_PUBLIC_API_INTERNAL + '/api/ordem-tabela', requestOptions).then(response => response)
     toast({description: "Tabela salva com sucesso!"})
   }
 

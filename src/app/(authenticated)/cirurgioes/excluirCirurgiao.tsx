@@ -8,7 +8,7 @@ export function CardExcluirCirurgiao({session, setLoading, fetchData, field}) {
       const excluirCirurgiao = async () => {
         setLoading(true);
         try {
-          await fetch(process.env.NEXT_PUBLIC_API + '/api/cirurgiao/' + field.id, {
+          await fetch(process.env.NEXT_PUBLIC_API_INTERNAL + '/api/cirurgiao/' + field.id, {
             method: "DELETE",
             headers: {
               authorization: session?.user.token

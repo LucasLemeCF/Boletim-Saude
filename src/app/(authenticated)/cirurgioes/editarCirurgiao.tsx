@@ -17,7 +17,7 @@ export function CardEditarCirurgiao({register, handleSubmit, session, setLoading
             const editarCirurgiao = async () => {
               setLoading(true);
               try {
-                await fetch(process.env.NEXT_PUBLIC_API + '/api/cirurgiao/' + field.id, {
+                await fetch(process.env.NEXT_PUBLIC_API_INTERNAL + '/api/cirurgiao/' + field.id, {
                   method: "PATCH",
                   headers: {
                     "Content-Type": "application/json",
