@@ -93,7 +93,7 @@ const linhaCirurgiao = (cirurgiao, posicaoLinha, register, watchLinha) => {
 
   return (
     <div className="flex items-center justify-between divide-x divide-y border-black bg-[#E2EFDB]">
-      <div className="flex items-center justify-between border-black border-t w-[300px] h-[25px] px-1">
+      <div className="flex flex-row items-center justify-between border-black border-t w-[300px] h-[25px] px-1">
         <p>{cirurgiao.cirurgiao}</p>
       </div>
 
@@ -101,8 +101,9 @@ const linhaCirurgiao = (cirurgiao, posicaoLinha, register, watchLinha) => {
         <p>{cirurgiao.procedimento}</p>
       </div>
 
-      <input  className="flex items-center justify-center border-black text-center text-center w-[100px] h-[25px] bg-[#E2EFDB]" 
-        name={`linhas.${posicaoLinha}.pacientesAtendidos`} {...register(`linhas.${Number(posicaoLinha)}.pacientesAtendidos`, { valueAsNumber: true, required: "Digite os numeros restantes" })}
+      <input className="flex items-center justify-center border-black text-center w-[100px] h-[25px] bg-[#E2EFDB] focus:outline-green-600 focus:outline-4" 
+        name={`linhas.${posicaoLinha}.pacientesAtendidos`}
+        {...register(`linhas.${Number(posicaoLinha)}.pacientesAtendidos`, { valueAsNumber: true, required: "Digite os numeros restantes" })}
       />
 
       <div className="flex items-center justify-center border-black w-[100px] h-[25px]">

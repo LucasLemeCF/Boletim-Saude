@@ -38,7 +38,7 @@ function Paginas() {
       const fetchData = async () => {
         setLoading(true);
         try {
-          const response = await fetch(process.env.NEXT_PUBLIC_API + '/api/' + tipoRelatorio + '/' + mesRelatorio + '-' + anoRelatorio, {
+          const response = await fetch(process.env.NEXT_PUBLIC_API_INTERNAL + '/api/' + tipoRelatorio + '/' + mesRelatorio + '-' + anoRelatorio, {
             method: "GET",
             headers: {
               authorization: session?.user.token,
@@ -80,7 +80,7 @@ function Paginas() {
       const fetchData = async () => {
         setLoading(true);
         try {
-          const response = await fetch(process.env.NEXT_PUBLIC_API + '/api/' + dadosNovos.tipo + '/' + dadosNovos.mes + '-' + dadosNovos.ano, {
+          const response = await fetch(process.env.NEXT_PUBLIC_API_INTERNAL + '/api/' + dadosNovos.tipo + '/' + dadosNovos.mes + '-' + dadosNovos.ano, {
             method: "GET",
             headers: {
               authorization: session?.user.token,
@@ -104,7 +104,13 @@ function Paginas() {
 
   return (
     <Form {...form}>
-      <form className="flex justify-between w-[891px] mt-8 p-8 rounded-[5px] bg-[#337B5B]">
+      <form className="hidden sm:flex justify-between w-[891px] mt-8 p-8 rounded-[5px] bg-[#337B5B]">
+        <SelectTipoRelatorio control={control}/>
+        <SelectMonth control={control}/>
+        <SelectYear control={control}/>
+        <ButtonLocal texto={"Gerar Gráfico"} color={"bg-blue-800 border border-black"} onClick={handleSubmit(onSubmit)} type={"button"}/>
+      </form>
+      <form className="sm:hidden flex flex-col justify-between gap-4 mt-8 p-6 rounded-[5px] bg-[#337B5B]">
         <SelectTipoRelatorio control={control}/>
         <SelectMonth control={control}/>
         <SelectYear control={control}/>
@@ -122,7 +128,7 @@ function Paginas() {
           }
         </div>
         :
-        <div className="text-white rounded-[5px] mt-20 p-4 bg-[#337B5B]">
+        <div className="text-white rounded-[5px] mt-20 mx-6 p-4 bg-[#337B5B]">
           <p>Não foi possível encontrar dados para a data selecionada</p> 
         </div>
       }

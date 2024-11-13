@@ -1,13 +1,19 @@
 "use client"
 
 import { signOut } from 'next-auth/react';
+import { HiOutlineMenu } from "react-icons/hi";
 import { MdLogout } from "react-icons/md";
 
-export const Header = () => {
+export function Header({open, setOpen}) {
     return (
-        <header className="flex w-full h-[75px] py-4 px-8 justify-center items-center gap-4 bg-[#337B5B]">
+        <header className="flex w-full h-[75px] py-4 pr-8 justify-center items-center gap-4 bg-[#337B5B]">
+            <HiOutlineMenu className={`${open ? 'hidden' : ''} ml-2 cursor-pointer text-white w-6 h-6`} 
+                onClick={()=>setOpen((e)=>!e)}
+            />
             <div className="flex w-full justify-end items-center gap-3">
-                <button onClick={() => signOut({ callbackUrl: '/login', redirect:true })} className="flex flex-row items-center">
+                <button className="flex flex-row items-center"
+                    onClick={() => signOut({ callbackUrl: '/login', redirect:true })}
+                >
                     <MdLogout className="w-6 h-6 mr-2 text-white"/>
                     <p className="text-lg text-white">Sair</p>
                 </button>

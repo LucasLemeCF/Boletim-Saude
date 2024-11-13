@@ -12,54 +12,105 @@ function BarChartPorcentagem({ dadosMes, chartRef }) {
   });
 
   return (
-    <div className="chart-container flex justify-center mt-4 px-8">
-      <Bar
-        ref={el => chartRef.current[1] = el}
-        height='50vh'
-        width='80vw'
-        type='bar'
-        data={chartData}
-        plugins={[topNumber]}
-        options={{
-          indexAxis: 'y',
-          plugins: {
-            legend: {
-              display: false
-            },
-            title: {
-              display: true,
-              text: 'Total da meta atingida',
-              font: {
-                size: 16,
-                weight: 'bold'
-             }
-            }
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-              grace: 1,
-              ticks: {
-                padding: 0,
-                font: {
-                  size: 12
-                }
+    <div>
+      <div className="hidden sm:flex justify-center chart-container mt-4 px-8">
+        <Bar
+          ref={el => chartRef.current[1] = el}
+          height='50vh'
+          width='80vw'
+          type='bar'
+          data={chartData}
+          plugins={[topNumber]}
+          options={{
+            indexAxis: 'y',
+            plugins: {
+              legend: {
+                display: false
               },
-            },
-            x: {
-              ticks: {
-                padding: 0,
+              title: {
+                display: true,
+                text: 'Total da meta atingida',
                 font: {
-                  size: 12
+                  size: 16,
+                  weight: 'bold'
+              }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                grace: 1,
+                ticks: {
+                  padding: 0,
+                  font: {
+                    size: 12
+                  }
                 },
-                callback: function (value) {
-                  return value + '%';
-                },
+              },
+              x: {
+                ticks: {
+                  padding: 0,
+                  font: {
+                    size: 12
+                  },
+                  callback: function (value) {
+                    return value + '%';
+                  },
+                }
               }
             }
-          }
-        }}
-      />
+          }}
+        />
+      </div>
+
+      <div className="flex sm:hidden justify-center chart-container mt-4">
+        <Bar
+          height='550px'
+          width='400px'
+          type='bar'
+          data={chartData}
+          plugins={[topNumber]}
+          options={{
+            indexAxis: 'y',
+            plugins: {
+              legend: {
+                display: false
+              },
+              title: {
+                display: true,
+                text: 'Total da meta atingida',
+                font: {
+                  size: 16,
+                  weight: 'bold'
+              }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                grace: 1,
+                ticks: {
+                  padding: 0,
+                  font: {
+                    size: 10
+                  }
+                },
+              },
+              x: {
+                ticks: {
+                  padding: 0,
+                  font: {
+                    size: 12
+                  },
+                  callback: function (value) {
+                    return value + '%';
+                  },
+                }
+              }
+            }
+          }}
+        />
+      </div>
     </div>
   );
 }

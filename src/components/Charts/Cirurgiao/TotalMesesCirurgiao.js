@@ -25,7 +25,7 @@ function TotalMesesCirurgiao({ ano, chartRef }) {
       const fetchData = async () => {
         setLoading(true);
         try {
-          const response = await fetch(process.env.NEXT_PUBLIC_API + '/api/cirurgiao/resultadoAno/' + ano, {
+          const response = await fetch(process.env.NEXT_PUBLIC_API_INTERNAL + '/api/cirurgiao/resultadoAno/' + ano, {
             method: "GET",
             headers: {
               authorization: session?.user.token,
@@ -57,47 +57,91 @@ function TotalMesesCirurgiao({ ano, chartRef }) {
   if (isLoading) return Carregando()
 
   return (
-    <div className="chart-container mt-4 px-8">
-      <Bar
-        ref={el => chartRef.current[1] = el}
-        height='50vh'
-        width='80vw'
-        type='bar'
-        data={chartData}
-        plugins={[topNumber]}
-        options={{
-          plugins: {
-            legend: {
-              display: false
-            },
-            title: {
-              display: true,
-              text: 'Total de cirurgias por mês',
-              font: {
-                size: 16,
-                weight: 'bold'
-              }
-            }
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-              grace: 1,
-              ticks: {
-                padding: 10,
-                font: {
-                  size: 9
-                }
+    <div className="flex justify-center w-full">
+      <div className="hidden sm:block w-full chart-container mt-4 px-8">
+        <Bar
+          ref={el => chartRef.current[1] = el}
+          height='50vh'
+          width='80vw'
+          type='bar'
+          data={chartData}
+          plugins={[topNumber]}
+          options={{
+            plugins: {
+              legend: {
+                display: false
               },
+              title: {
+                display: true,
+                text: 'Total de cirurgias por mês',
+                font: {
+                  size: 16,
+                  weight: 'bold'
+                }
+              }
             },
-            x: {
-              ticks: {
-                padding: 10,
+            scales: {
+              y: {
+                beginAtZero: true,
+                grace: 1,
+                ticks: {
+                  padding: 10,
+                  font: {
+                    size: 9
+                  }
+                },
+              },
+              x: {
+                ticks: {
+                  padding: 10,
+                }
               }
             }
-          }
-        }}
-      />
+          }}
+        />
+      </div>
+
+      <div className="block sm:hidden chart-container mt-4">
+        <Bar
+          height='400px'
+          width='400px'
+          type='bar'
+          data={chartData}
+          plugins={[topNumber]}
+          options={{
+            plugins: {
+              legend: {
+                display: false
+              },
+              title: {
+                display: true,
+                text: 'Total de cirurgias por mês',
+                font: {
+                  size: 16,
+                  weight: 'bold'
+                }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                grace: 1,
+                ticks: {
+                  padding: 10,
+                  font: {
+                    size: 9
+                  }
+                },
+              },
+              x: {
+                ticks: {
+                  padding: 10,
+                }
+              }
+            }
+          }}
+        />
+      </div>
     </div>
   );
 }

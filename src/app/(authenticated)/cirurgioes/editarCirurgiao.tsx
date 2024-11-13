@@ -17,7 +17,7 @@ export function CardEditarCirurgiao({register, handleSubmit, session, setLoading
             const editarCirurgiao = async () => {
               setLoading(true);
               try {
-                await fetch(process.env.NEXT_PUBLIC_API + '/api/cirurgiao/' + field.id, {
+                await fetch(process.env.NEXT_PUBLIC_API_INTERNAL + '/api/cirurgiao/' + field.id, {
                   method: "PATCH",
                   headers: {
                     "Content-Type": "application/json",
@@ -65,7 +65,7 @@ export function CardEditarCirurgiao({register, handleSubmit, session, setLoading
                             Cancelar
                         </Button>
                     </DialogClose>
-                    <Button type="button" className="bg-[#337B5B] hover:bg-[#337B5B]/90 rounded-[6px] text-white" onClick={handleSubmit(onSubmit)}>
+                    <Button type="button" className="bg-[#337B5B] hover:bg-[#2f7053] rounded-[6px] text-white" onClick={handleSubmit(onSubmit)}>
                         Editar
                     </Button>
                 </DialogFooter>

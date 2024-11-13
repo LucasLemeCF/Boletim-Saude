@@ -41,33 +41,31 @@ export function RelatorioCirurgiao({dadosRelatorio, mesRelatorio, anoRelatorio})
 
   return (
     <>
-      <div className={`flex flex justify-between w-full px-8`}>
-        <div className="w-[150px]"></div>
-        <div className="w-[150px]"></div>
-        <div className="flex items-center space-x-2 w-[150px] h-[50px] rounded-[5px] flex items-center justify-center">
+      <div className={`hidden sm:flex justify-between w-full px-8`}>
+        <div className="flex items-center space-x-2 w-full h-[50px] rounded-[5px] justify-center sm:justify-end">
           <Switch onClick={() => gerarPdfReader()}/>
           <Label>Modo PDF</Label>
+          {
+            openPdf ? 
+            <button className={`w-[150px] h-[50px] rounded-[5px] text-white flex items-center justify-start bg-[#337B5B]`} type={"button"}>
+              <MdOutlineFileDownload className="w-6 h-6 ml-4"/>
+              <div className={"ml-4"}>
+                <PDFDownloadLink document={<PdfCirurgiao cirurgioes={dadosRelatorio} mesRelatorio={mesRelatorio} anoRelatorio={anoRelatorio} base64Image={base64Image} mesString={mesString} dadosRelatorio={dadosRelatorio}/>} fileName={"Relatório de Cirurgias - " + mesRelatorio + "-" + anoRelatorio + ".pdf"}>
+                  Baixar
+                </PDFDownloadLink>
+              </div>
+            </button> : null
+          }
         </div>
-        {
-          openPdf ? 
-          <button className={`w-[150px] h-[50px] rounded-[5px] text-white flex items-center justify-start bg-[#337B5B]`} type={"button"}>
-            <MdOutlineFileDownload className="w-6 h-6 ml-4"/>
-            <div className={"ml-4"}>
-              <PDFDownloadLink document={<PdfCirurgiao cirurgioes={dadosRelatorio} mesRelatorio={mesRelatorio} anoRelatorio={anoRelatorio} base64Image={base64Image} mesString={mesString} dadosRelatorio={dadosRelatorio}/>} fileName={"Relatório de Cirurgias - " + mesRelatorio + "-" + anoRelatorio + ".pdf"}>
-                Baixar
-              </PDFDownloadLink>
-            </div>
-          </button> : null
-        }
       </div>
 
-      <div className={`flex flex-col justify-items-start w-[891px] h-[1260px] mt-8 px-0 ` + (openPdf ? "" : "hidden")}>
-        <PDFViewer  style={{height: "100%"}}>
+      <div className={`flex flex-col justify-center w-[300px] sm:w-full h-[500px] sm:h-[1000px] mt-8 px-0 ` + (openPdf ? "" : "hidden")}>
+        <PDFViewer style={{width: "100%", height: "100%"}}>
           <PdfCirurgiao cirurgioes={dadosRelatorio} mesRelatorio={mesRelatorio} anoRelatorio={anoRelatorio} base64Image={base64Image} mesString={mesString} dadosRelatorio={dadosRelatorio}/>
         </PDFViewer>
       </div>
 
-      <div className={openPdf ? "hidden" : ""}>
+      <div className={openPdf ? "hidden" : "flex flex-col justify-center w-[400px] sm:w-full"}>
         <CapaCirurgiao cirurgioes={dadosRelatorio} mes={mesRelatorio} ano={anoRelatorio} chartRef={chartRefCapa}/>
         {dadosRelatorio.map(cirurgiao => (
           cirurgiao.procedimentos.map((procedimento, index) => {

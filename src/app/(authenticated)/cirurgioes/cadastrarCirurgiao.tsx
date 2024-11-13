@@ -9,7 +9,7 @@ export function CardAdicionarCirurgiao({register, handleSubmit, session, setLoad
             const cadastrarEspecialidade = async () => {
                 setLoading(true);
                 try {
-                    await fetch(process.env.NEXT_PUBLIC_API + '/api/cirurgiao', {
+                    await fetch(process.env.NEXT_PUBLIC_API_INTERNAL + '/api/cirurgiao', {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -34,7 +34,7 @@ export function CardAdicionarCirurgiao({register, handleSubmit, session, setLoad
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <ButtonLocal texto={"Cadastrar Cirurgião"} color={"bg-[#337B5B] w-[230px] h-[40px]"} type={"button"} icon="Adicionar"/>
+                <ButtonLocal texto={"Cadastrar Cirurgião"} color={"bg-[#337B5B] hover:bg-[#2f7053] w-[230px] h-[40px]"} type={"button"} icon="Adicionar"/>
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
@@ -57,7 +57,7 @@ export function CardAdicionarCirurgiao({register, handleSubmit, session, setLoad
                             Cancelar
                         </Button>
                     </DialogClose>
-                    <Button type="button" className="bg-[#337B5B] hover:bg-[#337B5B]/90 rounded-[6px] text-white" onClick={handleSubmit(onSubmit)}>
+                    <Button type="button" className="bg-[#337b5b] hover:bg-[#2f7053] rounded-[6px] text-white" onClick={handleSubmit(onSubmit)}>
                         Cadastrar
                     </Button>
                 </DialogFooter>

@@ -6,7 +6,7 @@ import { numeroParaMes } from "../../../../utils/meses";
 
 export function CapaCirurgiao({cirurgioes, mes, ano, chartRef}) {  
     return (
-      <div className={`flex flex-col justify-items-start border-b border-black w-[891px] h-[1260px] pt-4 pb-8`}> 
+      <div className={`flex flex-col justify-items-start border-b border-black w-full sm:w-[891px] sm:mx-4 pt-4 pb-8`}> 
         {titulo(mes, ano)}
         <BarChartCapaCirurgiao cirurgioes={cirurgioes} chartRef={chartRef}/>
         {descricao(cirurgioes, mes)}
@@ -19,9 +19,9 @@ const titulo = (mesInt, ano) => {
     const mes = numeroParaMes(mesInt);
 
     return (
-        <div className="flex justify-between h-[60px] px-8">
+        <div className="flex justify-between w-full h-[60px] sm:px-8">
             <div className="w-[60px]"></div>
-            <div className="text-center font-bold text-xl ml-4">Relatório de Cirurgias de {mes} de {ano}</div>
+            <div className="text-center font-bold text-lg sm:text-xl sm:ml-4">Relatório de Cirurgias de {mes} de {ano}</div>
             <Image 
                 src="/logo.png"
                 width={60}

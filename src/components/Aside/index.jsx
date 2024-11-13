@@ -1,19 +1,25 @@
+"use client"
+
 import Image from "next/image";
+import { MdChevronRight } from "react-icons/md";
 import { Navigation } from './navigation';
 
-export const Aside = () => {
+export function Aside({open, setOpen}) {
     return (
-        <aside className="w-64 h-screen fixed bg-[#337B5B] flex flex-col">
-            {header()}
-            {<Navigation/>}
+        <aside className="w-64 fixed z-10 h-full bg-[#337B5B] flex flex-col transform duration-500 ease-in-out"
+            style={{transform: `${open ? 'translateX(0%)' : 'translateX(-100%)'}`}}
+        >
+            <Header setOpen={setOpen}/>
+            <Navigation/>
         </aside>
     )
 }
 
-const header = () => {
+function Header({setOpen}) {
     return (
         <div className="flex flex-row justify-center items-center self-stretch mt-5">
            {logo()}
+           <MdChevronRight className="ml-4 transform -rotate-180 cursor-pointer text-white w-6 h-6" onClick={()=>setOpen((e)=>!e)}/>
         </div>
     )
 }

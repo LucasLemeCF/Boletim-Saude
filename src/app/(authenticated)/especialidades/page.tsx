@@ -46,7 +46,7 @@ function ConteudoTabela({session}) {
     if (session) {
       setLoading(true);
       try {
-        const response = await fetch(process.env.NEXT_PUBLIC_API + '/api/especialidade', {
+        const response = await fetch(process.env.NEXT_PUBLIC_API_INTERNAL + '/api/especialidade', {
           method: "GET",
           headers: {
             authorization: session?.user.token,

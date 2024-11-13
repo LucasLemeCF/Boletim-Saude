@@ -16,37 +16,73 @@ function LineChartEspecialidade({ dadosMes, chartRef, index }) {
   });
 
   return (
-    <div className="chart-container mt-4">
-      <Line
-        ref={el => chartRef.current[index-1] = el}
-        data={chartData}
-        options={{
-          responsive: true,
-          point: {
-            hoverRadius: 10
-          },
-          plugins: {
-            legend: {
-              display: false
-            }
-          },
-          scales: {
-            y: {
-              ticks: {
-                padding: 10,
-                callback: function (value) {
-                  return value + '%';
-                },
+    <div>
+      <div className="hidden sm:flex justify-center w-full chart-container mt-4">
+        <Line
+          ref={el => chartRef.current[index-1] = el}
+          data={chartData}
+          options={{
+            responsive: true,
+            point: {
+              hoverRadius: 10
+            },
+            plugins: {
+              legend: {
+                display: false
               }
             },
-            x: {
-              ticks: {
-                padding: 10,
+            scales: {
+              y: {
+                ticks: {
+                  padding: 10,
+                  callback: function (value) {
+                    return value + '%';
+                  },
+                }
+              },
+              x: {
+                ticks: {
+                  padding: 10,
+                }
               }
             }
-          }
-        }}
-      />
+          }}
+        />
+      </div>
+
+      <div className="flex sm:hidden justify-center w-full chart-container mt-4">
+        <Line
+          data={chartData}
+          height='300px'
+          width='400px'
+          options={{
+            responsive: true,
+            point: {
+              hoverRadius: 10
+            },
+            plugins: {
+              legend: {
+                display: false
+              }
+            },
+            scales: {
+              y: {
+                ticks: {
+                  padding: 10,
+                  callback: function (value) {
+                    return value + '%';
+                  },
+                }
+              },
+              x: {
+                ticks: {
+                  padding: 10,
+                }
+              }
+            }
+          }}
+        />
+      </div>
     </div>
   );
 }

@@ -24,16 +24,12 @@ export default function Tabela() {
   const [data, setData] = useState(new Date());
   
   return (
-    <main className="flex flex-col items-center justify-between bg-[#F8FAFC] overscroll-none">
-      <div className="flex flex-col items-center justify-between pt-[50px] pb-[25px]">
-        <div className="flex flex-col items-center justify-between mt-0 mb-0 border-collapse">
-          {
-            session ?
-            <ConteudoTabela dataCalendario={data} setData={setData} session={session}/>
-            : CarregandoSession()
-          }
-        </div>
-      </div>
+    <main className="flex flex-col items-start sm:items-center justify-between pt-[50px] pb-[25px] bg-[#F8FAFC] overflow-x-auto">
+      {
+        session ?
+        <ConteudoTabela dataCalendario={data} setData={setData} session={session}/>
+        : CarregandoSession()
+      }
     </main>
   )
 }
@@ -66,12 +62,13 @@ function ConteudoTabela({dataCalendario, setData, session}) {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await fetch(process.env.NEXT_PUBLIC_API + '/api/tabela/' + ConverterData(dataCalendario), {
+        const requestOptions = {
           method: "GET",
           headers: {
             authorization: session?.user.token,
           },
-        }); 
+        };
+        const response = await fetch(process.env.NEXT_PUBLIC_API_INTERNAL + '/api/tabela/' + ConverterData(dataCalendario), requestOptions)
         const dataResponse = await response.json();
         setDadosTabela(dataResponse);
         setValue("linhas", montarValoresLinhas(dataResponse))
@@ -101,15 +98,15 @@ function ConteudoTabela({dataCalendario, setData, session}) {
       body: JSON.stringify(resultado)
     };
 
-    fetch(process.env.NEXT_PUBLIC_API + '/api/tabela', requestOptions).then(response => response)
+    fetch(process.env.NEXT_PUBLIC_API_INTERNAL + '/api/tabela', requestOptions).then(response => response)
     toast({description: "Tabela salva com sucesso!"})
   }
 
   const watchLinha = watch("linhas");
 
   return (
-    <>
-      <div ref={imgRef}>
+    <div className="flex flex-col">
+      <div ref={imgRef} className='mx-2 sm:mx-0'>
         <HeaderTabela data={dataCalendario} setData={setData}/> 
         {(dadosTabela != null) && (TemDadosEspecialidades({dadosTabela}) || TemDadadosCirurgioes({dadosTabela})) ?
           <form className="w-full">
@@ -133,11 +130,13 @@ function ConteudoTabela({dataCalendario, setData, session}) {
         }
       </div>
       <div className="flex items-center justify-end gap-8 w-full mt-8">
-        <ButtonLocal texto={"Baixar"} color={"bg-blue-800"} onClick={BaixarTabela} type={"button"} icon={"Baixar"}/>
+        <div>
+          <ButtonLocal texto={"Baixar"} color={"bg-blue-800"} onClick={BaixarTabela} type={"button"} icon={"Baixar"}/>
+        </div>
         <ButtonLocal texto={"Salvar"} color={"bg-green-800"} onClick={handleSubmit(onSubmit)} type={"button"} icon={"Salvar"}/>
       </div>
       <Toaster/>
-    </>
+    </div>
   )
 }
 

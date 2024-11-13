@@ -54,7 +54,6 @@ export default function HeaderTabela({data, setData}) {
   }
   
   function HeaderData({data, setData}) {
-
     return (
       <div className="flex items-center justify-between divide-x border-t border-x border-black bg-[#337B5B] mt-0">
         <div className="flex items-center justify-center border-black border-collapse w-[300px] h-[25px]">
@@ -62,10 +61,10 @@ export default function HeaderTabela({data, setData}) {
         </div>
   
         <div className="flex items-center justify-center border-black border-collapse w-[300px] h-[25px] ">
-            <DatePickerDemo
-              data={data}
-              setData={setData}
-            />
+          <DatePickerDemo
+            data={data}
+            setData={setData}
+          />
         </div>
   
         <div className="flex items-center justify-center border-black border-collapse w-[300px] h-[25px] px-2 gap-4">  
@@ -75,5 +74,4 @@ export default function HeaderTabela({data, setData}) {
         </div>
       </div>
     )
-  
   }

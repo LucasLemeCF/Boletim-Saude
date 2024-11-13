@@ -17,20 +17,20 @@ export function RodapeEspecialidades({dadosTabela, linhasTabela}) {
       <div className="flex items-center justify-center border-black w-[100px]">
         <p className="font-semibold text-white">{totalDia}</p>
       </div>
-      <div className="flex items-center justify-center border-black w-[100px]">
+      <div className="hidden sm:flex items-center justify-center border-black w-[100px]">
         <p className="font-semibold text-white">{totalMetaDia}</p>
       </div>
-      <div className="flex items-center justify-center border-black w-[100px]">
+      <div className="hidden sm:flex items-center justify-center border-black w-[100px]">
         <p className="font-semibold text-white">{totalAtingidoDia}%</p>
       </div>
 
-      <div className="flex items-center justify-center border-black w-[100px]">
+      <div className="hidden sm:flex items-center justify-center border-black w-[100px]">
         <p className="font-semibold text-white">{totalMes}</p>
       </div>
-      <div className="flex items-center justify-center border-black w-[100px]">
+      <div className="hidden sm:flex items-center justify-center border-black w-[100px]">
         <p className="font-semibold text-white">{totalMetaMes}</p>
       </div>
-      <div className="flex items-center justify-center border-black w-[100px]">
+      <div className="hidden sm:flex items-center justify-center border-black w-[100px]">
         <p className="font-semibold text-white">{totalAtingidoMes}%</p>
       </div>
     </div>

@@ -4,6 +4,7 @@ import "./globals.css";
 export const metadata = {
   title: "Boletim Saúde - Itaberá",
   description: "Boletim de atendimentos médicos de Itaberá SP",
+  manifest: "/manifest.json"
 };
 
 const inter = Inter({ subsets: ['latin'] })
