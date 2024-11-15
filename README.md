@@ -33,7 +33,7 @@ name: boletim-saude-infra
 services:
   app:
     container_name: boletim-saude-api
-    image: lucaslemec/boletim-saude:2.0
+    image: lucaslemec/boletim-saude:latest
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -77,7 +77,7 @@ services:
 
   app-frontend:
     container_name: boletim-saude-app
-    image: lucaslemec/boletim-saude-app:2.0
+    image: lucaslemec/boletim-saude-app:latest
     environment:
       - NEXTAUTH_URL=http://localhost:3000
       - NEXTAUTH_SECRET="OFsQ6wuWlBCetNwuME5qus2Zocu23bF0W9d3dZo5hGk="
