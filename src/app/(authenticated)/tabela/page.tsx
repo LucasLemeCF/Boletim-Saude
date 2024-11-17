@@ -68,7 +68,7 @@ function ConteudoTabela({dataCalendario, setData, session}) {
             authorization: session?.user.token,
           },
         };
-        const response = await fetch(process.env.NEXT_PUBLIC_API_INTERNAL + '/api/tabela/' + ConverterData(dataCalendario), requestOptions)
+        const response = await fetch(process.env.NEXT_PUBLIC_API + '/api/tabela/' + ConverterData(dataCalendario), requestOptions)
         const dataResponse = await response.json();
         setDadosTabela(dataResponse);
         setValue("linhas", montarValoresLinhas(dataResponse))
@@ -98,7 +98,7 @@ function ConteudoTabela({dataCalendario, setData, session}) {
       body: JSON.stringify(resultado)
     };
 
-    fetch(process.env.NEXT_PUBLIC_API_INTERNAL + '/api/tabela', requestOptions).then(response => response)
+    fetch(process.env.NEXT_PUBLIC_API + '/api/tabela', requestOptions).then(response => response)
     toast({description: "Tabela salva com sucesso!"})
   }
 

@@ -20,7 +20,7 @@ export function CardEditarEspecialidade({register, handleSubmit, session, setLoa
             const editarEspecialidade = async () => {
               setLoading(true);
               try {
-                await fetch(process.env.NEXT_PUBLIC_API_INTERNAL + '/api/especialidade/' + field.id, {
+                await fetch(process.env.NEXT_PUBLIC_API + '/api/especialidade/' + field.id, {
                   method: "PATCH",
                   headers: {
                     "Content-Type": "application/json",

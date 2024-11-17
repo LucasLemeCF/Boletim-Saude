@@ -1,8 +1,8 @@
 FROM node:20-alpine AS base
 ENV NODE_ENV Production
 
-ENV NEXT_PUBLIC_API http://boletim-saude-api:8080
-ENV NEXT_PUBLIC_API_INTERNAL http://localhost:8080
+ENV NEXT_PUBLIC_API http://localhost:80
+ENV NEXT_PUBLIC_API_INTERNAL http://boletim-saude-api:8080
 
 EXPOSE 3000
 ENV PORT 3000
