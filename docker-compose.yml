@@ -32,22 +32,9 @@ services:
     networks:
       - boletim-saude-network
 
-  pgadmin:
-    container_name: pgadmin
-    image: dpage/pgadmin4
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
-      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
-    ports:
-      - "5050:80"
-    depends_on:
-      - database
-    networks:
-      - boletim-saude-network
-
   app-frontend:
     container_name: boletim-saude-app
-    image: boletim-saude-itabera-sp-app
+    image: boletim-saude-app
     environment:
       - NEXTAUTH_URL=${NEXTAUTH_URL}
       - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
@@ -57,6 +44,18 @@ services:
       - boletim-saude-network
     depends_on:
       - app
+
+  nginx:
+    container_name: nginx-gateway
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - app-frontend
+    networks:
+      - boletim-saude-network
 
 networks:
   boletim-saude-network:
