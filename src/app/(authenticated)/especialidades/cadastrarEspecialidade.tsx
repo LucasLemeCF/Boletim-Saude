@@ -9,7 +9,7 @@ export function CardAdicionarEspecialidade({register, handleSubmit, session, set
             const cadastrarEspecialidade = async () => {
                 setLoading(true);
                 try {
-                    await fetch(process.env.NEXT_PUBLIC_API_INTERNAL + '/api/especialidade', {
+                    await fetch(process.env.NEXT_PUBLIC_API + '/api/especialidade', {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",

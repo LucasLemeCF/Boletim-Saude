@@ -1,6 +1,11 @@
 {
+    "id": "/",
+    "name": "Boletim Saúde - Itaberá",
+    "short_name": "Boletim Saúde",
     "theme_color": "#337B5B",
-    "background_color": "#FFFFF",
+    "display": "standalone",
+    "orientation": "any",
+    "start_url": "/",
     "icons": [
         {
             "purpose": "maskable",
@@ -14,13 +19,5 @@
             "src": "icon512_rounded.png",
             "type": "image/png"
         }
-    ],
-    "orientation": "any",
-    "display": "minimal-ui",
-    "dir": "auto",
-    "lang": "pt-BR",
-    "name": "Aplicativo",
-    "short_name": "Aplicativo",
-    "start_url": "/",
-    "scope": "/"
+    ]
 }

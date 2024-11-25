@@ -9,7 +9,7 @@ export function CardAdicionarProcedimento({register, handleSubmit, session, setL
             const cadastrar = async () => {
                 setLoading(true);
                 try {
-                    await fetch(process.env.NEXT_PUBLIC_API_INTERNAL + '/api/procedimentoCirurgiao', {
+                    await fetch(process.env.NEXT_PUBLIC_API + '/api/procedimentoCirurgiao', {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",

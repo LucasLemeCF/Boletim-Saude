@@ -17,7 +17,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             senha: { label: "Senha", type: "password" }
           },
           authorize: async (credentials) => {
-            const url = process.env.NEXT_PUBLIC_API;
+            const url = process.env.NEXT_PUBLIC_API_INTERNAL;
             const res = await fetch(url+"/api/login", {
                 method: "POST",
                 headers: {
