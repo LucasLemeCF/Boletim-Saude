@@ -4,15 +4,30 @@
 
 ## 📋 Índice (documentação em construção)
 
-- [💻 Sobre o Projeto](#-sobre-o-projeto)
-- [⚙️ Funcionalidades](#️-funcionalidades)
-- [🛠 Tecnologias](#-tecnologias)
-- [🏗 Arquitetura](#-arquitetura)
-- [🚀 Como Executar o Projeto](#-como-executar-o-projeto)
-  - [✅ Pré-requisitos](#pré-requisitos)
-  - [🎲 Configurando e Executando](#-configurando-e-executando)
-- [🧪 Testando o Projeto](#-testando-o-projeto)
-- [🦸 Autor](#-autor)
+- [Boletim Saúde](#boletim-saúde)
+  - [📋 Índice (documentação em construção)](#-índice-documentação-em-construção)
+  - [💻 Sobre o Projeto](#-sobre-o-projeto)
+  - [⚙️ Funcionalidades](#️-funcionalidades)
+    - [Boletim Diário](#boletim-diário)
+    - [Relatórios Mensais](#relatórios-mensais)
+    - [Edição do Boletim](#edição-do-boletim)
+    - [Gerenciamento de Especialidades](#gerenciamento-de-especialidades)
+    - [Gerenciamento de Cirurgiões](#gerenciamento-de-cirurgiões)
+  - [🛠 Tecnologias](#-tecnologias)
+    - [Infraestrutura](#infraestrutura)
+    - [Backend](#backend)
+    - [Frontend](#frontend)
+  - [🏗 Arquitetura](#-arquitetura)
+    - [API](#api)
+  - [🏗 Design](#-design)
+  - [🚀 Como Executar o Projeto](#-como-executar-o-projeto)
+    - [Docker](#docker)
+      - [1 - Docker Hub:](#1---docker-hub)
+      - [2 - Docker com projeto local:](#2---docker-com-projeto-local)
+    - [Local (Não finalizado)](#local-não-finalizado)
+  - [🧪 Testando o Projeto](#-testando-o-projeto)
+  - [🦸 Autor](#-autor)
+    - [Lucas Leme](#lucas-leme)
 
 ## 💻 Sobre o Projeto
 
@@ -67,30 +82,28 @@ Projeto desenvolvido para a Prefeitura Municipal de Itaberá, com o objetivo de 
 
 <table>
   <tr>
-    <div style="display: flex;">
-      <span style="display: grid; place-items: center; width: 75px;">
-        <a href="https://git-scm.com/downloads">
-          <img src="frontend/public/images/icon-git.svg" width="50" height="50" 
-            style="color: blue;"
-          />
-        </a>
-        <p style="text-align: center;">Git</p>
-      </span>
-      <span style="display: grid; place-items: center; width: 75px;">
-        <a href="https://nginx.org/">
-          <img src="frontend/public/images/icon-nginx.png" width="50" height="50" 
-            style="color: blue;"
-          />
-        </a>
-        <p style="text-align: center;">Nginx</p>
-      </span>
-      <span style="display: grid; place-items: center; width: 75px;">
-        <a href="https://www.docker.com/">
-          <img src="frontend/public/images/icon-docker.svg" width="50" height="50" />
-        </a>
-        <p style="text-align: center;">Docker</p>
-      </span>
-    </div>
+    <td style="width: 75px; text-align: center;">
+      <a href="https://git-scm.com/downloads">
+        <img src="frontend/public/images/icon-git.svg" width="50" height="50" 
+          style="color: blue;"
+        />
+      </a>
+      <p style="text-align: center;">Git</p>
+    </td>
+    <td style="width: 75px; text-align: center;">
+      <a href="https://nginx.org/">
+        <img src="frontend/public/images/icon-nginx.png" width="50" height="50" 
+          style="color: blue;"
+        />
+      </a>
+      <p style="text-align: center;">Nginx</p>
+    </td>
+    <td style="width: 75px; text-align: center;">
+      <a href="https://www.docker.com/">
+        <img src="frontend/public/images/icon-docker.svg" width="50" height="50" />
+      </a>
+      <p style="text-align: center;">Docker</p>
+    </td>
   </tr>
 </table>
 
@@ -98,77 +111,73 @@ Projeto desenvolvido para a Prefeitura Municipal de Itaberá, com o objetivo de 
 
 <table>
   <tr>
-    <div style="display: flex;">
-      <span style="display: grid; place-items: center; width: 75px;">
-        <a href="https://www.java.com/pt-BR/">
-          <img src="frontend/public/images/icon-java.svg" width="50" height="50" />
-        </a>
-        <p style="text-align: center;">Java 21</p>
-      </span>
-      <span style="display: grid; place-items: center; width: 75px;">
-        <a href="https://maven.apache.org/">
-         <img src="frontend/public/images/icon-maven.svg" width="50" height="50" />
-        </a>
-        <p style="text-align: center;">Maven</p>
-      </span>
-      <span style="display: grid; place-items: center; width: 75px;">
-        <a href="https://spring.io/projects/spring-boot">
-         <img src="frontend/public/images/icon-spring.svg" width="50" height="50" />
-        </a>
-        <p style="text-align: center;">Spring Boot</p>
-      </span>
-      <span style="display: grid; place-items: center; width: 75px; margin-left:10px;">
-        <a href="https://www.postgresql.org/">
-         <img src="frontend/public/images/icon-postgresql.svg" width="50" height="50" />
-        </a>
-        <p style="text-align: center;">PostgreSQL</p>
-      </span>
-    </div>
+    <td style="width: 75px; text-align: center;">
+      <a href="https://www.java.com/pt-BR/">
+        <img src="frontend/public/images/icon-java.svg" width="50" height="50" />
+      </a>
+      <p style="text-align: center;">Java 21</p>
+    </td>
+    <td style="width: 75px; text-align: center;">
+      <a href="https://maven.apache.org/">
+        <img src="frontend/public/images/icon-maven.svg" width="50" height="50" />
+      </a>
+      <p style="text-align: center;">Maven</p>
+    </td>
+    <td style="width: 75px; text-align: center;">
+      <a href="https://spring.io/projects/spring-boot">
+        <img src="frontend/public/images/icon-spring.svg" width="50" height="50" />
+      </a>
+      <p style="text-align: center;">Spring Boot</p>
+    </td>
+    <td style="width: 75px; text-align: center;">
+      <a href="https://www.postgresql.org/">
+        <img src="frontend/public/images/icon-postgresql.svg" width="50" height="50" />
+      </a>
+      <p style="text-align: center;">PostgreSQL</p>
+    </td>
   </tr>
 </table>
 
 ### Frontend
 
 <table>
-  <tr>
-    <div style="display: flex;">
-      <span style="display: grid; place-items: center; width: 75px;">
-        <a href="https://nextjs.org/">
-          <img src="frontend/public/images/icon-next.svg" width="50" height="50" />
-        </a>
-        <p style="text-align: center;">Next 14</p>
-      </span>
-      <span style="display: grid; place-items: center; width: 75px;">
-        <a href="https://react.dev/">
-         <img src="frontend/public/images/icon-react.svg" width="50" height="50" />
-        </a>
-        <p style="text-align: center;">React 18</p>
-      </span>
-      <span style="display: grid; place-items: center; width: 75px; margin-left:10px;">
-        <a href="https://nodejs.org/pt">
-         <img src="frontend/public/images/icon-node.svg" width="50" height="50" />
-        </a>
-        <p style="text-align: center;">NodeJS</p>
-      </span>
-      <span style="display: grid; place-items: center; width: 75px; margin-left:10px;">
-        <a href="https://www.npmjs.com/">
-         <img src="frontend/public/images/icon-npm.svg" width="50" height="50" />
-        </a>
-        <p style="text-align: center;">NPM</p>
-      </span>
-      <span style="display: grid; place-items: center; width: 75px; margin-left:10px;">
-        <a href="https://tailwindcss.com/">
-         <img src="frontend/public/images/icon-tailwindcss.svg" width="50" height="50" />
-        </a>
-        <p style="text-align: center;">TailwindCSS</p>
-      </span>
-      <span style="display: grid; place-items: center; width: 75px; margin-left:10px;">
-        <a href="https://ui.shadcn.com/">
-         <img src="frontend/public/images/icon-shadcn.png" width="50" height="50" />
-        </a>
-        <p style="text-align: center;">shadcn/ui</p>
-      </span>
-    </div>
+  <tr style="width: 75px; text-align: center;">
+    <td style="width: 75px;">
+      <a href="https://nextjs.org/">
+        <img src="frontend/public/images/icon-next.svg" width="50" height="50" />
+      </a>
+      <p style="text-align: center;">Next 14</p>
+    </td>
+    <td style="width: 75px;">
+      <a href="https://react.dev/">
+        <img src="frontend/public/images/icon-react.svg" width="50" height="50" />
+      </a>
+      <p style="text-align: center;">React 18</p>
+    </td>
+    <td style="width: 75px; margin-left:10px;">
+      <a href="https://nodejs.org/pt">
+        <img src="frontend/public/images/icon-node.svg" width="50" height="50" />
+      </a>
+      <p style="text-align: center;">NodeJS</p>
+    </td>
+    <td style="width: 75px; margin-left:10px;">
+      <a href="https://www.npmjs.com/">
+        <img src="frontend/public/images/icon-npm.svg" width="50" height="50" />
+      </a>
+      <p style="text-align: center;">NPM</p>
+    </td>
+    <td style="width: 75px; margin-left:10px;">
+      <a href="https://tailwindcss.com/">
+        <img src="frontend/public/images/icon-tailwindcss.svg" width="50" height="50" />
+      </a>
+      <p style="text-align: center;">TailwindCSS</p>
+    </td>
+    <td style="width: 75px; margin-left:10px;">
+      <a href="https://ui.shadcn.com/">
+        <img src="frontend/public/images/icon-shadcn.png" width="50" height="50" />
+      </a>
+      <p style="text-align: center;">shadcn/ui</p>
+    </td>
   </tr>
 </table>
 
@@ -362,5 +371,5 @@ API Local - Swagger: http://localhost:8080/api/swagger-ui/index.html
 ## 🦸 Autor
 ### Lucas Leme
 
-<div>Linkedin :<a href="https://www.linkedin.com/in/lucas-leme/">https://www.linkedin.com/in/lucas-leme/</a></div>
+<div>Linkedin: <a href="https://www.linkedin.com/in/lucas-leme/">https://www.linkedin.com/in/lucas-leme/</a></div>
 <div>Github: <a href="https://github.com/LucasLemeCF">https://github.com/LucasLemeCF</a></div>
