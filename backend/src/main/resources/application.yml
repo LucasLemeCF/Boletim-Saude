@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: boletim-saude-api
+
+  datasource:
+    url: ${POSTGRES_URL}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          lab:
+            non_contextual_creation: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  servlet:
+    context-path: /api
+    port: 8080
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+login:
+  usuario: ${USUARIO_LOGIN}
+  senha: ${SENHA_LOGIN}
+
+api:
+  token:
+    secret: ${API_TOKEN_SECRET}

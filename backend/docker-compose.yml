@@ -1,0 +1,62 @@
+name: boletim-saude-infra
+
+services:
+  app:
+    container_name: boletim-saude-api
+    build: .
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_URL=${POSTGRES_URL}
+      - API_TOKEN_SECRET=${API_TOKEN_SECRET}
+      - USUARIO_LOGIN=${USUARIO_LOGIN}
+      - SENHA_LOGIN=${SENHA_LOGIN}
+    ports:
+      - "8080:8080"
+    networks:
+      - boletim-saude-network
+    depends_on:
+      - database
+
+  database:
+    container_name: postgres
+    image: postgres:16
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ../docker/data/postgresql:/var/lib/postgresql/data
+    networks:
+      - boletim-saude-network
+
+  app-frontend:
+    container_name: boletim-saude-app
+    image: boletim-saude-app
+    environment:
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - NEXTAUTH_URL=${NEXTAUTH_URL}
+    ports:
+      - "3000:3000"
+    networks:
+      - boletim-saude-network
+    depends_on:
+      - app
+
+  nginx:
+    container_name: nginx-gateway
+    image: nginx:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - app-frontend
+    networks:
+      - boletim-saude-network
+
+networks:
+  boletim-saude-network:
+    driver: bridge
