@@ -111,27 +111,27 @@ Projeto desenvolvido para a Prefeitura Municipal de Itaberá, com o objetivo de 
 
 <table>
   <tr>
-    <td style="width: 75px; text-align: center;">
+    <td style="width: 75px; text-align: center;" width="50" height="50" >
       <a href="https://www.java.com/pt-BR/">
-        <img src="frontend/public/images/icon-java.svg" width="50" height="50" />
+        <img src="frontend/public/images/icon-java.svg"/>
       </a>
       <p style="text-align: center;">Java 21</p>
     </td>
-    <td style="width: 75px; text-align: center;">
+    <td style="width: 75px; text-align: center;" width="50" height="50" >
       <a href="https://maven.apache.org/">
-        <img src="frontend/public/images/icon-maven.svg" width="50" height="50" />
+        <img src="frontend/public/images/icon-maven.svg"/>
       </a>
       <p style="text-align: center;">Maven</p>
     </td>
-    <td style="width: 75px; text-align: center;">
+    <td style="width: 75px; text-align: center;" width="50" height="50" >
       <a href="https://spring.io/projects/spring-boot">
-        <img src="frontend/public/images/icon-spring.svg" width="50" height="50" />
+        <img src="frontend/public/images/icon-spring.svg"/>
       </a>
       <p style="text-align: center;">Spring Boot</p>
     </td>
-    <td style="width: 75px; text-align: center;">
-      <a href="https://www.postgresql.org/">
-        <img src="frontend/public/images/icon-postgresql.svg" width="50" height="50" />
+    <td style="text-align: center;" width="50" height="50" >
+      <a href="https://www.postgresql.org/"  >
+        <img src="frontend/public/images/icon-postgresql.svg"/>
       </a>
       <p style="text-align: center;">PostgreSQL</p>
     </td>
