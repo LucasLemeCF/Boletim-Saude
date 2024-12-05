@@ -45,8 +45,6 @@ services:
     environment:
       - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
       - NEXTAUTH_URL=${NEXTAUTH_URL}
-      - NEXT_PUBLIC_API=${NEXT_PUBLIC_API}
-      - NEXT_PUBLIC_API_INTERNAL=${NEXT_PUBLIC_API_INTERNAL}
     ports:
       - "3000:3000"
     depends_on:
