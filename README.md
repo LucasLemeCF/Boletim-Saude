@@ -2,6 +2,7 @@
 
 ![Login.png](/frontend/public/documentation/telas/Login.png)
 
+
 ## 📋 Índice (documentação em construção)
 
 - [Boletim Saúde](#boletim-saúde)
@@ -21,10 +22,13 @@
     - [API](#api)
   - [🏗 Design](#-design)
   - [🚀 Como Executar o Projeto](#-como-executar-o-projeto)
-    - [Docker](#docker)
+    - [✅ Pré-requisitos](#-pré-requisitos)
+    - [🎲 Configurando e Executando](#-configurando-e-executando)
   - [🧪 Testando o Projeto](#-testando-o-projeto)
   - [🦸 Autor](#-autor)
     - [Lucas Leme](#lucas-leme)
+
+
 
 ## 💻 Sobre o Projeto
 
@@ -72,6 +76,7 @@ Projeto desenvolvido para a Prefeitura Municipal de Itaberá, com o objetivo de 
 - Exclusão de especialidae
 
 ![Cirurgioes.png](/frontend/public/documentation/telas/Cirurgioes.png)
+
 
 ## 🛠 Tecnologias
 
@@ -179,7 +184,6 @@ Projeto desenvolvido para a Prefeitura Municipal de Itaberá, com o objetivo de 
 </table>
 
 
-
 ## 🏗 Arquitetura
 
 ### API
@@ -216,23 +220,48 @@ Os diagramas da arquitetura foram feitos usando a ferramenta Miro, disponivel em
 https://miro.com/app/board/uXjVK5NG8zs=/
 
 
-
 ## 🏗 Design
 
 O design inicial do projeto foi criado utilizando a ferramenta Figma, disponível em: https://www.figma.com/design/Ena3r3kvJhocQlGNe5DT7i/Untitled?t=oyZD2n1bGHiyJxZm-0  
 
 
-
 ## 🚀 Como Executar o Projeto
 
-### Docker
+### ✅ Pré-requisitos
 
+Antes de iniciar o projeto, é necessário precisar ter instalado as seguintes ferramentas:
+- [Git](https://git-scm.com)
+- [Docker](https://www.docker.com/get-started/)
+
+### 🎲 Configurando e Executando
+
+1. Abra o terminal na pasta em que deseja baixar o projeto, em seguida use o seguinte comando:
 ```bash
-git clone https://github.com/LucasLemeCF/Boletim-Saude-Itabera-SP-api.git
+git clone https://github.com/LucasLemeCF/Boletim-Saude.git
 ```
 
+2. Em seguida abra o arquivo .env e altere as variaveis de acordo com sua necessidade, essa etapa é opcional caso apens queira testar o projeto.
+
+3. Rode o seguinte comando no terminal:
+```bash
+docker compose up -d
+```
+
+4. Aguarde um tempo até que o projeto inicie antes de testar.
+
+</br>
+
+Obs: Para parar a execução utilize o seguinte comando:
+```bash
+docker compose down
+```
+
+
 ## 🧪 Testando o Projeto
-API Local - Swagger: http://localhost:8080/api/swagger-ui/index.html
+A porta padrão de execução é a 8000, sendo assim para realizar o login acesse: http://localhost:8000/login
+
+O usuário e senha estão configurados no arquivo .env nas variaveis de ambiente USUARIO_LOGIN e SENHA_LOGIN.
+
 
 ## 🦸 Autor
 ### Lucas Leme
