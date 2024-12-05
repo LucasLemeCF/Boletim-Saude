@@ -4,7 +4,6 @@
 
 
 ## 📋 Índice (documentação em construção)
-
 - [Boletim Saúde](#boletim-saúde)
   - [📋 Índice (documentação em construção)](#-índice-documentação-em-construção)
   - [💻 Sobre o Projeto](#-sobre-o-projeto)
@@ -187,9 +186,9 @@ Projeto desenvolvido para a Prefeitura Municipal de Itaberá, com o objetivo de 
 ## 🏗 Arquitetura
 
 ### API
-A API foi construida usando Clean Architecture baseados no livro de mesmo nome do autor Bob Martin.
+A API foi construida usando Clean Architecture baseado no livro de mesmo nome do autor Robert Martin (Uncle Bob).
 
-<div>
+<div align="center">
   <div style="display: flex; justify-content: center; align-items: center;">
     <img
       src="frontend/public/documentation/arquitetura/CleanArchitecture.png"
