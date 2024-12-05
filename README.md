@@ -82,7 +82,7 @@ Projeto desenvolvido para a Prefeitura Municipal de Itaberá, com o objetivo de 
 
 <table>
   <tr>
-    <td style="width: 75px; text-align: center;">
+    <td align="center" style="width: 75px; text-align: center;">
       <a href="https://git-scm.com/downloads">
         <img src="frontend/public/images/icon-git.svg" width="50" height="50" 
           style="color: blue;"
@@ -90,7 +90,7 @@ Projeto desenvolvido para a Prefeitura Municipal de Itaberá, com o objetivo de 
       </a>
       <p style="text-align: center;">Git</p>
     </td>
-    <td style="width: 75px; text-align: center;">
+    <td align="center" style="width: 75px; text-align: center;">
       <a href="https://nginx.org/">
         <img src="frontend/public/images/icon-nginx.png" width="50" height="50" 
           style="color: blue;"
@@ -98,7 +98,7 @@ Projeto desenvolvido para a Prefeitura Municipal de Itaberá, com o objetivo de 
       </a>
       <p style="text-align: center;">Nginx</p>
     </td>
-    <td style="width: 75px; text-align: center;">
+    <td align="center" style="width: 75px; text-align: center;">
       <a href="https://www.docker.com/">
         <img src="frontend/public/images/icon-docker.svg" width="50" height="50" />
       </a>
@@ -111,25 +111,25 @@ Projeto desenvolvido para a Prefeitura Municipal de Itaberá, com o objetivo de 
 
 <table>
   <tr>
-    <td style="width: 75px; text-align: center;" >
+    <td align="center" style="width: 75px; text-align: center;" >
       <a href="https://www.java.com/pt-BR/">
         <img src="frontend/public/images/icon-java.svg" width="50" height="50" />
       </a>
       <p style="text-align: center;" width="50" height="50" >Java 21</p>
     </td>
-    <td style="width: 75px; text-align: center;">
+    <td align="center" style="width: 75px; text-align: center;">
       <a href="https://maven.apache.org/">
         <img src="frontend/public/images/icon-maven.svg" width="50" height="50" />
       </a>
       <p style="text-align: center;" width="50" height="50" >Maven</p>
     </td>
-    <td style="width: 75px; text-align: center;">
+    <td align="center" style="width: 75px; text-align: center;">
       <a href="https://spring.io/projects/spring-boot">
         <img src="frontend/public/images/icon-spring.svg" width="50" height="50" />
       </a>
       <p style="text-align: center;" width="50" height="50" >Spring Boot</p>
     </td>
-    <td style="text-align: center;">
+    <td align="center" style="text-align: center;">
       <a href="https://www.postgresql.org/"  >
         <img src="frontend/public/images/icon-postgresql.svg" width="50" height="50" />
       </a>
@@ -141,38 +141,38 @@ Projeto desenvolvido para a Prefeitura Municipal de Itaberá, com o objetivo de 
 ### Frontend
 
 <table>
-  <tr style="width: 75px; text-align: center;">
+  <tr align="center" style="width: 75px; text-align: center;">
     <td style="width: 75px;">
       <a href="https://nextjs.org/">
         <img src="frontend/public/images/icon-next.svg" width="50" height="50" />
       </a>
       <p style="text-align: center;">Next 14</p>
     </td>
-    <td style="width: 75px;">
+    <td align="center" style="width: 75px;">
       <a href="https://react.dev/">
         <img src="frontend/public/images/icon-react.svg" width="50" height="50" />
       </a>
       <p style="text-align: center;">React 18</p>
     </td>
-    <td style="width: 75px; margin-left:10px;">
+    <td align="center" style="width: 75px; margin-left:10px;">
       <a href="https://nodejs.org/pt">
         <img src="frontend/public/images/icon-node.svg" width="50" height="50" />
       </a>
       <p style="text-align: center;">NodeJS</p>
     </td>
-    <td style="width: 75px; margin-left:10px;">
+    <td align="center" style="width: 75px; margin-left:10px;">
       <a href="https://www.npmjs.com/">
         <img src="frontend/public/images/icon-npm.svg" width="50" height="50" />
       </a>
       <p style="text-align: center;">NPM</p>
     </td>
-    <td style="width: 75px; margin-left:10px;">
+    <td align="center" style="width: 75px; margin-left:10px;">
       <a href="https://tailwindcss.com/">
         <img src="frontend/public/images/icon-tailwindcss.svg" width="50" height="50" />
       </a>
       <p style="text-align: center;">TailwindCSS</p>
     </td>
-    <td style="width: 75px; margin-left:10px;">
+    <td align="center" style="width: 75px; margin-left:10px;">
       <a href="https://ui.shadcn.com/">
         <img src="frontend/public/images/icon-shadcn.png" width="50" height="50" />
       </a>
