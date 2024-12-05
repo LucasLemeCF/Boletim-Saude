@@ -3,9 +3,9 @@
 ![Login.png](/frontend/public/documentation/telas/Login.png)
 
 
-## 📋 Índice (documentação em construção)
+## 📋 Índice
 - [Boletim Saúde](#boletim-saúde)
-  - [📋 Índice (documentação em construção)](#-índice-documentação-em-construção)
+  - [📋 Índice](#-índice)
   - [💻 Sobre o Projeto](#-sobre-o-projeto)
   - [⚙️ Funcionalidades](#️-funcionalidades)
     - [Boletim Diário](#boletim-diário)
@@ -19,7 +19,7 @@
     - [Frontend](#frontend)
   - [🏗 Arquitetura](#-arquitetura)
     - [API](#api)
-  - [🏗 Design](#-design)
+  - [🎨 Design](#-design)
   - [🚀 Como Executar o Projeto](#-como-executar-o-projeto)
     - [✅ Pré-requisitos](#-pré-requisitos)
     - [🎲 Configurando e Executando](#-configurando-e-executando)
@@ -219,7 +219,7 @@ Os diagramas da arquitetura foram feitos usando a ferramenta Miro, disponivel em
 https://miro.com/app/board/uXjVK5NG8zs=/
 
 
-## 🏗 Design
+## 🎨 Design
 
 O design inicial do projeto foi criado utilizando a ferramenta Figma, disponível em: https://www.figma.com/design/Ena3r3kvJhocQlGNe5DT7i/Untitled?t=oyZD2n1bGHiyJxZm-0  
 
@@ -228,7 +228,7 @@ O design inicial do projeto foi criado utilizando a ferramenta Figma, disponíve
 
 ### ✅ Pré-requisitos
 
-Antes de iniciar o projeto, é necessário precisar ter instalado as seguintes ferramentas:
+Antes de baixar e iniciar o projeto, é necessário precisar ter instalado as seguintes ferramentas:
 - [Git](https://git-scm.com)
 - [Docker](https://www.docker.com/get-started/)
 
