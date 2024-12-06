@@ -51,13 +51,12 @@ function ConteudoTabela({dataCalendario, setData, session}) {
   const [isLoading, setLoading] = useState(true);
   const { toast } = useToast();
   
-  const { watch, register, handleSubmit, setValue, getValues, control } = useForm<OrdemTabelaFormData>({
+  const { register, handleSubmit, setValue, getValues, control } = useForm<OrdemTabelaFormData>({
     defaultValues: {
       cabecalhosEspecialidades: [],
       cabecalhosCirurgioes: [],
     }
   });
-  const watchLinha = watch();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -123,6 +122,7 @@ function ConteudoTabela({dataCalendario, setData, session}) {
       body: JSON.stringify(resultado)
     };
 
+    console.log(resultado);
     fetch(process.env.NEXT_PUBLIC_API + '/api/ordem-tabela', requestOptions).then(response => response)
     toast({description: "Tabela salva com sucesso!"})
   }
@@ -134,10 +134,10 @@ function ConteudoTabela({dataCalendario, setData, session}) {
         {tabela != null ?
           <Form {...form}>
             <LinhasOrdemTabelaEspecialidade especialidades={especialidades}
-              control={control} getValues={getValues} register={register}
+              control={control} register={register}
             />
             <LinhasOrdemTabelaCirurgiao tabela={tabela} control={control} cirurgioes={cirurgioes}
-             setValue={setValue} register={register} getValues={getValues}
+              setValue={setValue} register={register} getValues={getValues}
             />
             <div className="flex items-center justify-end gap-8 w-full mt-8">
               <ButtonLocal texto={"Salvar"} color={"bg-[#337B5B] hover:bg-[#2f7053]"} onClick={handleSubmit(onSubmit)} type={"button"} icon={"Salvar"}/>

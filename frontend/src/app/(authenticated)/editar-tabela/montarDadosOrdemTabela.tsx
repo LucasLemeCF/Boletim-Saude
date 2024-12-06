@@ -3,10 +3,16 @@ export function montarValoresLinhas(tabela) {
     const linhas: any[] = [];
 
     if (tabela !== null) {
+        let posicaoAtual = 0;
+
         tabela.cabecalhosEspecialidades.map((cabecalho) => {
+            posicaoAtual++;
+
             cabecalho.linhasEspecialidades.map((especialidade) => {
+                posicaoAtual++;
+
                 linhas.push({
-                    posicao: especialidade.posicao,
+                    posicao: posicaoAtual,
                     tipo: "ESPECIALIDADE_LINHA",
                     componenteId: especialidade.idEspecialidade,
                 });
@@ -14,9 +20,13 @@ export function montarValoresLinhas(tabela) {
         });
 
         tabela.cabecalhosCirurgioes.map((cirurgiao) => {
+            posicaoAtual++;
+
             cirurgiao.listaProcedimentos.map((procedimento) => {
+                posicaoAtual++;
+
                 linhas.push({
-                    posicao: procedimento.posicao,
+                    posicao: posicaoAtual,
                     tipo: "CIRURGIAO_LINHA",
                     componenteId: procedimento.idProcedimento,
                 });
@@ -83,10 +93,14 @@ export function montarCabecalhosCirurgioes(tabela) {
 export function montarValoresCabecalhos(tabela) {
     const cabecalhos = [] as any;
 
+    let posicaoAtual = 0;
+
     if (tabela !== null) {
         tabela.cabecalhosEspecialidades.map((cabecalho) => {
+            posicaoAtual++;
+
             cabecalhos.push({
-                posicao: cabecalho.posicao,
+                posicao: posicaoAtual,
                 tipo: "ESPECIALIDADE_CABECALHO",
                 textos: [
                     {
@@ -94,11 +108,17 @@ export function montarValoresCabecalhos(tabela) {
                     }
                 ]
             });
+
+            cabecalho.linhasEspecialidades.map(() => {
+                posicaoAtual++;
+            });
         });
 
         tabela.cabecalhosCirurgioes.map((cirurgiao) => {
+            posicaoAtual++;
+
             cabecalhos.push({
-                posicao: cirurgiao.posicao,
+                posicao: posicaoAtual,
                 tipo: "CIRURGIAO_CABECALHO",
                 textos: [
                     {
@@ -108,6 +128,10 @@ export function montarValoresCabecalhos(tabela) {
                         texto: cirurgiao.textos[1],
                     }
                 ]
+            });
+
+            cirurgiao.listaProcedimentos.map(() => {
+                posicaoAtual++;
             });
         });
     }
