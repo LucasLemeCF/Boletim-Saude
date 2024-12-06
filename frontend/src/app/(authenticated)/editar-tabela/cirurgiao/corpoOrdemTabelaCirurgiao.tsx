@@ -39,7 +39,7 @@ export default function LinhasOrdemTabelaCirurgiao({ control, register, cirurgio
           appendCabecalho({linhasProcedimentos: [], textos: ["", ""]})
         }}  
       >
-        + Adicionar cabecçalho de cirurgiões
+        + Adicionar cabeçalho de cirurgiões
       </button>
     </div>
   )

@@ -261,6 +261,8 @@ A porta padrão de execução é a 8000, sendo assim para realizar o login acess
 
 O usuário e senha estão configurados no arquivo .env nas variaveis de ambiente USUARIO_LOGIN e SENHA_LOGIN.
 
+Para criar o bletim é necessário acessar a pagina "Especialidades" e cadastrar alguma, o mesmo para cirurgiões. Em seguida ir em "Editar Boletim", clicar em adicionar cabeçalho de especialidades/cirurgiões e selecionar a especialidade/médico, por fim é só clicar em "salvar", o modelo do boletim estará disponível em "Boletim Médico".
+
 
 ## 🦸 Autor
 ### Lucas Leme

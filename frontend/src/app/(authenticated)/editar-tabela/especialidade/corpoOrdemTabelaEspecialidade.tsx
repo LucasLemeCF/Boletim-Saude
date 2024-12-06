@@ -39,7 +39,7 @@ export default function LinhasOrdemTabelaEspecialidade({ control, register, espe
           appendCabecalho({linhasEspecialidades: [], textos: [""]})
       }}  
       >
-        + Adicionar cabeçalho de especialidade
+        + Adicionar cabeçalho de especialidades
       </button>
     </div>
   )
