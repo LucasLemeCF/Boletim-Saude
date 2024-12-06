@@ -122,8 +122,7 @@ function ConteudoTabela({dataCalendario, setData, session}) {
       body: JSON.stringify(resultado)
     };
 
-    console.log(resultado);
-    // fetch(process.env.NEXT_PUBLIC_API + '/api/ordem-tabela', requestOptions).then(response => response)
+    fetch(process.env.NEXT_PUBLIC_API + '/api/ordem-tabela', requestOptions).then(response => response)
     toast({description: "Tabela salva com sucesso!"})
   }
 
