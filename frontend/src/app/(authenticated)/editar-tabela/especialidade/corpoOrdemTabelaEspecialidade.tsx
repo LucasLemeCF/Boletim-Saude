@@ -38,7 +38,9 @@ export default function LinhasOrdemTabelaEspecialidade({ control, register, espe
         onClick={() => {
           appendCabecalho({linhasEspecialidades: [], textos: [""]})
       }}  
-      >+ Adicionar cabecalho de especialidade</button>
+      >
+        + Adicionar cabeçalho de especialidade
+      </button>
     </div>
   )
 }
@@ -100,6 +102,12 @@ function LinhaCabecalho({ register, indexCabecalho, fieldsCabecalho, updateCabec
 }
 
 function LinhaTabela({linha, control, especialidades, indexCabecalho, indexEspecialidade, remove, update, insert, move, tamanhoArray}) {
+  function moverLinhaParaCima(indexEspecialidade) {
+    if(indexEspecialidade > 0) {
+      move(indexEspecialidade, indexEspecialidade - 1)
+    }
+  }
+  
   function moverLinhaParaBaixo(indexEspecialidade) {
     if(tamanhoArray > indexEspecialidade + 1) {
       move(indexEspecialidade, indexEspecialidade + 1)
@@ -141,7 +149,7 @@ function LinhaTabela({linha, control, especialidades, indexCabecalho, indexEspec
       </div>
       <div className="flex items-center justify-between border-black w-[300px] h-[25px]"></div>
       <div className="flex items-center justify-center border-black w-[100px] h-[25px] px-1 hover:cursor-pointer hover:bg-[#d2dfcc]"
-        onClick={() => move(indexEspecialidade, indexEspecialidade - 1)}
+        onClick={() => moverLinhaParaCima(indexEspecialidade)}
       >
         <p className='font-semibold text-center text-black'><FaArrowUp className="w-[15px] h-[15px]"/></p>
       </div>
