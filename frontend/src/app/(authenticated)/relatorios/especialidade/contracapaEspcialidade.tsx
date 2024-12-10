@@ -2,8 +2,6 @@
 import Image from 'next/image';
 
 export function ContracapaEspecialiade({mes, ano, atendimentosPorMes}) {
-    console.log(atendimentosPorMes);
-
     return (
         <div className={`flex flex-col justify-items-start border-b border-black w-full sm:w-[891px] pt-4 pb-8`}>
             {titulo(mes, ano)} 
@@ -62,6 +60,7 @@ function TabelaAtendimentoPorMes({atendimentosPorMes}) {
                 <CelulaCabecalho texto={"OUT"}/>
                 <CelulaCabecalho texto={"NOV"}/>
                 <CelulaCabecalho texto={"DEZ"}/>
+                <CelulaCabecalho texto={"Média"}/>
             </div>
             {atendimentosPorMes.map((especialidade, index) => (
                 <div className="flex flex-row" key={index}>
@@ -78,6 +77,7 @@ function TabelaAtendimentoPorMes({atendimentosPorMes}) {
                     <CelulaCorpo especialidade={especialidade} mes={9}/>
                     <CelulaCorpo especialidade={especialidade} mes={10}/>
                     <CelulaCorpo especialidade={especialidade} mes={11}/>
+                    <CelulaMedia especialidade={especialidade}/>
                 </div>
             ))}
           </div>
@@ -95,4 +95,32 @@ function CelulaCorpo({especialidade, mes}) {
     return (
         <div className="w-[55px] text-center border-t border-l border-black">{especialidade.atendimentoPorMes[mes]}</div>
     )
+}
+
+function CelulaMedia({especialidade}) {
+    return (
+        <div className="w-[55px] text-center border-t border-l border-black">{CalcularMedia(especialidade.atendimentoPorMes)}</div>
+    )
+}
+
+export function CalcularMedia(atendimentoPorMes) {
+    let mesesComDados = 0;
+    let soma = 0;
+
+    atendimentoPorMes.forEach(atendimento => {
+        if (atendimento !== null && atendimento !== undefined && atendimento > 0) {
+            mesesComDados++;
+            soma += atendimento;
+        }
+    });
+
+    let resultado = 0;
+
+    if (soma === 0 || mesesComDados === 0) {
+        resultado = 0;
+    } else {
+        resultado = Math.round(soma / mesesComDados);
+    }
+    
+    return resultado;
 }

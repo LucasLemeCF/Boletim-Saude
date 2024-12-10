@@ -1,4 +1,5 @@
 import { Image, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
+import { CalcularMedia } from './contracapaEspcialidade';
 
 export const PdfContracapaEspecialidade = ({ atendimentosPorMes, anoRelatorio }) => (
     <Page size="A4" style={styles.page}>
@@ -16,18 +17,19 @@ export const PdfContracapaEspecialidade = ({ atendimentosPorMes, anoRelatorio })
             <View style={{borderBottomWidth: "1px", borderRightWidth: "1px", marginTop: "10px"}}>
                 <View style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
                     <CelulaEspecialidadeCabecalho texto={"Especialidade"}/>
-                    <CelulaCabecalho texto={"JAN"}/>
-                    <CelulaCabecalho texto={"FEV"}/>
-                    <CelulaCabecalho texto={"MAR"}/>
-                    <CelulaCabecalho texto={"ABR"}/>
-                    <CelulaCabecalho texto={"MAI"}/>
-                    <CelulaCabecalho texto={"JUN"}/>
-                    <CelulaCabecalho texto={"JUL"}/>
-                    <CelulaCabecalho texto={"AGO"}/>
-                    <CelulaCabecalho texto={"SET"}/>
-                    <CelulaCabecalho texto={"OUT"}/>
-                    <CelulaCabecalho texto={"NOV"}/>
-                    <CelulaCabecalho texto={"DEZ"}/>
+                    <CelulaCabecalho texto={"JAN"} size={12}/>
+                    <CelulaCabecalho texto={"FEV"} size={12}/>
+                    <CelulaCabecalho texto={"MAR"} size={12}/>
+                    <CelulaCabecalho texto={"ABR"} size={12}/>
+                    <CelulaCabecalho texto={"MAI"} size={12}/>
+                    <CelulaCabecalho texto={"JUN"} size={12}/>
+                    <CelulaCabecalho texto={"JUL"} size={12}/>
+                    <CelulaCabecalho texto={"AGO"} size={12}/>
+                    <CelulaCabecalho texto={"SET"} size={12}/>
+                    <CelulaCabecalho texto={"OUT"} size={12}/>
+                    <CelulaCabecalho texto={"NOV"} size={12}/>
+                    <CelulaCabecalho texto={"DEZ"} size={12}/>
+                    <CelulaCabecalho texto={"Média"} size={11}/>
                 </View>
                 {atendimentosPorMes.map((especialidade, index) => (
                     <View style={{display: "flex", flexDirection: "row", alignItems: "center"}} key={index}>
@@ -44,6 +46,7 @@ export const PdfContracapaEspecialidade = ({ atendimentosPorMes, anoRelatorio })
                         <CelulaCorpo especialidade={especialidade} mes={9}/>
                         <CelulaCorpo especialidade={especialidade} mes={10}/>
                         <CelulaCorpo especialidade={especialidade} mes={11}/>
+                        <CelulaMedia especialidade={especialidade}/>
                     </View>
                 ))}
             </View>
@@ -76,7 +79,7 @@ function CelulaEspecialidadeCabecalho({texto}) {
     )
 }
 
-function CelulaCabecalho({texto}) {
+function CelulaCabecalho({texto, size}) {
     return (
         <Text style={{   
             width: "50px",
@@ -89,7 +92,7 @@ function CelulaCabecalho({texto}) {
             borderTopWidth: "1px",
             borderLeftWidth: "1px",
             borderColor: "black",
-            fontSize: 12,
+            fontSize: size,
             display: "flex", 
             flexDirection: "column",
             justifyContent: "center",
@@ -144,6 +147,28 @@ function CelulaCorpo({especialidade, mes}) {
             alignItems: "center"
         }}>
            {especialidade.atendimentoPorMes[mes]}
+        </Text>
+    )
+}
+
+function CelulaMedia({especialidade}) {
+    return (
+        <Text style={{   
+            width: "50px",
+            height: "20px",
+            paddingTop: "4px",
+            textAlign: "center",
+            borderTopWidth: "1px",
+            borderLeftWidth: "1px",
+            borderColor: "black",
+            fontSize: 12,
+            display: "flex", 
+            flexDirection: "column",
+            justifyContent: "center",
+            alignContent: "center",
+            alignItems: "center"
+        }}>
+           {CalcularMedia(especialidade.atendimentoPorMes)}
         </Text>
     )
 }
