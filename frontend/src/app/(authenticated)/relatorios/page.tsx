@@ -23,6 +23,7 @@ export default function Relatorio() {
 function Paginas() {
   const { data: session } = useSession();
   const [dadosRelatorio, setDadosRelatorio] = useState(null)
+  const [atendimentosPorMes, setAtendimentosPorMes] = useState(null)
   const [tipoRelatorio, setTipoRelatorio] = useState("especialidade");
   const [mesRelatorio, setMesRelatorio] = useState(buscaMesAtual());
   const [anoRelatorio, setAnoRelatorio] = useState((new Date().getFullYear()).toString());
@@ -46,6 +47,15 @@ function Paginas() {
           });
           const dataResponse = await response.json();
           setDadosRelatorio(dataResponse);
+
+          const atendimentosPorMes = await fetch(process.env.NEXT_PUBLIC_API + '/api/' + tipoRelatorio + '/atendimentosPorMes/' + anoRelatorio, {
+            method: "GET",
+            headers: {
+              authorization: session?.user.token,
+            },
+          });
+          const atendimentosPorMesResponse = await atendimentosPorMes.json();
+          setAtendimentosPorMes(atendimentosPorMesResponse);
         } catch (error) {
           console.error('Error fetching data:', error);
         } finally {
@@ -120,7 +130,7 @@ function Paginas() {
         TemDadados(dadosRelatorio, tipoRelatorio) && session ? 
         <div ref={targetRef} className="flex flex-col items-center justify-between my-8 w-[891px]"> 
           {tipoRelatorio == "especialidade" ?
-            <RelatorioEspecialidade dadosRelatorio={dadosRelatorio} mesRelatorio={mesRelatorio} anoRelatorio={anoRelatorio}/>
+            <RelatorioEspecialidade dadosRelatorio={dadosRelatorio} mesRelatorio={mesRelatorio} anoRelatorio={anoRelatorio} atendimentosPorMes={atendimentosPorMes}/>
             : tipoRelatorio == "cirurgiao" ?
             <RelatorioCirurgiao dadosRelatorio={dadosRelatorio} mesRelatorio={mesRelatorio} anoRelatorio={anoRelatorio}/>
             : 

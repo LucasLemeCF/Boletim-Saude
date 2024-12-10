@@ -126,18 +126,6 @@ function calcularResultado(dadosMes) {
   }
 }
 
-function somarAtendimentos(especialidades) {
-  let soma = 0;
-  
-  especialidades.map(especialidade => {
-    especialidade.resultadosMensais[0].resultadosDiarios.map(resultadosDiario => {
-      soma += resultadosDiario.atendimentos;
-    });
-  });
-
-  return soma;
-}
-
 const styles = StyleSheet.create({
   page: {
     width: "100%",
