@@ -1,5 +1,6 @@
 package boletimdasaude.infra.controllers;
 import boletimdasaude.application.mappers.especialidade.EspecialidadeMapper;
+import boletimdasaude.application.requests.especialidade.AtendimentosMesEspecialidadeRequest;
 import boletimdasaude.application.requests.especialidade.EspecialidadeRequest;
 import boletimdasaude.application.responses.especialidade.EspecialidadeResponse;
 import boletimdasaude.application.usecases.especialidade.EspecialidadeInteractor;
@@ -57,6 +58,13 @@ public class EspecialidadeController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> excluirEspecialidade(@PathVariable(value="id") Long id) {
         return ResponseEntity.ok().body(especialidadeInteractor.excluirEspecialidade(id));
+    }
+
+    @GetMapping(path = "/atendimentosPorMes/{ano}")
+    public ResponseEntity<List<AtendimentosMesEspecialidadeRequest>> buscarQuantidadeAtendimentosMes(
+            @PathVariable(value="ano") int ano
+    ) {
+        return ResponseEntity.ok().body(especialidadeInteractor.buscarQuantidadeAtendimentosMes(ano));
     }
 
 }
