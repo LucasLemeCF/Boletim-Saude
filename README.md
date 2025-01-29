@@ -22,7 +22,10 @@
   - [🎨 Design](#-design)
   - [🚀 Como Executar o Projeto](#-como-executar-o-projeto)
     - [✅ Pré-requisitos](#-pré-requisitos)
-    - [🎲 Configurando e Executando](#-configurando-e-executando)
+    - [🎲 Configurando e Executando no Docker](#-configurando-e-executando-no-docker)
+    - [🎲 Configurando e Executando Localmente](#-configurando-e-executando-localmente)
+      - [Frontend](#frontend-1)
+      - [Backend](#backend-1)
   - [🧪 Testando o Projeto](#-testando-o-projeto)
   - [🦸 Autor](#-autor)
     - [Lucas Leme](#lucas-leme)
@@ -232,21 +235,21 @@ Antes de baixar e iniciar o projeto, é necessário precisar ter instalado as se
 - [Git](https://git-scm.com)
 - [Docker](https://www.docker.com/get-started/)
 
-### 🎲 Configurando e Executando
+### 🎲 Configurando e Executando no Docker
 
 1. Abra o terminal na pasta em que deseja baixar o projeto, em seguida use o seguinte comando:
 ```bash
 git clone https://github.com/LucasLemeCF/Boletim-Saude.git
 ```
 
-2. Em seguida abra o arquivo .env e altere as variaveis de acordo com sua necessidade, essa etapa é opcional caso apens queira testar o projeto.
+1. Em seguida abra o arquivo .env e altere as variaveis de acordo com sua necessidade, essa etapa é opcional caso apens queira testar o projeto.
 
-3. Rode o seguinte comando no terminal:
+2. Rode o seguinte comando no terminal:
 ```bash
 docker compose up -d
 ```
 
-4. Aguarde um tempo até que o projeto inicie antes de testar.
+1. Aguarde um tempo até que o projeto inicie antes de testar.
 
 </br>
 
@@ -255,6 +258,30 @@ Obs: Para parar a execução utilize o seguinte comando:
 docker compose down
 ```
 
+### 🎲 Configurando e Executando Localmente
+
+#### Frontend
+1. Na pasta "frontend" acesse o arquivo .env.example e remova os comentários das váveis de ambiente e eenomeie o arquivo para ".env".
+   
+2. Abra um terminal na pasta "frontend" e use o seguinte comando:
+```bash
+npm install
+```
+
+3. Para executar o frontend digite no terminal:
+```bash
+npm run dev
+```
+
+#### Backend
+
+1. Crie um banco de dados de acordo com com o arquivo .env da raiz do projeto (por padrão é BoletimSaude).
+
+2. Configure a IDE para usar as variáveis de ambiente contidas no arquivo .env que está na raiz do projeto.
+   
+3. Instale e defina o Java 21 para a execução do projeto.
+ 
+4. Execute o projeto a partir da IDE.
 
 ## 🧪 Testando o Projeto
 A porta padrão de execução é a 8000, sendo assim para realizar o login acesse: http://localhost:8000/login
