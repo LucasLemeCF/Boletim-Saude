@@ -53,7 +53,7 @@ function BarChartCapaEspecialidade({ especialiade, chartRef }) {
               },
               x: {
                 ticks: {
-                  padding: 0,
+                  padding: 20,
                   font: {
                     size: 12
                   },
