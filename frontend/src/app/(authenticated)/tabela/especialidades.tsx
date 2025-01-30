@@ -96,7 +96,6 @@ function CabecalhoEspecialidade({ cabecalho, tamanhoCabecalhoAnterior, indexCabe
   )
 }
 
-
 interface LinhaEspecialidadeProps {
   especialidade: EspecialidadesTabela;
   posicaoLinha: Number;
