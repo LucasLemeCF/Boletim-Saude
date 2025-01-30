@@ -317,14 +317,17 @@ public class ResultadoMensalEspecialidadeRepository implements IResultadoMensalE
     }
 
     private TabelaEspecialidadesResponse montarTabelaSemDadosParaOMes(LinhaTabela linha) {
+        EspecialidadeEntity especialidade = especialidadeRepositoryJpa.findById(linha.componenteId())
+                .orElseThrow(() -> new NotFoundException(String.format("ID %s não encontrado", linha.componenteId())));
+
         return new TabelaEspecialidadesResponse(
                 linha.posicao(),
                 linha.componenteId(),
                 buscarEspecialidadePorId(linha.componenteId()),
                 0,
+                especialidade.getMetaDiariaAtual(),
                 0,
-                0,
-                0
+                especialidade.getMetaMensalAtual()
         );
     }
 

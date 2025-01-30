@@ -153,11 +153,11 @@ public class OrdemTabelaRepository implements IOrdemTabelaRepository {
     public List<TabelaCabecalhoEspecialidadesResponse> buscarCabecalhosEspecialidades(String data) {
         List<TabelaCabecalhoEspecialidadesResponse> cabecalhos = new ArrayList<>();
 
-       OrdemTabelaEntity ordemTabelaEntity = buscarOrdemTabelaEntity(data);
+        OrdemTabelaEntity ordemTabelaEntity = buscarOrdemTabelaEntity(data);
 
-       if (ordemTabelaEntity == null) {
+        if (ordemTabelaEntity == null) {
            return cabecalhos;
-       }
+        }
 
         for (CabecalhoTabelaEntity cabecalho : ordemTabelaEntity.getCabecalhosTabelaEntity()) {
             if (cabecalho.getTipo().equals(TipoLinha.ESPECIALIDADE_CABECALHO)) {
