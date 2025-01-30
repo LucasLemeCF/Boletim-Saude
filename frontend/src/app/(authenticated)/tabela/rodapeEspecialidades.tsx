@@ -116,11 +116,9 @@ function calculaPorcentagemDia(dadosTabela, linhasTabela) {
 
   let resultado = ((totalPacientesAtendidosDia/totalMetasDiarias) * 100).toFixed(2); 
   
-  if (isNaN(Number(resultado))) {
-    resultado = "0";
-  } else if (resultado === "Infinity") {
+  if (isNaN(Number(resultado)) || resultado === "Infinity") {
     resultado = "100";
-  }
+  } 
 
   return resultado;
 }
@@ -151,11 +149,9 @@ function calcularPorcentagemMes(dadosTabela, linhasTabela) {
 
   let resultado = ((totalPacientesAtendidosMes/totalMetasMensais) * 100).toFixed(2);
 
-  if (isNaN(Number(resultado))) {
-    resultado = "0";
-  } else if (resultado === "Infinity") {
+  if (isNaN(Number(resultado)) || resultado === "Infinity") {
     resultado = "100";
-  }
-
+  } 
+  
   return resultado;
 } 
