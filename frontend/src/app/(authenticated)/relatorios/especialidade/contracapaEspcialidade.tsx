@@ -42,64 +42,67 @@ const titulo = (mes, ano) => {
     )
 }
 
-function TabelaAtendimentoPorMes({atendimentosPorMes}) {
+function TabelaAtendimentoPorMes({ atendimentosPorMes }) {
     return (
         <div className={`flex flex-col justify-items-start border-black w-full sm:w-[891px] pt-4 pb-8`}>
-          <div className="border-b border-r border-black">
-            <div className="flex flex-row">
-                <div className="w-[250px] bg-[#337B5B] text-white font-bold text-center border-t border-l border-black">Especialidade</div>
-                <CelulaCabecalho texto={"JAN"}/>
-                <CelulaCabecalho texto={"FEV"}/>
-                <CelulaCabecalho texto={"MAR"}/>
-                <CelulaCabecalho texto={"ABR"}/>
-                <CelulaCabecalho texto={"MAI"}/>
-                <CelulaCabecalho texto={"JUN"}/>
-                <CelulaCabecalho texto={"JUL"}/>
-                <CelulaCabecalho texto={"AGO"}/>
-                <CelulaCabecalho texto={"SET"}/>
-                <CelulaCabecalho texto={"OUT"}/>
-                <CelulaCabecalho texto={"NOV"}/>
-                <CelulaCabecalho texto={"DEZ"}/>
-                <CelulaCabecalho texto={"Média"}/>
+            <div className="border-b border-r border-black">
+                <CabecalhoTabela/>
+                <CorpoTabela atendimentosPorMes={atendimentosPorMes}/>
+                <TotalAtendimentos atendimentosPorMes={atendimentosPorMes}/>
             </div>
-            {atendimentosPorMes.map((especialidade, index) => (
-                <div className="flex flex-row" key={index}>
-                    <div className="w-[250px] bg-[#337B5B] text-white text-sm text-center border-t border-l border-black">{especialidade.especialidade}</div>
-                    <CelulaCorpo especialidade={especialidade} mes={0}/>
-                    <CelulaCorpo especialidade={especialidade} mes={1}/>
-                    <CelulaCorpo especialidade={especialidade} mes={2}/>
-                    <CelulaCorpo especialidade={especialidade} mes={3}/>
-                    <CelulaCorpo especialidade={especialidade} mes={4}/>
-                    <CelulaCorpo especialidade={especialidade} mes={5}/>
-                    <CelulaCorpo especialidade={especialidade} mes={6}/>
-                    <CelulaCorpo especialidade={especialidade} mes={7}/>
-                    <CelulaCorpo especialidade={especialidade} mes={8}/>
-                    <CelulaCorpo especialidade={especialidade} mes={9}/>
-                    <CelulaCorpo especialidade={especialidade} mes={10}/>
-                    <CelulaCorpo especialidade={especialidade} mes={11}/>
-                    <CelulaMedia especialidade={especialidade}/>
-                </div>
-            ))}
-          </div>
         </div>
     );
 }
 
-function CelulaCabecalho({texto}) {
+function CabecalhoTabela() {
+    const meses = ["JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO", "SET", "OUT", "NOV", "DEZ", "Média"];
+
     return (
-        <div className="w-[55px] bg-[#337B5B] text-white font-bold text-center border-t border-l border-black">{texto}</div>
+        <div className="flex flex-row">
+            <CelulaVerdeGrande texto="Especialidade" font={"bold"}/>
+            {meses.map((mes, index) => (
+                <CelulaVerde key={index} texto={mes} font={"bold"}/>
+            ))}
+        </div>
+    );
+}
+
+function CorpoTabela({atendimentosPorMes}) {
+    return (
+        <>
+            {atendimentosPorMes.map((especialidade, index) => (
+                <LinhaTabela key={index} especialidade={especialidade} />
+            ))}
+        </>
     )
 }
 
-function CelulaCorpo({especialidade, mes}) {
+function LinhaTabela({ especialidade }) {
     return (
-        <div className="w-[55px] text-center border-t border-l border-black">{especialidade.atendimentoPorMes[mes]}</div>
+        <div className="flex flex-row">
+           <CelulaVerdeGrande texto={especialidade.especialidade}/>
+            {Array.from({ length: 12 }).map((_, mes) => (
+                <Celula key={mes} texto={especialidade.atendimentoPorMes[mes]} />
+            ))}
+            <Celula texto={CalcularMedia(especialidade.atendimentoPorMes)} />
+        </div>
+    );
+}
+function Celula({texto}) {
+    return (
+        <div className={`w-[50px] bg-white text-black text-center border-t border-l border-black`}>{texto}</div>
     )
 }
 
-function CelulaMedia({especialidade}) {
+function CelulaVerde({texto, font="normal"}) {
     return (
-        <div className="w-[55px] text-center border-t border-l border-black">{CalcularMedia(especialidade.atendimentoPorMes)}</div>
+        <div className={`w-[50px] bg-[#337B5B] font-${font} text-white text-center border-t border-l border-black`}>{texto}</div>
+    )
+}
+
+function CelulaVerdeGrande({texto, font="normal"}) {
+    return (
+        <div className={`w-[260px] bg-[#337B5B] font-${font} text-sm text-white text-center border-t border-l border-black`}>{texto}</div>
     )
 }
 
@@ -123,4 +126,40 @@ export function CalcularMedia(atendimentoPorMes) {
     }
     
     return resultado;
+}
+
+function TotalAtendimentos({ atendimentosPorMes }) {
+    const totalPorMes = CalcularTotalPorMes(atendimentosPorMes);
+
+    return (
+        <div className="flex flex-row">
+            <CelulaVerdeGrande texto={"Total"}/>
+            {totalPorMes.map((total, index) => (
+                <CelulaVerde key={index} texto={total}/>
+            ))}
+            <CelulaVerde texto={CalcularMediaTotal(totalPorMes)}/>
+        </div>
+    );
+}
+
+export function CalcularTotalPorMes(atendimentosPorMes) {
+    const totalPorMes = Array(12).fill(0);
+
+    atendimentosPorMes.forEach(especialidade => {
+        especialidade.atendimentoPorMes.forEach((atendimento, index) => {
+            if (atendimento !== null && atendimento !== undefined && atendimento > 0) {
+                totalPorMes[index] += atendimento;
+            }
+        });
+    });
+
+    return totalPorMes;
+}
+
+export function CalcularMediaTotal(totalPorMes) {
+    const mesesComDados = totalPorMes.filter(total => total > 0).length;
+    const somaTotal = totalPorMes.reduce((acc, total) => acc + total, 0);
+    const mediaTotal = mesesComDados > 0 ? Math.round(somaTotal / mesesComDados) : 0;
+
+    return mediaTotal;
 }

@@ -1,7 +1,7 @@
 import { Image, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
-import { CalcularMedia } from './contracapaEspcialidade';
+import { CalcularMedia, CalcularMediaTotal } from './contracapaEspcialidade';
 
-export const PdfContracapaEspecialidade = ({ atendimentosPorMes, anoRelatorio }) => (
+export const PdfContracapaEspecialidade = ({ atendimentosPorMes, anoRelatorio, totalPorMes }) => (
     <Page size="A4" style={styles.page}>
         <View style={styles.section}>
             <View style={{ display: "flex",  flexDirection: "row", justifyContent: "space-between", height: "40px" }}>
@@ -33,22 +33,29 @@ export const PdfContracapaEspecialidade = ({ atendimentosPorMes, anoRelatorio })
                 </View>
                 {atendimentosPorMes.map((especialidade, index) => (
                     <View style={{display: "flex", flexDirection: "row", alignItems: "center"}} key={index}>
-                        <CelulaEspecialidadeCorpo especialidade={especialidade}/>
-                        <CelulaCorpo especialidade={especialidade} mes={0}/>
-                        <CelulaCorpo especialidade={especialidade} mes={1}/>
-                        <CelulaCorpo especialidade={especialidade} mes={2}/>
-                        <CelulaCorpo especialidade={especialidade} mes={3}/>
-                        <CelulaCorpo especialidade={especialidade} mes={4}/>
-                        <CelulaCorpo especialidade={especialidade} mes={5}/>
-                        <CelulaCorpo especialidade={especialidade} mes={6}/>
-                        <CelulaCorpo especialidade={especialidade} mes={7}/>
-                        <CelulaCorpo especialidade={especialidade} mes={8}/>
-                        <CelulaCorpo especialidade={especialidade} mes={9}/>
-                        <CelulaCorpo especialidade={especialidade} mes={10}/>
-                        <CelulaCorpo especialidade={especialidade} mes={11}/>
+                        <CelulaEspecialidadeCorpo texto={especialidade.especialidade}/>
+                        <CelulaCorpo texto={especialidade.atendimentoPorMes[0]}/>
+                        <CelulaCorpo texto={especialidade.atendimentoPorMes[1]}/>
+                        <CelulaCorpo texto={especialidade.atendimentoPorMes[2]}/>
+                        <CelulaCorpo texto={especialidade.atendimentoPorMes[3]}/>
+                        <CelulaCorpo texto={especialidade.atendimentoPorMes[4]}/>
+                        <CelulaCorpo texto={especialidade.atendimentoPorMes[5]}/>
+                        <CelulaCorpo texto={especialidade.atendimentoPorMes[6]}/>
+                        <CelulaCorpo texto={especialidade.atendimentoPorMes[7]}/>
+                        <CelulaCorpo texto={especialidade.atendimentoPorMes[8]}/>
+                        <CelulaCorpo texto={especialidade.atendimentoPorMes[9]}/>
+                        <CelulaCorpo texto={especialidade.atendimentoPorMes[10]}/>
+                        <CelulaCorpo texto={especialidade.atendimentoPorMes[11]}/>
                         <CelulaMedia especialidade={especialidade}/>
                     </View>
                 ))}
+                <View style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
+                    <CelulaEspecialidadeCorpo texto={"Total"}/>
+                    {totalPorMes.map((total, index) => (
+                        <CelulaCorpoTotal key={index} texto={total}/>
+                    ))}
+                    <CelulaCorpoTotal texto={CalcularMediaTotal(totalPorMes)}/>
+                </View>
             </View>
         </View>
     </Page>
@@ -104,7 +111,7 @@ function CelulaCabecalho({texto, size}) {
     )
 }
 
-function CelulaEspecialidadeCorpo({especialidade}) {
+function CelulaEspecialidadeCorpo({texto}) {
     return (
         <Text style={{   
             width: "200px", 
@@ -124,12 +131,12 @@ function CelulaEspecialidadeCorpo({especialidade}) {
             alignContent: "center",
             alignItems: "center"
         }}>
-            {especialidade.especialidade}
+            {texto}
         </Text>
     )
 }
 
-function CelulaCorpo({especialidade, mes}) {
+function CelulaCorpo({texto}) {
     return (
         <Text style={{   
             width: "50px",
@@ -139,6 +146,7 @@ function CelulaCorpo({especialidade, mes}) {
             borderTopWidth: "1px",
             borderLeftWidth: "1px",
             borderColor: "black",
+            backgroundColor: "white", 
             fontSize: 12,
             display: "flex", 
             flexDirection: "column",
@@ -146,7 +154,31 @@ function CelulaCorpo({especialidade, mes}) {
             alignContent: "center",
             alignItems: "center"
         }}>
-           {especialidade.atendimentoPorMes[mes]}
+           {texto}
+        </Text>
+    )
+}
+
+function CelulaCorpoTotal({texto}) {
+    return (
+        <Text style={{   
+            width: "50px",
+            height: "20px",
+            paddingTop: "4px",
+            textAlign: "center",
+            borderTopWidth: "1px",
+            borderLeftWidth: "1px",
+            borderColor: "black",
+            backgroundColor: "#337B5B", 
+            color: "white",
+            fontSize: 10,
+            display: "flex", 
+            flexDirection: "column",
+            justifyContent: "center",
+            alignContent: "center",
+            alignItems: "center"
+        }}>
+           {texto}
         </Text>
     )
 }

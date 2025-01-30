@@ -6,7 +6,7 @@ import { Label } from "../../../../components/ui/label";
 import { Switch } from "../../../../components/ui/switch";
 import { numeroParaMes } from "../../../../utils/meses";
 import { CapaEspecialidade } from "./capaEspecialidade";
-import { ContracapaEspecialiade } from './contracapaEspcialidade';
+import { CalcularTotalPorMes, ContracapaEspecialiade } from './contracapaEspcialidade';
 import { CorpoEspecialidade } from "./corpoEspecialidade";
 import { PdfCapaEspecialidade } from "./PdfCapaEspecialidade";
 import { PdfContracapaEspecialidade } from './PdfContracapaEspecialidade';
@@ -39,6 +39,8 @@ export function RelatorioEspecialidade({dadosRelatorio, mesRelatorio, anoRelator
             setOpenPdf(true);
         }
     }
+
+    const totalPorMes = CalcularTotalPorMes(atendimentosPorMes);
   
     return (
       <>
@@ -51,7 +53,7 @@ export function RelatorioEspecialidade({dadosRelatorio, mesRelatorio, anoRelator
                     <button className={`w-[150px] h-[50px] rounded-[5px] text-white flex items-center justify-start bg-[#337B5B]`} type={"button"}>
                     <MdOutlineFileDownload className="w-6 h-6 ml-4"/>
                     <div className={"ml-4"}>
-                        <PDFDownloadLink document={<PdfEspecialidade especialidades={dadosRelatorio} mesRelatorio={mesRelatorio} anoRelatorio={anoRelatorio} base64Image={base64Image} mesString={mesString} dadosRelatorio={dadosRelatorio} atendimentosPorMes={atendimentosPorMes}/>} fileName={"Relatório Médico - " + mesRelatorio + "-" + anoRelatorio + ".pdf"}>
+                        <PDFDownloadLink document={<PdfEspecialidade especialidades={dadosRelatorio} mesRelatorio={mesRelatorio} anoRelatorio={anoRelatorio} base64Image={base64Image} mesString={mesString} dadosRelatorio={dadosRelatorio} atendimentosPorMes={atendimentosPorMes} totalPorMes={totalPorMes}/>} fileName={"Relatório Médico - " + mesRelatorio + "-" + anoRelatorio + ".pdf"}>
                         Baixar
                         </PDFDownloadLink>
                     </div>
@@ -62,7 +64,7 @@ export function RelatorioEspecialidade({dadosRelatorio, mesRelatorio, anoRelator
        
         <div className={`flex flex-col justify-items-start w-[891px] h-[1260px] mt-8 px-0 ` + (openPdf ? "" : "hidden")}>
             <PDFViewer  style={{height: "100%"}}>
-               <PdfEspecialidade especialidades={dadosRelatorio} mesRelatorio={mesRelatorio} anoRelatorio={anoRelatorio} base64Image={base64Image} mesString={mesString} dadosRelatorio={dadosRelatorio} atendimentosPorMes={atendimentosPorMes}/>
+               <PdfEspecialidade especialidades={dadosRelatorio} mesRelatorio={mesRelatorio} anoRelatorio={anoRelatorio} base64Image={base64Image} mesString={mesString} dadosRelatorio={dadosRelatorio} atendimentosPorMes={atendimentosPorMes} totalPorMes={totalPorMes}/>
             </PDFViewer>
         </div>
         
@@ -79,10 +81,10 @@ export function RelatorioEspecialidade({dadosRelatorio, mesRelatorio, anoRelator
     )
 }
 
-export const PdfEspecialidade = ({ especialidades, mesRelatorio, anoRelatorio, base64Image, mesString, dadosRelatorio, atendimentosPorMes }) => (
+export const PdfEspecialidade = ({ especialidades, mesRelatorio, anoRelatorio, base64Image, mesString, dadosRelatorio, atendimentosPorMes, totalPorMes }) => (
     <Document title={"Relatório Médico - " + mesRelatorio + "-" + anoRelatorio + ".pdf"} >
         <PdfCapaEspecialidade img={base64Image} mes={mesString} ano={anoRelatorio} especialidades={dadosRelatorio}/>
-        <PdfContracapaEspecialidade atendimentosPorMes={atendimentosPorMes} anoRelatorio={anoRelatorio}/>
+        <PdfContracapaEspecialidade atendimentosPorMes={atendimentosPorMes} anoRelatorio={anoRelatorio} totalPorMes={totalPorMes}/>
         <PdfCorpoEspecialidade especialidades={especialidades} img={base64Image}/>
     </Document>
 )
