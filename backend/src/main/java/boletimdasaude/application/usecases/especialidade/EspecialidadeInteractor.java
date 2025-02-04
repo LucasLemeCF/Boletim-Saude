@@ -8,6 +8,7 @@ import boletimdasaude.domain.especialidade.ResultadoMensalEspecialidade;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class EspecialidadeInteractor {
@@ -32,6 +33,8 @@ public class EspecialidadeInteractor {
                 resultado.add(especialidade);
             }
         }
+
+        resultado.sort(Comparator.comparing(Especialidade::especialidade));
 
         return resultado;
     }

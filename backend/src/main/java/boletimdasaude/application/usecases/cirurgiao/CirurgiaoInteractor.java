@@ -6,8 +6,10 @@ import boletimdasaude.application.responses.cirurgiao.ProcedimentoCirurgiaoRespo
 import boletimdasaude.domain.cirurgiao.Cirurgiao;
 import boletimdasaude.domain.cirurgiao.ProcedimentoCirurgiao;
 import boletimdasaude.domain.cirurgiao.ResultadoMensalCirurgiao;
+import boletimdasaude.domain.especialidade.Especialidade;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class CirurgiaoInteractor {
@@ -40,6 +42,8 @@ public class CirurgiaoInteractor {
                 resultado.add(new Cirurgiao(cirurgiao.id(), cirurgiao.nome(), listaProcedimentos, cirurgiao.ativo()));
             }
         }
+
+        resultado.sort(Comparator.comparing(Cirurgiao::nome));
 
         return resultado;
     }
