@@ -46,7 +46,7 @@ public class EspecialidadeRepository implements IEspecialidadeRepository, ITabel
         for (EspecialidadeEntity especialidadeEntity : listaEspecialidade) {
             if (temresultadosMensais(especialidadeEntity.getResultadosMensais())) {
                 for (ResultadoMensalEspecialidadeEntity resultadoMensal : especialidadeEntity.getResultadosMensais()) {
-                    if (resultadoMensal.getMes() == mes && resultadoMensal.getAno() == ano) {
+                    if (mesmaData(mes, ano, resultadoMensal) && teveAtendimentosNoMes(resultadoMensal)) {
                         List<ResultadoMensalEspecialidadeEntity> listaResultadoMensal = new ArrayList<>();
                         listaResultadoMensal.add(resultadoMensal);
                         especialidadeEntity.setResultadosMensais(listaResultadoMensal);
@@ -57,6 +57,14 @@ public class EspecialidadeRepository implements IEspecialidadeRepository, ITabel
         }
 
         return resultado;
+    }
+
+    private boolean mesmaData(int mes, int ano, ResultadoMensalEspecialidadeEntity resultadoMensal) {
+        return resultadoMensal.getMes() == mes && resultadoMensal.getAno() == ano;
+    }
+
+    private boolean teveAtendimentosNoMes(ResultadoMensalEspecialidadeEntity resultadoMensal) {
+        return resultadoMensal.getAtendimentos() > 0;
     }
 
     private int extrairtMes(String date) {
