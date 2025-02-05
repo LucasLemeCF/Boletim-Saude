@@ -3,7 +3,7 @@ spring:
     name: boletim-saude-api
 
   datasource:
-    url: ${POSTGRES_URL}
+    url: jdbc:postgresql://${HOST_BD}:${PORTA_BD}/${NOME_BD}
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
 
@@ -33,3 +33,10 @@ login:
 api:
   token:
     secret: ${API_TOKEN_SECRET}
+
+db:
+    host: ${HOST_BD}
+    port: ${PORTA_BD}
+    name: ${NOME_BD}
+    user: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
