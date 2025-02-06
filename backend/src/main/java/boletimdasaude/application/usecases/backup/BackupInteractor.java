@@ -6,8 +6,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
@@ -60,7 +62,17 @@ public class BackupInteractor {
         processBuilder.environment().put("PGPASSWORD", dbPassword);
         processBuilder.redirectErrorStream(true);
 
+        System.out.println("Comando: " + processBuilder.command());
+
         Process process = processBuilder.start();
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.err.println(line);
+            }
+        }
+
         int exitCode = process.waitFor();
         if (exitCode != 0) {
             throw new RuntimeException("O processo de backup falhou com o código de saída: " + exitCode);

@@ -261,7 +261,7 @@ docker compose down
 ### 🎲 Configurando e Executando Localmente
 
 #### Frontend
-1. Na pasta "frontend" acesse o arquivo .env.example e remova os comentários das váveis de ambiente e eenomeie o arquivo para ".env".
+1. Na pasta "frontend" acesse o arquivo .env.example e remova os comentários das váveis de ambiente e renomeie o arquivo para ".env".
    
 2. Abra um terminal na pasta "frontend" e use o seguinte comando:
 ```bash
@@ -274,10 +274,9 @@ npm run dev
 ```
 
 #### Backend
+1. Crie um banco de dados de acordo com o arquivo .env.example ques está na pasta "backend" (por padrão é BoletimSaude).
 
-1. Crie um banco de dados de acordo com com o arquivo .env da raiz do projeto (por padrão é BoletimSaude).
-
-2. Configure a IDE para usar as variáveis de ambiente contidas no arquivo .env que está na raiz do projeto.
+2. Configure a IDE para usar as variáveis de ambiente contidas no arquivo .env.example.
    
 3. Instale e defina o Java 21 para a execução do projeto.
  
