@@ -55,18 +55,24 @@ function FormLogin () {
   });
 
   const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
-    startTransition(() => {
+    startTransition(async () => {
       const data = {
         usuario: values.usuario,
-        senha: values.senha
-      }
+        senha: values.senha,
+      };
   
-      signIn('credentials', {
-          ...data,
-          callbackUrl: '/tabela',
-      })
+      const result = await signIn('credentials', {
+        ...data,
+        redirect: false,
+      });
+  
+      if (result?.error) {
+        alert('Usuário ou senha incorretos!');
+      } else {
+        window.location.href = '/tabela';
+      }
     });
-  }
+  };
 
   return  (
     <div className="w-full mt-8">
