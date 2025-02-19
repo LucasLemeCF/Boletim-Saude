@@ -3,15 +3,16 @@ package boletimdasaude.application.usecases.backup;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -62,16 +63,7 @@ public class BackupInteractor {
         processBuilder.environment().put("PGPASSWORD", dbPassword);
         processBuilder.redirectErrorStream(true);
 
-        System.out.println("Comando: " + processBuilder.command());
-
         Process process = processBuilder.start();
-
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.err.println(line);
-            }
-        }
 
         int exitCode = process.waitFor();
         if (exitCode != 0) {
@@ -108,5 +100,28 @@ public class BackupInteractor {
     private void excluiArquivoTemporario(Path arquivoTemporario) throws IOException {
         Files.delete(arquivoTemporario);
     }
+
+    public ResponseEntity<String> restaurarBackup(MultipartFile file) throws IOException, InterruptedException {
+        Path arquivoTemporario = criarArquivoTemporario();
+        Files.copy(file.getInputStream(), arquivoTemporario, StandardCopyOption.REPLACE_EXISTING);
+
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        processBuilder.command("pg_restore", "-h", host, "-p", port, "-U", dbUser, "-d", dbName, "--clean", "-v", arquivoTemporario.toString());
+        processBuilder.environment().put("PGPASSWORD", dbPassword);
+        processBuilder.redirectErrorStream(true);
+
+        Process process = processBuilder.start();
+
+        int exitCode = process.waitFor();
+        excluiArquivoTemporario(arquivoTemporario);
+
+        if (exitCode != 0) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("O processo de restauração falhou com o código de saída: " + exitCode);
+        }
+
+        return ResponseEntity.ok("Restauração do banco de dados concluída com sucesso.");
+    }
+
 
 }
