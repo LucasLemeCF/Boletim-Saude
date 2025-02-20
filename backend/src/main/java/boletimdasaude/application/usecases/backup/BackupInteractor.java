@@ -8,10 +8,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -54,7 +57,16 @@ public class BackupInteractor {
     }
 
     private Path criarArquivoTemporario() throws IOException {
-        return Files.createTempFile("backup_", ".sql");
+        String nomeArquivo = buscarDataAtual() + ".sql";
+
+        Path diretorioTemporario = Paths.get(System.getProperty("java.io.tmpdir"));
+        Path arquivoTemporario = diretorioTemporario.resolve(nomeArquivo);
+
+        if (Files.exists(arquivoTemporario)) {
+            Files.delete(arquivoTemporario);
+        }
+
+        return Files.createFile(arquivoTemporario);
     }
 
     private ProcessBuilder adicionarBackupAoArquivoTemporario(Path arquivoTemporario) throws IOException, InterruptedException {
@@ -65,6 +77,10 @@ public class BackupInteractor {
 
         Process process = processBuilder.start();
 
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+            reader.readLine();
+        }
+
         int exitCode = process.waitFor();
         if (exitCode != 0) {
             throw new RuntimeException("O processo de backup falhou com o código de saída: " + exitCode);
@@ -72,15 +88,15 @@ public class BackupInteractor {
 
         return processBuilder;
     }
-    
+
     private byte[] converterBackupEmBytes(Path arquivoTemporario) throws IOException {
         return Files.readAllBytes(arquivoTemporario);
     }
-    
+
     private ByteArrayInputStream converterParaByteArrayInputStream(byte[] arquivoEmBytes) {
         return new ByteArrayInputStream(arquivoEmBytes);
     }
-    
+
     private InputStreamResource converterParaInputStreamResource(ByteArrayInputStream byteArrayInputStream) {
         return new InputStreamResource(byteArrayInputStream);
     }
@@ -106,11 +122,25 @@ public class BackupInteractor {
         Files.copy(file.getInputStream(), arquivoTemporario, StandardCopyOption.REPLACE_EXISTING);
 
         ProcessBuilder processBuilder = new ProcessBuilder();
-        processBuilder.command("pg_restore", "-h", host, "-p", port, "-U", dbUser, "-d", dbName, "--clean", "-v", arquivoTemporario.toString());
+        processBuilder.command(
+                "pg_restore",
+                "-h", host,
+                "-p", port,
+                "-U", dbUser,
+                "-d", dbName,
+                "--clean",
+                "--if-exists",
+                "-v",
+                arquivoTemporario.toString()
+        );
         processBuilder.environment().put("PGPASSWORD", dbPassword);
         processBuilder.redirectErrorStream(true);
 
         Process process = processBuilder.start();
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+            reader.readLine();
+        }
 
         int exitCode = process.waitFor();
         excluiArquivoTemporario(arquivoTemporario);
@@ -122,6 +152,5 @@ public class BackupInteractor {
 
         return ResponseEntity.ok("Restauração do banco de dados concluída com sucesso.");
     }
-
 
 }
