@@ -18,6 +18,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class BackupInteractor {
 
@@ -76,11 +79,6 @@ public class BackupInteractor {
         processBuilder.redirectErrorStream(true);
 
         Process process = processBuilder.start();
-
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-            reader.readLine();
-        }
-
         int exitCode = process.waitFor();
         if (exitCode != 0) {
             throw new RuntimeException("O processo de backup falhou com o código de saída: " + exitCode);
@@ -117,22 +115,43 @@ public class BackupInteractor {
         Files.delete(arquivoTemporario);
     }
 
+    private boolean isPostgresVersionCompatible() throws IOException {
+        ProcessBuilder versionBuilder = new ProcessBuilder("psql", "--version");
+        Process versionProcess = versionBuilder.start();
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(versionProcess.getInputStream()))) {
+            String versionOutput = reader.readLine();
+            if (versionOutput != null) {
+                String version = versionOutput.replaceAll("[^0-9.]", "").split("\\.")[0];
+                int majorVersion = Integer.parseInt(version);
+                return majorVersion >= 9;
+            }
+        }
+
+        return false;
+    }
+
     public ResponseEntity<String> restaurarBackup(MultipartFile file) throws IOException, InterruptedException {
         Path arquivoTemporario = criarArquivoTemporario();
         Files.copy(file.getInputStream(), arquivoTemporario, StandardCopyOption.REPLACE_EXISTING);
 
         ProcessBuilder processBuilder = new ProcessBuilder();
-        processBuilder.command(
+        List<String> command = new ArrayList<>(Arrays.asList(
                 "pg_restore",
                 "-h", host,
                 "-p", port,
                 "-U", dbUser,
                 "-d", dbName,
                 "--clean",
-                "--if-exists",
                 "-v",
                 arquivoTemporario.toString()
-        );
+        ));
+
+        if (isPostgresVersionCompatible()) {
+            command.add(command.size() - 1, "--if-exists");
+        }
+
+        processBuilder.command(command);
         processBuilder.environment().put("PGPASSWORD", dbPassword);
         processBuilder.redirectErrorStream(true);
 
@@ -152,5 +171,4 @@ public class BackupInteractor {
 
         return ResponseEntity.ok("Restauração do banco de dados concluída com sucesso.");
     }
-
 }
