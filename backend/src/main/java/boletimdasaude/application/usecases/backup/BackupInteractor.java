@@ -144,6 +144,7 @@ public class BackupInteractor {
                 "-d", dbName,
                 "--clean",
                 "-v",
+                "--no-owner",
                 arquivoTemporario.toString()
         ));
 
