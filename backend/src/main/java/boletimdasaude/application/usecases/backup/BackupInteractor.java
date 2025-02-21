@@ -21,8 +21,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class BackupInteractor {
+
+    Logger logger = Logger.getLogger(getClass().getName());
 
     @Value("${db.name}")
     private String dbName;
@@ -115,23 +118,7 @@ public class BackupInteractor {
         Files.delete(arquivoTemporario);
     }
 
-    private boolean isPostgresVersionCompatible() throws IOException {
-        ProcessBuilder versionBuilder = new ProcessBuilder("psql", "--version");
-        Process versionProcess = versionBuilder.start();
-
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(versionProcess.getInputStream()))) {
-            String versionOutput = reader.readLine();
-            if (versionOutput != null) {
-                String version = versionOutput.replaceAll("[^0-9.]", "").split("\\.")[0];
-                int majorVersion = Integer.parseInt(version);
-                return majorVersion >= 9;
-            }
-        }
-
-        return false;
-    }
-
-    public ResponseEntity<String> restaurarBackup(MultipartFile file) throws IOException, InterruptedException {
+    public ResponseEntity<String> restaurarBackup(MultipartFile file, int ambiente) throws IOException, InterruptedException {
         Path arquivoTemporario = criarArquivoTemporario();
         Files.copy(file.getInputStream(), arquivoTemporario, StandardCopyOption.REPLACE_EXISTING);
 
@@ -144,12 +131,10 @@ public class BackupInteractor {
                 "-d", dbName,
                 "--clean",
                 "-v",
+                "--no-owner",
                 arquivoTemporario.toString()
         ));
-
-        if (isPostgresVersionCompatible()) {
-            command.add(command.size() - 1, "--if-exists");
-        }
+        corrigeRestorePorAmbiente(command, ambiente);
 
         processBuilder.command(command);
         processBuilder.environment().put("PGPASSWORD", dbPassword);
@@ -158,7 +143,10 @@ public class BackupInteractor {
         Process process = processBuilder.start();
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-            reader.readLine();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                logger.info(line);
+            }
         }
 
         int exitCode = process.waitFor();
@@ -170,5 +158,12 @@ public class BackupInteractor {
         }
 
         return ResponseEntity.ok("Restauração do banco de dados concluída com sucesso.");
+    }
+
+    private void corrigeRestorePorAmbiente(List<String> command, int ambiente) {
+        if (ambiente == 2) {
+            command.add(command.size() - 1, "--if-exists");
+            command.add(command.size() - 1, "--create");
+        }
     }
 }

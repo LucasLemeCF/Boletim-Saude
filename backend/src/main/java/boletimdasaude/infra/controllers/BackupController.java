@@ -23,9 +23,9 @@ public class BackupController {
         return backupInteractor.gerarBackup();
     }
 
-    @PostMapping(value = "/restore", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> restoreDatabase(@RequestParam("file") MultipartFile file) throws IOException, InterruptedException {
-        return backupInteractor.restaurarBackup(file);
+    @PostMapping(value = "/restore/{ambiente}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> restoreDatabase(@RequestParam("file") MultipartFile file, @PathVariable(value="ambiente") int ambiente) throws IOException, InterruptedException {
+        return backupInteractor.restaurarBackup(file, ambiente);
     }
 
 }
